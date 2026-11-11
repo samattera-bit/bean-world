@@ -19,7 +19,7 @@ const parts = [];
 if (w.today?.intention) parts.push(w.today.intention);
 if (b.traits?.length) parts.push(`${name} is ${b.traits.join(', ')}.`);
 if (b.loves?.length) parts.push(`${name} loves ${b.loves.join(', and ')}.`);
-parts.push((w.gifts || []).length ? `${name} has kept ${(w.gifts || []).length} gifts.` : `${name} has no gifts yet.`);
+parts.push((w.gifts || []).length ? `${name} has kept ${(w.gifts || []).length === 1 ? "one gift" : (w.gifts || []).length + " gifts"}.` : `${name} has no gifts yet.`);
 texts.add(parts.join(' '));
 
 const manPath = root + 'audio/manifest.json';

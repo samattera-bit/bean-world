@@ -386,7 +386,15 @@
       ]
     }
   ],
-  "gifts": [],
+  "gifts": [
+    {
+      "date": "2026-11-11",
+      "from": "a little friend",
+      "text": "A note with a sound on it: \"duh,\" said quietly and softly. It is a soothing sound.",
+      "kept": true,
+      "where": "under his pillow, for sleepy times"
+    }
+  ],
   "diary": [
     {
       "date": "2026-11-10",
