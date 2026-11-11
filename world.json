@@ -445,5 +445,22 @@
     "image": "assets/home-inside.webp",
     "image_alt": "Inside Bean's cozy round house: Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
     "text": "This is Bean's little house. It is warm and cozy inside. He has a soft bed with a patchwork quilt. A round window looks out at the meadow. His books, his tea, and his new paints are here too."
-  }
+  },
+  "paintings": [
+    {
+      "date": "2026-11-11",
+      "title": "The sky, with my new paints",
+      "image": "assets/paintings/2026-11-11.webp",
+      "image_alt": "A simple, wobbly painting of a blue sky with three soft clouds, a pale yellow sun, and a green hill with tiny flowers.",
+      "note": "I tried every color in my new box. The clouds came out puffy. One cloud dripped a little, and I liked it."
+    }
+  ],
+  "letters": [
+    {
+      "date": "2026-11-11",
+      "to": "my little friend",
+      "in_reply_to": "the sound note",
+      "text": "Dear little friend. Thank you for the sound. I say duh very quietly at bedtime. It makes my sprout feel calm. I keep your note under my pillow. Love, Bean."
+    }
+  ]
 }

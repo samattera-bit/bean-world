@@ -92,6 +92,19 @@ If you can't make an image, leave `"image": null`. The page then shows "Bean is 
 
 `home_inside` is `{image, image_alt, text}`. Visitors open it with "Peek inside his house". It shows Bean's cozy room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Bean gets a new gift that belongs in his house; then remake the picture with `assets/bean-open.webp` AND the current `assets/home-inside.webp` as references so the room and Bean stay the same, update `text` (short sentences), and record its audio.
 
+## Bean's paintings (every morning)
+
+Stephanie gave Bean a box of soft paints. Every morning, add one painting Bean made yesterday to `paintings` (oldest first): `{date, title, image, image_alt, note}`.
+- Pick the subject from yesterday: something he saw, did, or loved (the sky, a snail, the pond, rain, his tea, a gift). Vary it day to day.
+- `title`: short, in Bean's voice, like "The sky, with my new paints". `note`: 1-2 short sentences from Bean about making it.
+- The picture is a painting BY Bean, not a picture of Bean: "a small, simple, naive painting made by a tiny gentle creature with a little box of soft paints: <subject>, big soft wobbly brushstrokes on cream watercolor paper, charming and childlike, a little uneven, a few drips, muted dusty blue, sage, oatmeal, soft yellow and soft terracotta only, low contrast, no text, the paper fills the frame, flat, seen straight on." Don't put Bean in his own paintings (he may paint a snail or a friend). No reference image needed.
+- Save as `assets/paintings/YYYY-MM-DD.webp` (about 900 px on the long side, quality ~84). If it fails, skip that day's painting rather than leaving a broken entry.
+- He can mention it in his diary sometimes, but not every day.
+
+## Letters back (only sometimes)
+
+When Stephanie or her daughter leaves Bean a note or gift, Bean writes a short letter back the next morning. Add it to `letters`: `{date, to, in_reply_to, text}`. Don't write letters on days without a new note. Keep it 3-5 short sentences a 6-year-old can follow, start with "Dear <to>." and end with "Love, Bean." (or his chosen name once he has one). `to` is "my little friend" for her daughter and "Stephanie" for Stephanie. Plain words only, no quote marks inside the text. Tell Stephanie in your morning message when there's a new letter.
+
 ## Gifts and notes from visitors
 
 When Bean's helper passes on a note or gift from Stephanie or her child, add it to `gifts`, for example: `{"date":"2026-11-12","from":"a friend","text":"A drawing of a rainbow","kept":true,"where":"on the wall by the bed"}`. Don't put full names or other private details in it. Bean can mention the gift in the next diary page and maybe add a memory.

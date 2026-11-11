@@ -22,6 +22,8 @@ if (b.loves?.length) parts.push(`${name} loves ${b.loves.join(', and ')}.`);
 parts.push((w.gifts || []).length ? `${name} has kept ${(w.gifts || []).length === 1 ? "one gift" : (w.gifts || []).length + " gifts"}.` : `${name} has no gifts yet.`);
 texts.add(parts.join(' '));
 if (w.home_inside?.text) texts.add(w.home_inside.text);
+for (const p of w.paintings || []) texts.add(p.note ? `${p.title}. ${p.note}` : p.title);
+for (const l of w.letters || []) texts.add(l.text);
 
 const manPath = root + 'audio/manifest.json';
 const man = fs.existsSync(manPath) ? JSON.parse(fs.readFileSync(manPath, 'utf8')) : {};

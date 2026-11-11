@@ -232,6 +232,8 @@ const ICON = {
   cloud: '<path d="M7 18h10a4 4 0 0 0 0-8 5 5 0 0 0-9.6-1A4.5 4.5 0 0 0 7 18z"/>',
   gift: '<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9v11M4 13h16M12 9c-2-4-6-4-6-1.5S10 9 12 9zm0 0c2-4 6-4 6-1.5S14 9 12 9z"/>',
   memory: '<path d="M6 4h12v16l-6-4-6 4z"/>',
+  frame: '<rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M4 16l5-5 4 4 2-2 5 5"/><circle cx="15.5" cy="8.5" r="1.5"/>',
+  letter: '<rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M4 7l8 6 8-6"/>',
 };
 const icon = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
 
@@ -249,13 +251,15 @@ function renderThings() {
   const intention = w.today && w.today.intention;
   const memories = (b.memories || []).slice().reverse();
   const gifts = (w.gifts || []).filter((g) => g.kept !== false);
+  const paintings = (w.paintings || []).map((p, i) => ({ ...p, i })).reverse();
+  const letters = (w.letters || []).map((l, i) => ({ ...l, i })).reverse();
 
   $('#things').innerHTML = `
     ${intention ? `<article class="card full intention"><h3>${icon('sun')} Today ${esc(name)} hopes…</h3><p>${esc(intention)}</p></article>` : ''}
     <article class="card wide">
       <h3>${icon('bean')} About ${esc(name)}</h3>
       <p>${nameLine}</p>
-      ${listOrEmpty(b.traits, 'Bean is still getting to know themself.')}
+      ${listOrEmpty(b.traits, 'Bean is still getting to know himself.')}
     </article>
     <article class="card wide">
       <h3>${icon('heart')} Things ${esc(name)} loves</h3>
@@ -273,6 +277,16 @@ function renderThings() {
       <h3>${icon('memory')} Memories</h3>
       ${memories.length ? `<ul role="list">${memories.map((m) => `<li><span class="memory-date">${esc(friendlyDate(m.date))}</span>${esc(m.text)}</li>`).join('')}</ul>` : '<p class="soft">No memories yet.</p>'}
     </article>
+    <article class="card full">
+      <h3>${icon('frame')} ${esc(name)}'s paintings</h3>
+      ${paintings.length
+        ? `<ul class="paintings" role="list">${paintings.map((p) => `<li><button class="painting" data-painting="${p.i}"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async" /><span class="painting-title">${esc(p.title)}</span><span class="memory-date">${esc(friendlyDate(p.date))}</span></button></li>`).join('')}</ul>`
+        : '<p class="soft">No paintings yet.</p>'}
+    </article>
+    ${letters.length ? `<article class="card full">
+      <h3>${icon('letter')} Letters from ${esc(name)}</h3>
+      <ul role="list">${letters.map((l) => `<li><button class="letter" data-letter="${l.i}"><span class="memory-date">To ${esc(l.to)} · ${esc(friendlyDate(l.date))}</span>${esc(l.text.split('. ').slice(0, 2).join('. '))}…</button></li>`).join('')}</ul>
+    </article>` : ''}
     <article class="card full">
       <h3>${icon('gift')} Gifts ${esc(name)} has kept</h3>
       ${gifts.length
@@ -338,7 +352,7 @@ function speak(text) {
   player.play().catch(() => { player = null; speakWithDevice(text); });
 }
 function currentReadText() {
-  if ($('#house').open) return app.world.home_inside?.text || '';
+  if (houseDlg.open) return readerText;
   if (app.view === 'diary') {
     const e = (app.world.diary || [])[app.diaryIndex];
     return e ? `${e.title}. ${e.text}` : '';
@@ -350,16 +364,24 @@ $$('.read-btn').forEach((b) => {
   b.addEventListener('click', () => { if (app.speaking) stopSpeaking(); else speak(currentReadText()); });
 });
 
-// ---------- inside Bean's house ----------
+// ---------- the reader: inside the house, paintings, letters ----------
 const houseDlg = $('#house');
+let readerText = '';
+function openReader({ title, image, alt, text, shown, closeLabel = 'Close' }) {
+  stopSpeaking();
+  readerText = text || '';
+  const img = $('#house-img');
+  houseDlg.classList.toggle('no-pic', !image);
+  if (image) { img.src = image; img.alt = alt || ''; } else { img.removeAttribute('src'); img.alt = ''; }
+  $('#house-title').textContent = title || '';
+  $('#house-text').textContent = shown ?? text ?? '';
+  $('#house-close span').textContent = closeLabel;
+  houseDlg.showModal();
+}
 function openHouse() {
   const h = app.world?.home_inside;
   if (!h) return;
-  stopSpeaking();
-  const img = $('#house-img');
-  img.src = h.image; img.alt = h.image_alt || '';
-  $('#house-text').textContent = h.text || '';
-  houseDlg.showModal();
+  openReader({ title: "Inside Bean's house", image: h.image, alt: h.image_alt, text: h.text, closeLabel: 'Back outside' });
 }
 function closeHouse() { stopSpeaking(); houseDlg.close(); }
 $('#house-btn').addEventListener('click', openHouse);
@@ -367,6 +389,19 @@ $('#house-spot').addEventListener('click', openHouse);
 $('#house-close').addEventListener('click', closeHouse);
 houseDlg.addEventListener('click', (e) => { if (e.target === houseDlg) closeHouse(); });
 houseDlg.addEventListener('close', stopSpeaking);
+$('#things').addEventListener('click', (e) => {
+  const p = e.target.closest('[data-painting]');
+  if (p) {
+    const x = (app.world.paintings || [])[Number(p.dataset.painting)];
+    if (x) openReader({ title: x.title, image: x.image, alt: x.image_alt, text: x.note ? `${x.title}. ${x.note}` : x.title, shown: x.note || '' });
+    return;
+  }
+  const l = e.target.closest('[data-letter]');
+  if (l) {
+    const x = (app.world.letters || [])[Number(l.dataset.letter)];
+    if (x) openReader({ title: 'A letter from Bean', text: x.text });
+  }
+});
 
 // Testing hook (read-only peek at the mind).
 window.__bean = { get state() { return app.state; }, get world() { return app.world; } };

@@ -331,7 +331,7 @@ body.is-still .house-tip { transition: none; }
 .house-dialog[open] { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
 .house-dialog::backdrop { background: rgba(58, 49, 39, 0.45); }
 .house-picture { margin: 0; }
-.house-picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.house-picture img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .house-words { padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-4); justify-content: center; }
 .house-controls { display: grid; gap: var(--space-3); margin-top: var(--space-2); }
 @media (max-width: 899px) {
@@ -339,3 +339,18 @@ body.is-still .house-tip { transition: none; }
   .house-picture img { height: auto; max-height: 45dvh; }
   .house-words { padding: var(--space-5); }
 }
+
+/* ---------- paintings and letters ---------- */
+.house-dialog.no-pic[open] { grid-template-columns: 1fr; width: min(640px, calc(100vw - 2rem)); }
+.house-dialog.no-pic .house-picture { display: none; }
+.house-picture img { background: var(--paper-2); }
+.card ul.paintings { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
+.painting, .letter {
+  display: flex; flex-direction: column; gap: var(--space-1); width: 100%; text-align: left;
+  background: var(--paper-2); border: 2px solid transparent; border-radius: var(--radius-md);
+  padding: var(--space-3); color: var(--ink); font: inherit; cursor: pointer;
+}
+.painting:hover, .letter:hover { border-color: var(--line); }
+.painting img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); }
+.painting-title { font-weight: 800; font-size: var(--text-small); }
+.letter { font-size: var(--text-body); padding: var(--space-4); }
