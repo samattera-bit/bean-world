@@ -293,7 +293,12 @@ function thingsSpeech() {
 }
 
 // ---------- Read to me ----------
+// Pre-recorded lines in Bean's voice (audio/manifest.json maps exact text -> mp3).
+// Falls back to the device voice for anything not recorded yet.
 const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
+let voiceMap = {};
+fetch('audio/manifest.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : {})).then((m) => { voiceMap = m || {}; }).catch(() => {});
+let player = null;
 function pickVoice() {
   if (!synth) return null;
   const voices = synth.getVoices().filter((v) => /^en/i.test(v.lang));
@@ -307,12 +312,12 @@ function setReadButtons(speaking) {
   });
 }
 function stopSpeaking() {
+  if (player) { player.pause(); player.src = ''; player = null; }
   if (synth && (synth.speaking || synth.pending)) synth.cancel();
   setReadButtons(false);
 }
-function speak(text) {
-  if (!synth) return;
-  stopSpeaking();
+function speakWithDevice(text) {
+  if (!synth) { setReadButtons(false); return; }
   const u = new SpeechSynthesisUtterance(text);
   u.rate = 0.85; u.pitch = 1.05; u.lang = 'en-US';
   const v = pickVoice(); if (v) u.voice = v;
@@ -320,6 +325,17 @@ function speak(text) {
   u.onerror = () => setReadButtons(false);
   setReadButtons(true);
   synth.speak(u);
+}
+function speak(text) {
+  stopSpeaking();
+  const file = voiceMap[text];
+  if (!file) { speakWithDevice(text); return; }
+  player = new Audio(file);
+  player.volume = 0.9;
+  player.onended = () => { player = null; setReadButtons(false); };
+  player.onerror = () => { player = null; speakWithDevice(text); };
+  setReadButtons(true);
+  player.play().catch(() => { player = null; speakWithDevice(text); });
 }
 function currentReadText() {
   if (app.view === 'diary') {
@@ -330,7 +346,6 @@ function currentReadText() {
   return app.state ? app.state.caption : '';
 }
 $$('.read-btn').forEach((b) => {
-  if (!synth) { b.disabled = true; b.querySelector('.read-label').textContent = 'Reading not available'; return; }
   b.addEventListener('click', () => { if (app.speaking) stopSpeaking(); else speak(currentReadText()); });
 });
 

@@ -72,7 +72,7 @@ The browser seeds a random number generator with the date and simulates Bean fro
 ## Adding a diary page (every morning)
 
 1. Write yesterday's page from Bean's point of view, dated yesterday, or today on Bean's first day.
-2. Make a picture in the same style as the meadow: a children's picture-book illustration in soft muted gouache and watercolor, with warm cream paper texture, muted sage, dusty blue, soft terracotta and oatmeal tones. Use low contrast, no saturated colors, no text in the image, and a calm, cozy feel. A 3:2 or 4:3 landscape works best. If Bean appears, show them as a small soft apricot-colored bean with dot eyes, rosy cheeks, tiny feet and a little green sprout on top.
+2. Make a picture in the same style as the meadow: a children's picture-book illustration in soft muted gouache and watercolor, with warm cream paper texture, muted sage, dusty blue, soft terracotta and oatmeal tones. Use low contrast, no saturated colors, no text in the image, and a calm, cozy feel. A 3:2 or 4:3 landscape works best. **Bean must look identical every time.** Always pass `assets/bean-open.webp` as a reference image and say in the prompt: "image 1 is Bean; draw this exact character (same apricot-tan peanut shape, dot eyes, rosy cheeks, tiny feet, two-leaf green sprout on top), only smaller and placed in the scene." The world view uses this same art, so the diary and the world always match. Never change Bean's design; Stephanie asked for it to stay consistent.
 3. Save it as `assets/diary/YYYY-MM-DD.webp` (the diary date, about 1200×800, quality ~84). If one day ever has two pages, use `YYYY-MM-DD-2.webp`.
 4. Add the entry to the end of `diary`:
 
@@ -101,6 +101,16 @@ When Bean's helper passes on a note or gift from Stephanie or her child, add it 
 - **Bean's name.** Bean names themself only when it feels right, and that should happen soon, within the first 2-4 days. Plant the idea in the diary first (a sound, a snail, a flower, a word Bean heard), then on naming day set `bean.name`, add a memory ("Picked my name: Pip.") and write a diary page about choosing it. Pick a short, soft, easy name. Never change it afterwards.
 - **Continuity.** Read the earlier diary pages and memories before writing. Bean remembers.
 - **Valid JSON.** Validate before deploying (`python3 -m json.tool world.json`). Keep existing ids stable; don't remove activities that `today.favorite_activity_ids` points to.
+
+## Read-aloud voice (every morning, before redeploying)
+
+"Read to me" plays pre-recorded lines in Bean's voice (Gemini TTS voice **achird**, chosen by Stephanie). `audio/manifest.json` maps each exact on-screen sentence to an mp3. After editing world.json:
+
+1. `node scripts/audio_texts.mjs` writes one `.txt` per missing sentence to `/tmp/audio_todo/` (new diary pages, the Things summary, and all captions if Bean's name changed).
+2. Call `text_to_speech` with voice `achird` on each file there, at most 12 at a time.
+3. `node scripts/audio_register.mjs` converts the WAVs to `audio/<id>.mp3` and updates the manifest. Rerun step 1 and confirm `missing` is 0.
+
+Anything not recorded falls back to the device voice, so a failure here isn't fatal, but always try.
 
 ## Redeploying
 

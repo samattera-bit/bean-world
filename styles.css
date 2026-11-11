@@ -139,38 +139,26 @@ body.is-still .bg-dusk { transition: none; }
 
 .bean {
   position: absolute; left: 50%; top: 50%;
-  width: 8.5%;
+  width: 6.2%;
   transform-origin: 50% 100%;
   transform: translate(-50%, -96%) scale(var(--depth, 1));
   will-change: left, top;
 }
 .bean .flip { transform: scaleX(var(--face, 1)); transition: transform 1.2s ease; }
 body.is-still .bean .flip { transition: none; }
-.bean-svg { width: 100%; height: auto; overflow: visible; }
-body[data-time='night'] .bean-svg { filter: brightness(0.86) saturate(0.9); transition: filter 3s ease; }
-.bean-shadow { fill: rgba(60, 50, 30, 0.22); }
-.body { fill: #dc9c72; stroke: #b5764f; stroke-width: 1.6; }
-.belly { fill: #e9b993; opacity: 0.75; }
-.foot { fill: #b9785a; }
-.sprout-stem { fill: none; stroke: #6f8a62; stroke-width: 2.4; stroke-linecap: round; }
-.sprout-leaf { fill: #8aa37a; stroke: #6f8a62; stroke-width: 1; }
-.eyes.open circle { fill: #3e3128; }
-.eyes.open .glint { fill: #f2e9da; }
-.eyes.closed path { fill: none; stroke: #3e3128; stroke-width: 2.4; stroke-linecap: round; }
-.eyes.closed { display: none; }
-.cheek { fill: #e0847a; opacity: 0.5; }
-.smile { fill: none; stroke: #3e3128; stroke-width: 2; stroke-linecap: round; }
-.bean.is-sleeping .eyes.open { display: none; }
-.bean.is-sleeping .eyes.closed { display: block; }
+.bean-art { position: relative; width: 100%; }
+.bean-body { position: relative; transform-origin: 50% 100%; animation: breathe 6s ease-in-out infinite; }
+.bean-img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+.bean-closed { position: absolute; inset: 0; opacity: 0; animation: blink 11s ease-in-out infinite; }
+.bean.is-sleeping .bean-closed { opacity: 1; animation: none; }
+.bean-shadow { position: absolute; left: 14%; right: 14%; bottom: -2%; height: 5%; border-radius: 50%; background: rgba(60, 50, 30, 0.22); }
+body[data-time='night'] .bean-body { filter: brightness(0.86) saturate(0.9); transition: filter 3s ease; }
 
-/* very gentle life: slow breathing + an occasional slow blink. Off when Still. */
-.bean-body { transform-box: fill-box; transform-origin: 50% 100%; animation: breathe 6s ease-in-out infinite; }
-.eyes.open { transform-box: fill-box; transform-origin: 50% 50%; animation: blink 11s ease-in-out infinite; }
-.bean.is-walking .foot-l { animation: step 2.4s ease-in-out infinite; }
-.bean.is-walking .foot-r { animation: step 2.4s ease-in-out -1.2s infinite; }
-@keyframes breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.006, 1.018); } }
-@keyframes blink { 0%, 95%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.12); } }
-@keyframes step { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+/* very gentle life: slow breathing, an occasional slow blink, and a soft bob while walking. Off when Still. */
+.bean.is-walking .bean-body { animation: bob 2.4s ease-in-out infinite; }
+@keyframes breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.006, 1.016); } }
+@keyframes blink { 0%, 95.5%, 100% { opacity: 0; } 96.5%, 98% { opacity: 1; } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5%); } }
 body.is-still .bean *, body.is-still .bean { animation: none !important; }
 
 .zzz {
@@ -302,7 +290,7 @@ body.is-still .bean *, body.is-still .bean { animation: none !important; }
   .panel { gap: var(--space-4); }
   .controls .big-btn { padding: 0 var(--space-3); gap: var(--space-2); }
   .view-world { min-height: 0; display: block; }
-  .bean { width: 11%; }
+  .bean { width: 8%; }
   .book { grid-template-columns: 1fr; }
   .page-picture { height: auto; aspect-ratio: 3 / 2; }
   .page-words { padding: var(--space-5); }
