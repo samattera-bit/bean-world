@@ -338,6 +338,7 @@ function speak(text) {
   player.play().catch(() => { player = null; speakWithDevice(text); });
 }
 function currentReadText() {
+  if ($('#house').open) return app.world.home_inside?.text || '';
   if (app.view === 'diary') {
     const e = (app.world.diary || [])[app.diaryIndex];
     return e ? `${e.title}. ${e.text}` : '';
@@ -348,6 +349,24 @@ function currentReadText() {
 $$('.read-btn').forEach((b) => {
   b.addEventListener('click', () => { if (app.speaking) stopSpeaking(); else speak(currentReadText()); });
 });
+
+// ---------- inside Bean's house ----------
+const houseDlg = $('#house');
+function openHouse() {
+  const h = app.world?.home_inside;
+  if (!h) return;
+  stopSpeaking();
+  const img = $('#house-img');
+  img.src = h.image; img.alt = h.image_alt || '';
+  $('#house-text').textContent = h.text || '';
+  houseDlg.showModal();
+}
+function closeHouse() { stopSpeaking(); houseDlg.close(); }
+$('#house-btn').addEventListener('click', openHouse);
+$('#house-spot').addEventListener('click', openHouse);
+$('#house-close').addEventListener('click', closeHouse);
+houseDlg.addEventListener('click', (e) => { if (e.target === houseDlg) closeHouse(); });
+houseDlg.addEventListener('close', stopSpeaking);
 
 // Testing hook (read-only peek at the mind).
 window.__bean = { get state() { return app.state; }, get world() { return app.world; } };

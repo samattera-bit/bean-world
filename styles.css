@@ -307,3 +307,35 @@ body.is-still .bean *, body.is-still .bean { animation: none !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- inside Bean's house ---------- */
+.controls + .house-btn { width: 100%; }
+.house-spot {
+  position: absolute; left: 0; top: 4%; width: 21%; height: 40%;
+  background: transparent; border: 0; border-radius: var(--radius-lg); cursor: pointer;
+}
+.house-spot:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+.house-tip {
+  position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%);
+  background: var(--paper); color: var(--ink); border-radius: 999px;
+  padding: var(--space-1) var(--space-4); font-size: var(--text-small); font-weight: 800;
+  box-shadow: var(--shadow); white-space: nowrap; opacity: 0; transition: opacity 0.6s ease;
+}
+.house-spot:hover .house-tip, .house-spot:focus-visible .house-tip { opacity: 1; }
+body.is-still .house-tip { transition: none; }
+.house-dialog {
+  margin: auto; border: 0; padding: 0; width: min(1040px, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem);
+  background: var(--paper); color: var(--ink); border-radius: var(--radius-xl); box-shadow: var(--shadow);
+  overflow: auto;
+}
+.house-dialog[open] { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.house-dialog::backdrop { background: rgba(58, 49, 39, 0.45); }
+.house-picture { margin: 0; }
+.house-picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.house-words { padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-4); justify-content: center; }
+.house-controls { display: grid; gap: var(--space-3); margin-top: var(--space-2); }
+@media (max-width: 899px) {
+  .house-dialog[open] { grid-template-columns: 1fr; }
+  .house-picture img { height: auto; max-height: 45dvh; }
+  .house-words { padding: var(--space-5); }
+}

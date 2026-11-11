@@ -88,6 +88,10 @@ The browser seeds a random number generator with the date and simulates Bean fro
 
 If you can't make an image, leave `"image": null`. The page then shows "Bean is still painting this picture."
 
+## Inside Bean's house
+
+`home_inside` is `{image, image_alt, text}`. Visitors open it with "Peek inside his house". It shows Bean's cozy room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Bean gets a new gift that belongs in his house; then remake the picture with `assets/bean-open.webp` AND the current `assets/home-inside.webp` as references so the room and Bean stay the same, update `text` (short sentences), and record its audio.
+
 ## Gifts and notes from visitors
 
 When Bean's helper passes on a note or gift from Stephanie or her child, add it to `gifts`, for example: `{"date":"2026-11-12","from":"a friend","text":"A drawing of a rainbow","kept":true,"where":"on the wall by the bed"}`. Don't put full names or other private details in it. Bean can mention the gift in the next diary page and maybe add a memory.

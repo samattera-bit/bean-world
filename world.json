@@ -440,5 +440,10 @@
       "hum_tunes",
       "try_new_paints"
     ]
+  },
+  "home_inside": {
+    "image": "assets/home-inside.webp",
+    "image_alt": "Inside Bean's cozy round house: Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
+    "text": "This is Bean's little house. It is warm and cozy inside. He has a soft bed with a patchwork quilt. A round window looks out at the meadow. His books, his tea, and his new paints are here too."
   }
 }
