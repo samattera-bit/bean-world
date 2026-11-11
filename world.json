@@ -4,7 +4,7 @@
   "bean": {
     "name": null,
     "placeholder_name": "Bean",
-    "pronoun": "they",
+    "pronoun": "he",
     "traits": [
       "curious",
       "gentle",
@@ -405,7 +405,7 @@
   ],
   "today": {
     "date": "2026-11-11",
-    "intention": "Bean wants to listen for their name in the soft sounds of the meadow.",
+    "intention": "Bean wants to listen for his name in the soft sounds of the meadow.",
     "favorite_activity_ids": [
       "count_ripples",
       "hum_tunes"

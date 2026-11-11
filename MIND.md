@@ -23,7 +23,7 @@ bean-world/
 | `last_updated` | `"YYYY-MM-DD"` of your edit | you, every morning |
 | `bean.name` | `null` until Bean picks a name, then a string like `"Pip"` | you, once |
 | `bean.placeholder_name` | `"Bean"`, shown while `name` is null | never |
-| `bean.pronoun` | `"they"` | never |
+| `bean.pronoun` | `"he"` (Stephanie decided Bean is a he) | never |
 | `bean.traits` | 2-4 short words, e.g. `"curious"` | rarely; add slowly |
 | `bean.loves` / `bean.dislikes` / `bean.hobbies` | short phrases, e.g. `"the sound of rain on the roof"` | add 0-1 per day |
 | `bean.mood_word` | one gentle word, e.g. `"cozy"` | you, daily |
@@ -49,7 +49,7 @@ bean-world/
 - `place` must be one of the place ids: `home`, `tree`, `hill`, `pond`, `bakery`, `garden`, `easel`, `music`.
 - The caption reads: `"<Name> is <verb_phrase>, and feels <feeling>."` Keep `verb_phrase` lowercase, with no full stop, and short enough that the whole caption stays one short sentence (under about 14 words).
 - `needs` = how much the activity fills each need per hour (0-0.6). Rest, Tummy, Play and Wonder slowly drop through the day.
-- `preference_weight` (0.5-1.5) is how much Bean likes it. Nudge it up by about 0.1 when Bean discovers they love something, and down a little when they find something less fun. Don't make big jumps.
+- `preference_weight` (0.5-1.5) is how much Bean likes it. Nudge it up by about 0.1 when Bean discovers he loves something, and down a little when he finds something less fun. Don't make big jumps.
 - `hours` is optional. Only use it for evening-only things, like stargazing on the hill.
 - There are no screens, phones or internet in Bean's world. Activities are things like gardening, baking, humming, painting, reading picture books, cloud watching, and talking to snails.
 
@@ -94,11 +94,13 @@ When Bean's helper passes on a note or gift from Stephanie or her child, add it 
 
 ## Rules
 
+- **Bean is a he.** Use he/him/his whenever writing about Bean in the third person (intentions, captions, notes to Stephanie). Bean is a little peanut-shaped bean with funny tiny legs; Stephanie finds his legs delightful.
+
 - **Kid-safe and innocent, always.** Nothing scary, sad, violent, romantic or grown-up. No danger, illness, loss, or "Bean was lonely" stories. Small, gentle problems that turn out fine are okay, like a lost button that turns up later.
 - **Short sentences.** Diary pages are 4-6 short sentences that a 6-year-old can follow when read aloud. Captions and intentions are one sentence.
 - **Gentle words.** Use words like soft, slow, cozy, curious, quiet and warm. Don't use exclamation storms or ALL CAPS.
 - **Bean discovers likes slowly.** Add at most one new love, hobby or dislike per day, and make sure it comes from something Bean actually did. Dislikes stay mild and sweet, like "when the bread gets a little too crunchy".
-- **Bean's name.** Bean names themself only when it feels right, and that should happen soon, within the first 2-4 days. Plant the idea in the diary first (a sound, a snail, a flower, a word Bean heard), then on naming day set `bean.name`, add a memory ("Picked my name: Pip.") and write a diary page about choosing it. Pick a short, soft, easy name. Never change it afterwards.
+- **Bean's name.** Bean names himself only when it feels right, and that should happen soon, within the first 2-4 days. Plant the idea in the diary first (a sound, a snail, a flower, a word Bean heard), then on naming day set `bean.name`, add a memory ("Picked my name: Pip.") and write a diary page about choosing it. Pick a short, soft, easy name. Never change it afterwards.
 - **Continuity.** Read the earlier diary pages and memories before writing. Bean remembers.
 - **Valid JSON.** Validate before deploying (`python3 -m json.tool world.json`). Keep existing ids stable; don't remove activities that `today.favorite_activity_ids` points to.
 

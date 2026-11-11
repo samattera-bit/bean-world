@@ -259,7 +259,7 @@ function renderThings() {
     </article>
     <article class="card wide">
       <h3>${icon('heart')} Things ${esc(name)} loves</h3>
-      ${listOrEmpty(b.loves, 'Bean is still finding out what they love.')}
+      ${listOrEmpty(b.loves, 'Bean is still finding out what he loves.')}
     </article>
     <article class="card">
       <h3>${icon('brush')} Hobbies</h3>
