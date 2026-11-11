@@ -319,7 +319,7 @@
         "play": 0.35,
         "wonder": 0.15
       },
-      "preference_weight": 1.0
+      "preference_weight": 1.1
     },
     {
       "id": "paint_the_sky",
@@ -333,7 +333,7 @@
         "play": 0.3,
         "wonder": 0.3
       },
-      "preference_weight": 1.0
+      "preference_weight": 1.1
     },
     {
       "id": "look_far_away",
@@ -384,6 +384,20 @@
         "19:15",
         "20:30"
       ]
+    },
+    {
+      "id": "try_new_paints",
+      "place": "easel",
+      "label": "New paints",
+      "verb_phrase": "trying his new paints at the easel",
+      "feeling": "delighted",
+      "needs": {
+        "rest": 0.05,
+        "tummy": 0,
+        "play": 0.35,
+        "wonder": 0.25
+      },
+      "preference_weight": 1.2
     }
   ],
   "gifts": [
@@ -393,6 +407,13 @@
       "text": "A note with a sound on it: \"duh,\" said quietly and softly. It is a soothing sound.",
       "kept": true,
       "where": "under his pillow, for sleepy times"
+    },
+    {
+      "date": "2026-11-11",
+      "from": "Stephanie",
+      "text": "A little box of paints in soft, gentle colors, for the easel.",
+      "kept": true,
+      "where": "next to the easel"
     }
   ],
   "diary": [
@@ -416,7 +437,8 @@
     "intention": "Bean wants to listen for his name in the soft sounds of the meadow.",
     "favorite_activity_ids": [
       "count_ripples",
-      "hum_tunes"
+      "hum_tunes",
+      "try_new_paints"
     ]
   }
 }
