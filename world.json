@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "last_updated": "2026-11-10",
+  "bean": {
+    "name": null,
+    "placeholder_name": "Bean",
+    "pronoun": "they",
+    "traits": ["curious", "gentle", "a little shy"],
+    "loves": ["the sound of rain on the roof"],
+    "dislikes": [],
+    "hobbies": [],
+    "mood_word": "curious",
+    "memories": [
+      { "date": "2026-11-10", "text": "Woke up in a soft green meadow for the very first time." }
+    ]
+  },
+  "schedule": {
+    "wake": "07:00",
+    "sleep": "20:30"
+  },
+  "places": [
+    { "id": "home",   "label": "Bean's little home",     "x": 0.149, "y": 0.434 },
+    { "id": "tree",   "label": "the reading nook under the big tree", "x": 0.366, "y": 0.403 },
+    { "id": "hill",   "label": "the stargazing hill",    "x": 0.594, "y": 0.211 },
+    { "id": "pond",   "label": "the pond",               "x": 0.655, "y": 0.538 },
+    { "id": "bakery", "label": "the bakery window",      "x": 0.876, "y": 0.509 },
+    { "id": "garden", "label": "the vegetable garden",   "x": 0.283, "y": 0.850 },
+    { "id": "easel",  "label": "the art easel",          "x": 0.526, "y": 0.850 },
+    { "id": "music",  "label": "the music corner",       "x": 0.830, "y": 0.885 }
+  ],
+  "activities": [
+    { "id": "nap_in_bed",      "place": "home",   "label": "Cozy nap",          "verb_phrase": "having a cozy little nap in bed",              "feeling": "cozy",     "needs": { "rest": 0.6,  "tummy": 0,    "play": 0,    "wonder": 0 },    "preference_weight": 1.0 },
+    { "id": "tidy_home",       "place": "home",   "label": "Tidying up",        "verb_phrase": "tidying the little house and fluffing the pillow", "feeling": "proud", "needs": { "rest": 0.15, "tummy": 0,    "play": 0.2,  "wonder": 0 },    "preference_weight": 0.7 },
+
+    { "id": "water_lettuce",   "place": "garden", "label": "Watering",          "verb_phrase": "watering the snails' lettuce",                 "feeling": "peaceful", "needs": { "rest": 0.1,  "tummy": 0,    "play": 0.2,  "wonder": 0.15 }, "preference_weight": 1.0 },
+    { "id": "talk_to_snails",  "place": "garden", "label": "Snail chat",        "verb_phrase": "talking softly with the garden snails",        "feeling": "happy",    "needs": { "rest": 0.05, "tummy": 0,    "play": 0.3,  "wonder": 0.3 },  "preference_weight": 1.1 },
+    { "id": "pick_peas",       "place": "garden", "label": "Picking peas",      "verb_phrase": "picking a few sweet peas for a snack",         "feeling": "pleased",  "needs": { "rest": 0,    "tummy": 0.35, "play": 0.1,  "wonder": 0 },    "preference_weight": 0.9 },
+
+    { "id": "watch_lily_pads", "place": "pond",   "label": "Lily pads",         "verb_phrase": "watching the lily pads float by",              "feeling": "dreamy",   "needs": { "rest": 0.25, "tummy": 0,    "play": 0,    "wonder": 0.3 },  "preference_weight": 1.0 },
+    { "id": "count_ripples",   "place": "pond",   "label": "Counting ripples",  "verb_phrase": "dropping one leaf and counting the ripples",   "feeling": "curious",  "needs": { "rest": 0.05, "tummy": 0,    "play": 0.3,  "wonder": 0.25 }, "preference_weight": 1.0 },
+
+    { "id": "read_books",      "place": "tree",   "label": "Reading",           "verb_phrase": "reading a picture book in the reading nook",   "feeling": "cozy",     "needs": { "rest": 0.25, "tummy": 0,    "play": 0.1,  "wonder": 0.35 }, "preference_weight": 1.1 },
+    { "id": "cloud_watching",  "place": "tree",   "label": "Cloud watching",    "verb_phrase": "watching the clouds drift past the big tree",  "feeling": "dreamy",   "needs": { "rest": 0.3,  "tummy": 0,    "play": 0,    "wonder": 0.3 },  "preference_weight": 1.0 },
+    { "id": "shade_rest",      "place": "tree",   "label": "Resting",           "verb_phrase": "resting in the cool shade of the big tree",    "feeling": "calm",     "needs": { "rest": 0.45, "tummy": 0,    "play": 0,    "wonder": 0.05 }, "preference_weight": 0.9 },
+
+    { "id": "bake_tiny_bread", "place": "bakery", "label": "Baking",            "verb_phrase": "baking tiny bread rolls",                      "feeling": "happy",    "needs": { "rest": 0,    "tummy": 0.35, "play": 0.25, "wonder": 0.05 }, "preference_weight": 1.1 },
+    { "id": "little_snack",    "place": "bakery", "label": "Snack time",        "verb_phrase": "having a little snack at the bakery window",   "feeling": "content",  "needs": { "rest": 0.1,  "tummy": 0.6,  "play": 0,    "wonder": 0 },    "preference_weight": 1.0 },
+    { "id": "warm_tea",        "place": "bakery", "label": "Warm tea",          "verb_phrase": "sipping a cup of warm chamomile tea",          "feeling": "cozy",     "needs": { "rest": 0.25, "tummy": 0.25, "play": 0,    "wonder": 0 },    "preference_weight": 0.9 },
+
+    { "id": "hum_tunes",       "place": "music",  "label": "Humming",           "verb_phrase": "humming a quiet little tune",                  "feeling": "cheerful", "needs": { "rest": 0.1,  "tummy": 0,    "play": 0.3,  "wonder": 0.1 },  "preference_weight": 1.0 },
+    { "id": "play_xylophone",  "place": "music",  "label": "Xylophone",         "verb_phrase": "playing soft notes on the little xylophone",   "feeling": "happy",    "needs": { "rest": 0,    "tummy": 0,    "play": 0.4,  "wonder": 0.1 },  "preference_weight": 1.0 },
+    { "id": "snail_song",      "place": "music",  "label": "Making a song",     "verb_phrase": "making up a song about a slow, kind snail",    "feeling": "proud",    "needs": { "rest": 0,    "tummy": 0,    "play": 0.35, "wonder": 0.2 },  "preference_weight": 0.9 },
+
+    { "id": "paint_pebbles",   "place": "easel",  "label": "Painting pebbles",  "verb_phrase": "painting tiny dots on smooth pebbles",         "feeling": "peaceful", "needs": { "rest": 0.1,  "tummy": 0,    "play": 0.35, "wonder": 0.15 }, "preference_weight": 1.0 },
+    { "id": "paint_the_sky",   "place": "easel",  "label": "Painting the sky",  "verb_phrase": "painting a picture of the sky",                "feeling": "curious",  "needs": { "rest": 0.05, "tummy": 0,    "play": 0.3,  "wonder": 0.3 },  "preference_weight": 1.0 },
+
+    { "id": "look_far_away",   "place": "hill",   "label": "Looking far",       "verb_phrase": "sitting on the hill and looking far away",     "feeling": "wondering","needs": { "rest": 0.15, "tummy": 0,    "play": 0,    "wonder": 0.4 },  "preference_weight": 0.8 },
+    { "id": "first_stars",     "place": "hill",   "label": "First stars",       "verb_phrase": "watching the first stars come out",            "feeling": "dreamy",   "needs": { "rest": 0.2,  "tummy": 0,    "play": 0,    "wonder": 0.5 },  "preference_weight": 1.2, "hours": ["18:30", "20:30"] },
+    { "id": "star_wish",       "place": "hill",   "label": "Star wish",         "verb_phrase": "making a quiet wish on a star",                "feeling": "hopeful",  "needs": { "rest": 0.2,  "tummy": 0,    "play": 0.05, "wonder": 0.45 }, "preference_weight": 1.1, "hours": ["19:15", "20:30"] }
+  ],
+  "gifts": [],
+  "diary": [
+    {
+      "date": "2026-11-10",
+      "title": "I woke up in a meadow",
+      "text": "Today I woke up in a soft green meadow. There is a little round house, and I think it is mine. A snail in the garden said hello very slowly. I said hello back, very slowly too. Everyone here seems to have a name, but I do not have one yet. I will listen to the wind and wait for the right one.",
+      "image": "assets/diary/2026-11-10.webp",
+      "image_alt": "A little round house in a quiet meadow at sunrise, with dewy flowers and two small snails."
+    }
+  ],
+  "today": {
+    "date": "2026-11-10",
+    "intention": "Bean wants to say hello to every corner of the meadow.",
+    "favorite_activity_ids": ["talk_to_snails", "read_books"]
+  }
+}
