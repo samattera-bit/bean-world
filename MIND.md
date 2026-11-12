@@ -109,7 +109,9 @@ When Stephanie or her daughter leaves Bean a note or gift, Bean writes a short l
 
 ## Gifts and notes from visitors
 
-When Bean's helper passes on a note or gift from Stephanie or her child, add it to `gifts`, for example: `{"date":"2026-11-12","from":"a friend","text":"A drawing of a rainbow","kept":true,"where":"on the wall by the bed"}`. Don't put full names or other private details in it. Bean can mention the gift in the next diary page and maybe add a memory.
+When Bean's helper passes on a note or gift from Stephanie or her child, add it to `gifts`, for example: `{"date":"2026-11-12","from":"a friend","text":"A drawing of a rainbow","kept":true,"where":"on the wall by the bed"}`. Don't put full names or other private details in it. A gift can have `for_date` (like a breakfast set out for a certain morning): Bean enjoys it that day, then writes about it in the diary page for that day (made the next morning), and the thank-you letter comes then too, not before he's had it.
+
+One-day treats: an activity can have `only_dates: ["YYYY-MM-DD"]` so it only happens on those days, and `first_thing: true` so it's the first thing Bean does when he wakes. Once the date has passed, remove that activity from `activities` (keep the gift). Bean can mention the gift in the next diary page and maybe add a memory.
 
 ## Rules
 

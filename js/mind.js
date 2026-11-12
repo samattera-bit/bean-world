@@ -108,7 +108,7 @@ export function planDay(world, date) {
   const sleep = hm(world.schedule?.sleep || '20:30');
   const rng = mulberry32(hashString('bean:' + date));
   const places = Object.fromEntries(world.places.map((p) => [p.id, p]));
-  const acts = world.activities.filter((a) => places[a.place]);
+  const acts = world.activities.filter((a) => places[a.place] && (!a.only_dates || a.only_dates.includes(date)));
   const favs = world.today && world.today.date === date ? world.today.favorite_activity_ids || [] : [];
   const prefs = { favorites: new Set(favs) };
 
@@ -123,7 +123,10 @@ export function planDay(world, date) {
     const pool = eligible.length ? eligible : acts;
     let best = pool[0];
     let bestU = -1;
-    for (const a of pool) {
+    // A special one-day treat (like a breakfast gift) happens first thing that morning.
+    const treat = t === wake && segments.length === 0 ? pool.find((a) => a.only_dates && a.first_thing) : null;
+    if (treat) { best = treat; bestU = Infinity; }
+    for (const a of treat ? [] : pool) {
       const u = utility(a, needs, prefs, rng, history, t, sleep);
       if (u > bestU) { bestU = u; best = a; }
     }

@@ -398,6 +398,24 @@
         "wonder": 0.25
       },
       "preference_weight": 1.2
+    },
+    {
+      "id": "gift_breakfast",
+      "place": "bakery",
+      "label": "Breakfast feast",
+      "verb_phrase": "having the breakfast feast you gave him",
+      "feeling": "so happy and full",
+      "needs": {
+        "rest": 0.1,
+        "tummy": 0.6,
+        "play": 0.1,
+        "wonder": 0.1
+      },
+      "preference_weight": 1.0,
+      "only_dates": [
+        "2026-11-12"
+      ],
+      "first_thing": true
     }
   ],
   "gifts": [
@@ -414,6 +432,14 @@
       "text": "A little box of paints in soft, gentle colors, for the easel.",
       "kept": true,
       "where": "next to the easel"
+    },
+    {
+      "date": "2026-11-11",
+      "from": "Stephanie",
+      "text": "A breakfast feast: a tiny warm croissant, berries and a little pear, a small waffle with honey, and a cup of warm cocoa.",
+      "kept": true,
+      "where": "at the bakery window, for breakfast on Thursday morning",
+      "for_date": "2026-11-12"
     }
   ],
   "diary": [
