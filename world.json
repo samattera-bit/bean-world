@@ -444,7 +444,34 @@
   "home_inside": {
     "image": "assets/home-inside.webp",
     "image_alt": "Inside Bean's cozy round house: Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
-    "text": "This is Bean's little house. It is warm and cozy inside. He has a soft bed with a patchwork quilt. A round window looks out at the meadow. His books, his tea, and his new paints are here too."
+    "text": "Bean is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too.",
+    "views": {
+      "home": {
+        "image": "assets/home-inside.webp",
+        "image_alt": "Inside Bean's cozy round house: Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
+        "text": "Bean is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too."
+      },
+      "nap": {
+        "image": "assets/home-inside-nap.webp",
+        "image_alt": "Bean naps in his bed under the patchwork quilt, with soft daylight in the round window.",
+        "text": "Shh. Bean is having a cozy nap in his bed. The quilt is soft and warm. The meadow is bright outside his round window."
+      },
+      "sleep": {
+        "image": "assets/home-inside-sleep.webp",
+        "image_alt": "Bean sleeps in his bed at night. A crescent moon shows in the round window, and a tiny nightlight glows.",
+        "text": "Shh. Bean is fast asleep in his cozy bed. The moon peeks in the round window. A tiny nightlight glows softly."
+      },
+      "out_day": {
+        "image": "assets/home-inside-out-day.webp",
+        "image_alt": "Bean's room with nobody in it. The bed is made, and the meadow is sunny outside the round window.",
+        "text": "This is Bean's little house. Bean is out in the meadow right now. His bed is all made up, and his paints wait on the windowsill."
+      },
+      "out_dusk": {
+        "image": "assets/home-inside-out-dusk.webp",
+        "image_alt": "Bean's empty room in the early evening, with a soft peach and lavender sky in the round window.",
+        "text": "This is Bean's little house. The sky is getting dusky, and Bean is still outside. His bed is made and waiting for him."
+      }
+    }
   },
   "paintings": [
     {

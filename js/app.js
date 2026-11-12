@@ -60,6 +60,19 @@ async function boot() {
 }
 
 // ---------- the scene ----------
+function isInside(s) {
+  if (!s) return false;
+  if (s.sleeping) return true;
+  return s.activity?.place === 'home' && !s.walking;
+}
+function houseView() {
+  const s = app.state;
+  const night = document.body.dataset.time === 'night';
+  if (!s) return 'home';
+  if (s.sleeping) return 'sleep';
+  if (isInside(s)) return s.activity?.id === 'nap_in_bed' ? (night ? 'sleep' : 'nap') : 'home';
+  return night ? 'out_dusk' : 'out_day';
+}
 function depthFor(y) {
   return 0.62 + 0.42 * y; // farther away (higher up) = a little smaller
 }
@@ -86,14 +99,15 @@ function tick() {
   if (cap.textContent !== s.caption) cap.textContent = s.caption;
   $('#scene').setAttribute('aria-label', `Bean's meadow. ${s.caption}`);
 
-  // sleeping
+  // indoors: asleep, or doing a home activity (nap, tidying) -> Bean is inside, not on the doorstep
+  const inside = isInside(s);
   beanEl.classList.toggle('is-sleeping', s.sleeping);
+  beanEl.classList.toggle('is-inside', inside);
   const z = $('#zzz');
-  z.classList.toggle('is-on', s.sleeping);
-  if (s.sleeping) {
-    z.style.left = (s.position.x * 100 + 2) + '%';
-    z.style.top = (s.position.y * 100 - 8) + '%';
-  }
+  const dozing = s.sleeping || (inside && s.activity?.id === 'nap_in_bed');
+  z.classList.toggle('is-on', dozing);
+  $('#scene').classList.toggle('bean-home', inside);
+  $('#house-spot').setAttribute('aria-label', inside ? 'Peek inside Bean\'s house. Bean is inside.' : 'Peek inside Bean\'s house');
 
   renderNeeds(s.needs);
   if (!prev) placeBean(s.position.x, s.position.y);
@@ -381,7 +395,8 @@ function openReader({ title, image, alt, text, shown, closeLabel = 'Close' }) {
 function openHouse() {
   const h = app.world?.home_inside;
   if (!h) return;
-  openReader({ title: "Inside Bean's house", image: h.image, alt: h.image_alt, text: h.text, closeLabel: 'Back outside' });
+  const v = (h.views && h.views[houseView()]) || h;
+  openReader({ title: "Inside Bean's house", image: v.image, alt: v.image_alt, text: v.text, closeLabel: 'Back outside' });
 }
 function closeHouse() { stopSpeaking(); houseDlg.close(); }
 $('#house-btn').addEventListener('click', openHouse);

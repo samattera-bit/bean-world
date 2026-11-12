@@ -354,3 +354,18 @@ body.is-still .house-tip { transition: none; }
 .painting img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); }
 .painting-title { font-weight: 800; font-size: var(--text-small); }
 .letter { font-size: var(--text-body); padding: var(--space-4); }
+
+/* ---------- Bean indoors ---------- */
+.bean { transition: opacity 1.2s ease; }
+.bean.is-inside { opacity: 0; }
+body.is-still .bean { transition: none; }
+.zzz { left: 9.5%; top: 20%; }
+.house-glow {
+  position: absolute; left: 5.75%; top: 30.5%; width: 4.2%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 150, 0.85) 0%, rgba(255, 200, 130, 0.45) 45%, rgba(255, 200, 130, 0) 72%);
+  opacity: 0; transition: opacity 3s ease; pointer-events: none; mix-blend-mode: screen;
+}
+body[data-time='night'] .scene.bean-home .house-glow { opacity: 0.55; }
+body.is-still .house-glow { transition: none; }
+.zzz { font-size: clamp(1.25rem, 2.8cqi, 2.25rem); left: 10%; top: 17%; }
+body[data-time='day'] .zzz { color: #5c5043; text-shadow: 0 1px 2px rgba(245, 238, 223, 0.9); }

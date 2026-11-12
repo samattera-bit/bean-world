@@ -90,7 +90,9 @@ If you can't make an image, leave `"image": null`. The page then shows "Bean is 
 
 ## Inside Bean's house
 
-`home_inside` is `{image, image_alt, text}`. Visitors open it with "Peek inside his house". It shows Bean's cozy room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Bean gets a new gift that belongs in his house; then remake the picture with `assets/bean-open.webp` AND the current `assets/home-inside.webp` as references so the room and Bean stay the same, update `text` (short sentences), and record its audio.
+`home_inside` has `views` for each moment: `home` (Bean awake inside, tidying), `nap` (daytime nap in bed), `sleep` (night, asleep, moon in window, tiny nightlight), `out_day` and `out_dusk` (empty room, bed made, while Bean is outside). The app picks the view from what Bean is doing right now, so the inside always matches the meadow. In the meadow, Bean disappears indoors whenever he's asleep or doing a home activity, and the round window glows softly at night.
+
+The room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Bean gets a gift that belongs in his house; then remake every view with `assets/home-inside.webp` (room) plus `assets/bean-open.webp` or `assets/bean-closed.webp` (Bean) as references, keep the same angle, update the texts (short sentences), and record their audio. Any new activity with `place: "home"` happens indoors and uses the `home` view.
 
 ## Bean's paintings (every morning)
 
