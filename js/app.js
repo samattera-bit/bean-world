@@ -99,6 +99,24 @@ function tick() {
   if (cap.textContent !== s.caption) cap.textContent = s.caption;
   $('#scene').setAttribute('aria-label', `Bean's meadow. ${s.caption}`);
 
+  // things Bean has built (like the swing) appear once he's finished making them
+  for (const f of app.world.features || []) {
+    let el = document.getElementById('feature-' + f.id);
+    if (!el) {
+      const place = (app.world.places || []).find((p) => p.id === f.id) || { x: 0.5, y: 0.5 };
+      el = document.createElement('img');
+      el.id = 'feature-' + f.id; el.className = 'feature feature-' + f.id; el.alt = ''; el.src = f.image;
+      el.style.left = (place.x * 100) + '%'; el.style.top = ((place.y + 0.02) * 100) + '%';
+      $('#scene').insertBefore(el, beanEl);
+    }
+    let built = clock.date > f.built_on;
+    if (clock.date === f.built_on) {
+      const segs = s.plan.segments.filter((g) => g.activity.id === f.built_by_activity);
+      built = segs.length ? clock.minutes >= segs[segs.length - 1].end : clock.date >= f.built_on;
+    }
+    el.classList.toggle('is-built', built);
+  }
+
   // indoors: asleep, or doing a home activity (nap, tidying) -> Bean is inside, not on the doorstep
   const inside = isInside(s);
   beanEl.classList.toggle('is-sleeping', s.sleeping);

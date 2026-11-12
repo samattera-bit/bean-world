@@ -46,7 +46,8 @@ bean-world/
   "hours": ["18:30", "20:30"] }
 ```
 
-- `place` must be one of the place ids: `home`, `tree`, `hill`, `pond`, `bakery`, `garden`, `easel`, `music`.
+- `place` must be one of the place ids: `home`, `tree`, `hill`, `pond`, `bakery`, `garden`, `easel`, `music`, `swing`.
+- `from_date: "YYYY-MM-DD"` makes an activity start only from that day (used for things Bean has built).
 - The caption reads: `"<Name> is <verb_phrase>, and feels <feeling>."` Keep `verb_phrase` lowercase, with no full stop, and short enough that the whole caption stays one short sentence (under about 14 words).
 - `needs` = how much the activity fills each need per hour (0-0.6). Rest, Tummy, Play and Wonder slowly drop through the day.
 - `preference_weight` (0.5-1.5) is how much Bean likes it. Nudge it up by about 0.1 when Bean discovers he loves something, and down a little when he finds something less fun. Don't make big jumps.
@@ -93,6 +94,10 @@ If you can't make an image, leave `"image": null`. The page then shows "Bean is 
 `home_inside` has `views` for each moment: `home` (Bean awake inside, tidying), `nap` (daytime nap in bed), `sleep` (night, asleep, moon in window, tiny nightlight), `out_day` and `out_dusk` (empty room, bed made, while Bean is outside). The app picks the view from what Bean is doing right now, so the inside always matches the meadow. In the meadow, Bean disappears indoors whenever he's asleep or doing a home activity, and the round window glows softly at night.
 
 The room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Bean gets a gift that belongs in his house; then remake every view with `assets/home-inside.webp` (room) plus `assets/bean-open.webp` or `assets/bean-closed.webp` (Bean) as references, keep the same angle, update the texts (short sentences), and record their audio. Any new activity with `place: "home"` happens indoors and uses the `home` view.
+
+## Things Bean has built
+
+`features` lists things Bean made with gifts, drawn as small painted sprites on top of the meadow: `{id, label, built_on, built_by_activity, image}`. The sprite sits at the place with the same `id` and fades in once the last `built_by_activity` segment on `built_on` has finished, and stays from then on. The swing (gift from Stephanie, built 2026-11-12) hangs from the right branch of the big tree; `swing_gently` happens there from 2026-11-13. After 2026-11-12, remove the one-day `build_swing` activity but keep the feature and the gift. A new built thing needs a transparent painted sprite in the meadow style, a new place, and a new feature entry.
 
 ## Bean's paintings (every morning)
 
