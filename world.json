@@ -510,14 +510,14 @@
       "date": "2026-11-10",
       "title": "A song for the snails",
       "text": "I visited the snails three times today. They are slow, and so kind. In the afternoon I made up a little song just for them. When I dropped a leaf in the pond, it went plip, and I liked that sound. Tonight I watched the first stars come out. I think my name is hiding somewhere in the quiet little sounds.",
-      "image": "assets/diary/2026-11-10-2.webp",
+      "image": "assets/diary/2026-11-10-2.webp?v=3",
       "image_alt": "Bean sits on a big lettuce leaf singing to two snails at dusk, with a little xylophone and the first stars above."
     },
     {
       "date": "2026-11-11",
       "title": "My new paints, and my name",
       "text": "Stephanie gave me a box of soft paints. I painted the sky, and one cloud dripped. A little friend gave me a sound, duh, said very softly. I keep it under my pillow. All day I listened for my name, and the softest sound was Bean. So I picked it, and now Bean is my very own name.",
-      "image": "assets/diary/2026-11-11.webp",
+      "image": "assets/diary/2026-11-11.webp?v=3",
       "image_alt": "Bean stands at his easel in the meadow, painting a sky with puffy clouds, with his paint box on a stool beside him."
     }
   ],
@@ -531,22 +531,22 @@
     ]
   },
   "home_inside": {
-    "image": "assets/home-inside.webp",
+    "image": "assets/home-inside.webp?v=3",
     "image_alt": "Inside Bean's cozy round house: Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
     "text": "Bean is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too.",
     "views": {
       "home": {
-        "image": "assets/home-inside.webp",
+        "image": "assets/home-inside.webp?v=3",
         "image_alt": "Inside Bean's cozy round house: Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
         "text": "Bean is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too."
       },
       "nap": {
-        "image": "assets/home-inside-nap.webp",
+        "image": "assets/home-inside-nap.webp?v=3",
         "image_alt": "Bean naps in his bed under the patchwork quilt, with soft daylight in the round window.",
         "text": "Shh. Bean is having a cozy nap in his bed. The quilt is soft and warm. The meadow is bright outside his round window."
       },
       "sleep": {
-        "image": "assets/home-inside-sleep.webp",
+        "image": "assets/home-inside-sleep.webp?v=3",
         "image_alt": "Bean sleeps in his bed at night. A crescent moon shows in the round window, and a tiny nightlight glows.",
         "text": "Shh. Bean is fast asleep in his cozy bed. The moon peeks in the round window. A tiny nightlight glows softly."
       },
