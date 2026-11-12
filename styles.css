@@ -378,7 +378,7 @@ body.is-still .feature { transition: none; }
 body[data-time='night'] .feature-swing { filter: brightness(0.7) saturate(0.8); }
 .feature-swing { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%); mask-image: linear-gradient(to bottom, transparent 0, #000 14%); }
 /* Bean v3: the round little bean (a little smaller than the first Bean) */
-.bean { width: 7.4%; }
+.bean { width: 4.6%; }
 .bean-shadow { left: 12%; right: 12%; bottom: -1%; height: 5%; }
-@media (max-width: 899px) { .bean { width: 9.6%; } }
+@media (max-width: 899px) { .bean { width: 6%; } }
 .bean-img { filter: drop-shadow(0 0 1px rgba(70, 50, 30, 0.45)); }
