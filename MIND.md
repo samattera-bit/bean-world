@@ -73,7 +73,7 @@ The browser seeds a random number generator with the date and simulates Bean fro
 ## Adding a diary page (every morning)
 
 1. Write yesterday's page from Bean's point of view, dated yesterday, or today on Bean's first day.
-2. Make a picture in the same style as the meadow: a children's picture-book illustration in soft muted gouache and watercolor, with warm cream paper texture, muted sage, dusty blue, soft terracotta and oatmeal tones. Use low contrast, no saturated colors, no text in the image, and a calm, cozy feel. A 3:2 or 4:3 landscape works best. **Bean must look identical every time.** Always pass `assets/bean-open.webp` as a reference image and say in the prompt: "image 1 is Bean; draw this exact character (same apricot-tan kidney-bean shape lying on its side, dot eyes, rosy cheeks, tiny feet, two-leaf green sprout on top), only smaller and placed in the scene." The world view uses this same art, so the diary and the world always match. Never change Bean's design; Stephanie asked for it to stay consistent.
+2. Make a picture in the same style as the meadow: a children's picture-book illustration in soft muted gouache and watercolor, with warm cream paper texture, muted sage, dusty blue, soft terracotta and oatmeal tones. Use low contrast, no saturated colors, no text in the image, and a calm, cozy feel. A 3:2 or 4:3 landscape works best. **Bean must look identical every time.** Always pass `assets/bean-open.webp` as a reference image and say in the prompt: "image 1 is Bean; draw this exact character (same short, plump, round little apricot-tan bean shape, dot eyes, rosy cheeks, tiny feet, two-leaf green sprout on top), only smaller and placed in the scene." The world view uses this same art, so the diary and the world always match. Never change Bean's design; Stephanie asked for it to stay consistent.
 3. Save it as `assets/diary/YYYY-MM-DD.webp` (the diary date, about 1200×800, quality ~84). If one day ever has two pages, use `YYYY-MM-DD-2.webp`.
 4. Add the entry to the end of `diary`:
 
@@ -118,13 +118,13 @@ When Bean's helper passes on a note or gift from Stephanie or her child, add it 
 
 One-day treats: an activity can have `only_dates: ["YYYY-MM-DD"]` so it only happens on those days, and `first_thing: true` so it's the first thing Bean does when he wakes. Once the date has passed, remove that activity from `activities` (keep the gift). Bean can mention the gift in the next diary page and maybe add a memory.
 
-## Bean's look (v2, kidney bean)
+## Bean's look (v3, round little bean)
 
-On 2026-11-12 Stephanie asked to try a new look: Bean is now a small kidney bean lying on his side (wider than tall, a soft curve between his two tiny feet), apricot-tan, dot eyes, rosy cheeks, two-leaf sprout. `assets/bean-open.webp` and `assets/bean-closed.webp` are the new art; the old peanut art is saved in `assets/bean-v1-peanut/` in case she goes back. Always use `assets/bean-open.webp` as the reference for diary pictures, and say "the same kidney-bean shape lying on its side" in the prompt.
+On 2026-11-12 Stephanie chose a new look: Bean is a small, short, plump, round little bean (wider than tall, soft and squishy, like a big pea), apricot-tan, dot eyes, rosy cheeks, two-leaf green sprout, two tiny stubby feet peeking out underneath, facing front. `assets/bean-open.webp` and `assets/bean-closed.webp` are this art. Old looks are saved in `assets/bean-v1-peanut/` and `assets/bean-v2-kidney/` (she didn't like the kidney one). Always pass `assets/bean-open.webp` as the reference for diary pictures and say "the same short, plump, round little bean shape" in the prompt.
 
 ## Rules
 
-- **Bean is a he.** Use he/him/his whenever writing about Bean in the third person (intentions, captions, notes to Stephanie). Bean is a little kidney bean with funny tiny legs; Stephanie finds his legs delightful.
+- **Bean is a he.** Use he/him/his whenever writing about Bean in the third person (intentions, captions, notes to Stephanie). Bean is a little round, plump bean with funny tiny legs; Stephanie finds his legs delightful.
 
 - **Kid-safe and innocent, always.** Nothing scary, sad, violent, romantic or grown-up. No danger, illness, loss, or "Bean was lonely" stories. Small, gentle problems that turn out fine are okay, like a lost button that turns up later.
 - **Short sentences.** Diary pages are 4-6 short sentences that a 6-year-old can follow when read aloud. Captions and intentions are one sentence.

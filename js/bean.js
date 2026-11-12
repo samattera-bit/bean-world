@@ -5,8 +5,8 @@ export function beanSVG() {
 <div class="bean-art" aria-hidden="true">
   <div class="bean-shadow"></div>
   <div class="bean-body">
-    <img class="bean-img bean-open" src="assets/bean-open.webp?v=2" alt="" draggable="false" />
-    <img class="bean-img bean-closed" src="assets/bean-closed.webp?v=2" alt="" draggable="false" />
+    <img class="bean-img bean-open" src="assets/bean-open.webp?v=3" alt="" draggable="false" />
+    <img class="bean-img bean-closed" src="assets/bean-closed.webp?v=3" alt="" draggable="false" />
   </div>
 </div>`;
 }

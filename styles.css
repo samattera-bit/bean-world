@@ -377,8 +377,8 @@ body.is-still .feature { transition: none; }
 .feature-swing { width: 6.3%; filter: saturate(0.9); }
 body[data-time='night'] .feature-swing { filter: brightness(0.7) saturate(0.8); }
 .feature-swing { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%); mask-image: linear-gradient(to bottom, transparent 0, #000 14%); }
-/* Bean v2: the kidney bean (wider than tall, a little smaller than before) */
-.bean { width: 8.2%; }
-.bean-shadow { left: 10%; right: 10%; bottom: -1%; height: 6%; }
-@media (max-width: 899px) { .bean { width: 10.5%; } }
+/* Bean v3: the round little bean (a little smaller than the first Bean) */
+.bean { width: 7.4%; }
+.bean-shadow { left: 12%; right: 12%; bottom: -1%; height: 5%; }
+@media (max-width: 899px) { .bean { width: 9.6%; } }
 .bean-img { filter: drop-shadow(0 0 1px rgba(70, 50, 30, 0.45)); }
