@@ -260,7 +260,7 @@ function renderThings() {
   const w = app.world, b = w.bean;
   const name = b.name || b.placeholder_name || 'Bean';
   const nameLine = b.name
-    ? `Bean's name is ${esc(b.name)}.`
+    ? (b.name_story ? esc(b.name_story) : `Bean's name is ${esc(b.name)}.`)
     : `Bean hasn't picked a name yet. For now, everyone just says "Bean".`;
   const intention = w.today && w.today.intention;
   const memories = (b.memories || []).slice().reverse();

@@ -121,7 +121,7 @@ One-day treats: an activity can have `only_dates: ["YYYY-MM-DD"]` so it only hap
 - **Short sentences.** Diary pages are 4-6 short sentences that a 6-year-old can follow when read aloud. Captions and intentions are one sentence.
 - **Gentle words.** Use words like soft, slow, cozy, curious, quiet and warm. Don't use exclamation storms or ALL CAPS.
 - **Bean discovers likes slowly.** Add at most one new love, hobby or dislike per day, and make sure it comes from something Bean actually did. Dislikes stay mild and sweet, like "when the bread gets a little too crunchy".
-- **Bean's name.** Bean names himself only when it feels right, and that should happen soon, within the first 2-4 days. Plant the idea in the diary first (a sound, a snail, a flower, a word Bean heard), then on naming day set `bean.name`, add a memory ("Picked my name: Pip.") and write a diary page about choosing it. Pick a short, soft, easy name. Never change it afterwards.
+- **Bean's name.** Bean names himself only when it feels right, and that should happen soon, within the first 2-4 days. Plant the idea in the diary first (a sound, a snail, a flower, a word Bean heard), then on naming day set `bean.name`, add a memory ("Picked my name: Pip.") and write a diary page about choosing it. Pick a short, soft, easy name. Never change it afterwards. **Done:** on 2026-11-11 he chose "Bean" for himself (`bean.name` = "Bean", with `bean.name_story` shown on the Things page). Don't rename him.
 - **Continuity.** Read the earlier diary pages and memories before writing. Bean remembers.
 - **Valid JSON.** Validate before deploying (`python3 -m json.tool world.json`). Keep existing ids stable; don't remove activities that `today.favorite_activity_ids` points to.
 
