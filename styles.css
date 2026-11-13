@@ -382,3 +382,68 @@ body[data-time='night'] .feature-swing { filter: brightness(0.7) saturate(0.8); 
 .bean-shadow { left: 12%; right: 12%; bottom: -1%; height: 5%; }
 @media (max-width: 899px) { .bean { width: 6%; } }
 .bean-img { filter: drop-shadow(0 0 1px rgba(70, 50, 30, 0.45)); }
+
+/* ---------- the 3D meadow (tab "3D") ---------- */
+.scene3d[hidden] { display: none !important; }
+.scene3d {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  width: 100%; max-width: calc((100dvh - 210px) * 16 / 9); justify-self: end;
+}
+.stage3d {
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl); overflow: hidden;
+  background: #dde3d6; box-shadow: var(--shadow);
+  touch-action: none;
+}
+body[data-time='night'] .stage3d { background: #34405a; }
+.canvas3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; outline-offset: -4px; }
+.stage3d-note { position: absolute; inset: 0; display: none; place-items: center; text-align: center; padding: var(--space-6); color: var(--ink-soft); font-size: var(--text-ui); }
+.stage3d[data-state='loading'] .stage3d-loading { display: grid; }
+.stage3d[data-state='failed'] .stage3d-failed { display: grid; align-content: center; gap: var(--space-4); justify-items: center; background: var(--paper); color: var(--ink); }
+.stage3d[data-state='failed'] .canvas3d { display: none; }
+.tools3d { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.tools3d .big-btn { flex: 1 1 auto; padding: 0 var(--space-5); }
+.tools3d .big-btn[hidden] { display: none; }
+
+/* calm message over the canvas (Where's Bean, near Bean) */
+.explore-msg {
+  position: absolute; left: 50%; top: var(--space-4); transform: translateX(-50%);
+  max-width: calc(100% - 2rem); width: max-content;
+  background: color-mix(in oklab, var(--paper) 92%, transparent); color: var(--ink);
+  border-radius: var(--radius-lg); padding: var(--space-2) var(--space-5);
+  font-size: var(--text-ui); font-weight: 700; line-height: 1.35; text-align: center; text-wrap: balance;
+  box-shadow: var(--shadow); opacity: 0; transition: opacity 1.2s ease; pointer-events: none;
+}
+.explore-msg.is-on { opacity: 1; }
+body.is-still .explore-msg { transition: none; }
+
+/* walk buttons (Explore): sit in the button row, never over the meadow */
+.walk-pad[hidden] { display: none !important; }
+.walk-pad { display: flex; gap: var(--space-2); margin-left: auto; }
+#explore-label .short { display: none; }
+.pad-btn {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: color-mix(in oklab, var(--paper) 90%, transparent); color: var(--ink);
+  border: 2px solid color-mix(in oklab, var(--ink) 30%, transparent);
+  box-shadow: var(--shadow);
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.pad-btn svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.pad-btn.is-down { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+@media (max-width: 899px) {
+  .scene3d { max-width: none; justify-self: stretch; }
+  .stage3d { aspect-ratio: 5 / 4; max-height: 70dvh; border-radius: var(--radius-lg); }
+  .tools3d { display: grid; grid-template-columns: 1fr 1fr; }
+  .tools3d .big-btn { padding: 0 var(--space-3); gap: var(--space-2); font-size: var(--text-small); }
+  .walk-pad { grid-column: 1 / -1; order: -1; justify-content: space-between; margin: 0; }
+  .pad-btn { width: 72px; height: 64px; border-radius: var(--radius-lg); }
+  #explore-label .long { display: none; }
+  #explore-label .short { display: inline; }
+  .explore-msg { font-size: var(--text-small); top: var(--space-3); }
+}
+@media (max-width: 899px) {
+  .view-world.is-3d .bubble-dot { display: none; }
+}
+@media (max-width: 440px) { .tab svg { display: none; } .tab { padding: 0 var(--space-1); } }

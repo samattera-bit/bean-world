@@ -13,6 +13,7 @@ bean-world/
   assets/meadow-day.webp        <- the scene (don't change)
   assets/meadow-dusk.webp
   js/mind.js                    <- the simulation (don't change)
+  js/world3d.js                 <- the 3D meadow tab (only touch for new places/features)
 ```
 
 ## world.json schema
@@ -121,6 +122,16 @@ One-day treats: an activity can have `only_dates: ["YYYY-MM-DD"]` so it only hap
 ## Bean's look (v3, round little bean)
 
 On 2026-11-12 Stephanie chose a new look: Bean is a small, short, plump, round little bean (wider than tall, soft and squishy, like a big pea), apricot-tan, dot eyes, rosy cheeks, two-leaf green sprout, two tiny stubby feet peeking out underneath, facing front. `assets/bean-open.webp` and `assets/bean-closed.webp` are this art. Old looks are saved in `assets/bean-v1-peanut/` and `assets/bean-v2-kidney/` (she didn't like the kidney one). Always pass `assets/bean-open.webp` as the reference for diary pictures and say "the same short, plump, round little bean shape" in the prompt.
+
+## The 3D meadow (3D tab)
+
+The "3D" tab (`?view=3d`) shows the same meadow as a small, calm 3D island. It lives in `js/world3d.js` (three.js is vendored in `js/vendor/`, loaded only when the tab opens). It reads the same `world.json` and the same `js/mind.js`, with the same clock (`js/clock.js`, so `?time=` and `?still=1` work), so Bean is always doing the same thing in 2D and 3D. Bean is the same picture (`assets/bean-open.webp` / `bean-closed.webp`) as a small standing billboard. There is an "Explore" mode where Stephanie walks around slowly at a low eye height, and a "Where's Bean?" button.
+
+You normally don't need to touch it. Only when you add a new **place** or a new **built feature**:
+- Places are positioned from their `x, y` in world.json automatically, but each needs a simple 3D model. Add it in `world3d.js` in the section marked `PLACE MODELS` (small offsets are in the `L` object). If it is big enough to bump into, add a circle to `OBST`.
+- A built feature (like the swing) also needs its model added to `FEATURE_MODELS`; it appears with the same "built" rule as the 2D sprite.
+- A place without a model still works: Bean just stands there on the grass.
+Keep 3D models soft, rounded, muted and simple, like the existing ones. No glowing, flashing or moving effects.
 
 ## Rules
 

@@ -20,6 +20,10 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18c3-5 6-7 9-7s6 2 9 7"/><circle cx="16.5" cy="6.5" r="2.5"/></svg>
         <span class="long">Bean's World</span><span class="short">World</span>
       </button>
+      <button class="tab" data-view="3d">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20 8v8l-8 4.5L4 16V8z"/><path d="M4 8l8 4.5L20 8M12 12.5v8"/></svg>
+        <span class="long">3D Meadow</span><span class="short">3D</span>
+      </button>
       <button class="tab" data-view="diary">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C6.5 4 9.5 4 12 5.5v14c-2.5-1.5-5.5-1.5-8 0z"/><path d="M20 5.5C17.5 4 14.5 4 12 5.5v14c2.5-1.5 5.5-1.5 8 0z"/></svg>
         <span>Diary</span>
@@ -43,6 +47,42 @@
           <div class="house-glow" aria-hidden="true"></div>
           <div class="zzz" id="zzz" aria-hidden="true">z<span>z</span></div>
           <button class="house-spot" id="house-spot" aria-label="Peek inside Bean's house"><span class="house-tip" aria-hidden="true">Peek inside</span></button>
+        </div>
+
+        <!-- The 3D meadow (same panel on the right). Its code loads only when the 3D tab is opened. -->
+        <div class="scene3d" id="scene3d" hidden>
+          <div class="stage3d" id="stage3d" data-state="idle">
+            <div class="stage3d-note stage3d-loading" aria-hidden="true">Bean's little meadow is unfolding…</div>
+            <div class="stage3d-note stage3d-failed" role="status">
+              <p>This device can't show the 3D meadow right now.</p>
+              <button class="big-btn" id="back-to-storybook" type="button">Back to the storybook</button>
+            </div>
+            <p class="explore-msg" id="explore-msg" aria-live="polite"></p>
+          </div>
+          <div class="tools3d" role="group" aria-label="3D meadow controls">
+            <button class="big-btn" id="explore-btn" type="button" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
+              <span id="explore-label">Explore</span>
+            </button>
+            <button class="big-btn" id="find-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m15.5 15.5 4 4"/></svg>
+              <span>Where's Bean?</span>
+            </button>
+            <button class="big-btn" id="follow-btn" type="button" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
+              <span>Follow Bean</span>
+            </button>
+            <button class="big-btn" id="reset-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></svg>
+              <span>Reset view</span>
+            </button>
+          <div class="walk-pad" id="walk-pad" role="group" aria-label="Walk around" hidden>
+            <button class="pad-btn" data-move="left" type="button" aria-label="Turn left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7H5V3"/><path d="M5.6 7A8 8 0 1 1 4 12"/></svg></button>
+            <button class="pad-btn" data-move="forward" type="button" aria-label="Walk forward"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+            <button class="pad-btn" data-move="back" type="button" aria-label="Walk back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button>
+            <button class="pad-btn" data-move="right" type="button" aria-label="Turn right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 7h4V3"/><path d="M18.4 7A8 8 0 1 0 20 12"/></svg></button>
+          </div>
+          </div>
         </div>
 
         <aside class="panel">

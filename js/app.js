@@ -1,23 +1,14 @@
 // Bean's World — the 2D storybook renderer + page UI.
 // All character logic lives in mind.js; all character data lives in world.json.
-import { easternClock, stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
+import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
+import { nowClock } from './clock.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-// ---------- time (real US/Eastern, or mocked with ?time=YYYY-MM-DDTHH:MM for testing) ----------
+// ---------- time (shared with the 3D view; see clock.js) ----------
 const params = new URLSearchParams(location.search);
-const mock = params.get('time');
-const loadedAt = Date.now();
-function nowClock() {
-  if (mock && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(mock)) {
-    const [date, t] = mock.split('T');
-    const [h, m, sec = 0] = t.split(':').map(Number);
-    return { date, month: Number(date.slice(5, 7)), minutes: h * 60 + m + sec / 60 + (Date.now() - loadedAt) / 60000 };
-  }
-  return easternClock(new Date());
-}
 
 // ---------- app state (in memory only) ----------
 const app = {
@@ -56,7 +47,7 @@ async function boot() {
   setInterval(tick, 60 * 1000); // Bean re-thinks once a minute
   requestAnimationFrame(frame);
   const startView = params.get('view');
-  if (['world', 'diary', 'things'].includes(startView)) showView(startView, true);
+  if (['world', '3d', 'diary', 'things'].includes(startView)) showView(startView, true);
 }
 
 // ---------- the scene ----------
@@ -189,6 +180,7 @@ function applyStill() {
   btn.setAttribute('aria-pressed', String(app.still));
   $('#still-label').textContent = app.still ? 'Still is on' : 'Still';
   updateBeanPosition();
+  document.dispatchEvent(new CustomEvent('bean:still', { detail: app.still }));
 }
 $('#still-btn').addEventListener('click', () => {
   app.still = !app.still;
@@ -196,25 +188,63 @@ $('#still-btn').addEventListener('click', () => {
 });
 
 // ---------- tabs ----------
+// The 3D tab shares the World section (same caption, buttons and needs); only the picture swaps.
 function showView(name, instant = false) {
   if (name === app.view && !instant) return;
   stopSpeaking();
   app.view = name;
+  const section = name === '3d' ? 'world' : name;
   $$('.tab').forEach((t) => {
     if (t.dataset.view === name) t.setAttribute('aria-current', 'page');
     else t.removeAttribute('aria-current');
   });
   $$('.view').forEach((v) => {
-    const on = v.dataset.view === name;
+    const on = v.dataset.view === section;
+    const wasHidden = v.hidden;
     v.hidden = !on;
     v.classList.toggle('is-active', on);
-    if (on && !app.still && !instant) {
+    if (on && wasHidden && !app.still && !instant) {
       v.classList.add('is-entering');
       requestAnimationFrame(() => requestAnimationFrame(() => v.classList.remove('is-entering')));
     }
   });
+  const is3d = name === '3d';
+  $('#scene').hidden = is3d;
+  $('#scene3d').hidden = !is3d;
+  $('.view-world').classList.toggle('is-3d', is3d);
+  if (is3d) open3D();
+  else if (world3d) world3d.setActive(false);
 }
 $$('.tab').forEach((t) => t.addEventListener('click', () => showView(t.dataset.view)));
+
+// ---------- the 3D meadow (loaded only when its tab is opened) ----------
+let world3d = null;
+let loading3d = null;
+function open3D() {
+  if (world3d) { world3d.setActive(true); return; }
+  if (loading3d) return;
+  const stage = $('#stage3d');
+  stage.dataset.state = 'loading';
+  loading3d = import('./world3d.js')
+    .then((m) => m.mount3D({
+      root: $('#scene3d'),
+      world: app.world,
+      nowClock,
+      isStill: () => app.still,
+      openHouse,
+      backToStorybook: () => showView('world'),
+    }))
+    .then((w) => {
+      world3d = w;
+      stage.dataset.state = w.ok ? 'ready' : 'failed';
+      if (w.ok) w.setActive(app.view === '3d');
+    })
+    .catch((err) => {
+      console.warn('3D view could not start', err);
+      stage.dataset.state = 'failed';
+    });
+}
+$('#back-to-storybook').addEventListener('click', () => showView('world'));
 
 // ---------- diary ----------
 function friendlyDate(iso) {
