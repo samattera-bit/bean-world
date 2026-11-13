@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-11-12",
+  "last_updated": "2026-11-13",
   "bean": {
     "name": "Bean",
     "placeholder_name": "Bean",
@@ -12,13 +12,14 @@
     ],
     "loves": [
       "the sound of rain on the roof",
-      "the slow, kind garden snails"
+      "the slow, kind garden snails",
+      "a warm croissant in the morning"
     ],
     "dislikes": [],
     "hobbies": [
       "painting with soft colors"
     ],
-    "mood_word": "proud",
+    "mood_word": "content",
     "memories": [
       {
         "date": "2026-11-10",
@@ -31,6 +32,10 @@
       {
         "date": "2026-11-11",
         "text": "Chose my very own name: Bean."
+      },
+      {
+        "date": "2026-11-12",
+        "text": "Built a swing on the big tree, with tools from Stephanie."
       }
     ],
     "name_story": "He listened to the soft sounds of the meadow for a whole day, and chose Bean for himself. It felt just right."
@@ -248,7 +253,7 @@
         "play": 0.25,
         "wonder": 0.05
       },
-      "preference_weight": 1.1
+      "preference_weight": 1.2
     },
     {
       "id": "little_snack",
@@ -413,45 +418,6 @@
       "preference_weight": 1.3
     },
     {
-      "id": "gift_breakfast",
-      "place": "bakery",
-      "label": "Breakfast feast",
-      "verb_phrase": "having the breakfast feast you gave him",
-      "feeling": "so happy and full",
-      "needs": {
-        "rest": 0.1,
-        "tummy": 0.6,
-        "play": 0.1,
-        "wonder": 0.1
-      },
-      "preference_weight": 1.0,
-      "only_dates": [
-        "2026-11-12"
-      ],
-      "first_thing": true
-    },
-    {
-      "id": "build_swing",
-      "place": "swing",
-      "label": "Building a swing",
-      "verb_phrase": "building a swing on the big tree",
-      "feeling": "busy and proud",
-      "needs": {
-        "rest": 0,
-        "tummy": 0,
-        "play": 0.35,
-        "wonder": 0.3
-      },
-      "preference_weight": 1.3,
-      "only_dates": [
-        "2026-11-12"
-      ],
-      "hours": [
-        "14:20",
-        "16:30"
-      ]
-    },
-    {
       "id": "swing_gently",
       "place": "swing",
       "label": "Swinging",
@@ -519,15 +485,22 @@
       "text": "Stephanie gave me a box of soft paints. I painted the sky, and one cloud dripped. A little friend gave me a sound, duh, said very softly. I keep it under my pillow. All day I listened for my name, and the softest sound was Bean. So I picked it, and now Bean is my very own name.",
       "image": "assets/diary/2026-11-11.webp?v=3",
       "image_alt": "Bean stands at his easel in the meadow, painting a sky with puffy clouds, with his paint box on a stool beside him."
+    },
+    {
+      "date": "2026-11-12",
+      "title": "Breakfast, and a swing",
+      "text": "I woke up to a breakfast feast from Stephanie. I ate a warm croissant, berries, and a tiny waffle with honey. The cocoa made my sprout feel cozy. In the afternoon, I used my new tools to build a swing on the big tree. I tied the ropes tight and checked them twice. Tomorrow I will swing, nice and slow.",
+      "image": "assets/diary/2026-11-12.webp",
+      "image_alt": "Bean stands beside the big tree, smiling at the new wooden swing he built, with a coil of rope and a small drill on the grass."
     }
   ],
   "today": {
-    "date": "2026-11-12",
-    "intention": "Bean wants to build a sturdy little swing on the big tree.",
+    "date": "2026-11-13",
+    "intention": "Bean wants to try his new swing, nice and slow.",
     "favorite_activity_ids": [
-      "build_swing",
-      "talk_to_snails",
-      "try_new_paints"
+      "swing_gently",
+      "bake_tiny_bread",
+      "first_stars"
     ]
   },
   "home_inside": {
@@ -569,6 +542,13 @@
       "image": "assets/paintings/2026-11-11.webp",
       "image_alt": "A simple, wobbly painting of a blue sky with three soft clouds, a pale yellow sun, and a green hill with tiny flowers.",
       "note": "I tried every color in my new box. The clouds came out puffy. One cloud dripped a little, and I liked it."
+    },
+    {
+      "date": "2026-11-12",
+      "title": "My breakfast feast",
+      "image": "assets/paintings/2026-11-12.webp",
+      "image_alt": "A soft, wobbly painting of a little table with a croissant, berries, a pear, a waffle with honey, and a cup of cocoa.",
+      "note": "I painted my breakfast before I ate it. The honey dripped on the paper, just like on the waffle."
     }
   ],
   "letters": [
@@ -583,6 +563,12 @@
       "to": "Stephanie",
       "in_reply_to": "the paints",
       "text": "Dear Stephanie. Thank you for my paints. I tried every color. The soft blue is my favorite, because it looks like rain. Love, Bean."
+    },
+    {
+      "date": "2026-11-13",
+      "to": "Stephanie",
+      "in_reply_to": "the breakfast and the swing tools",
+      "text": "Dear Stephanie. Thank you for my breakfast feast. The croissant was warm and flaky, and the cocoa was just right. Thank you for the swing tools too. I built a swing on the big tree, and today I will try it. Love, Bean."
     }
   ],
   "features": [
