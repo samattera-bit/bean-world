@@ -35,6 +35,7 @@ bean-world/
 | `gifts` | `[{date, from, text, kept, where}]` | you, when a visitor leaves something |
 | `diary` | `[{date, title, text, image, image_alt}]`, oldest first | you, add one per day |
 | `today` | `{date, intention, favorite_activity_ids}` | you, every morning |
+| `happenings` | `[{id, date, place, title, text}]`, 3-4 small interactive daily happenings across meadow places | you, every morning |
 
 ### Activities
 
@@ -66,6 +67,22 @@ bean-world/
 ```
 
 `intention` is one short sentence written in the third person. Pick 1-3 favorites; they get a small boost today. `today.date` must equal today's date, or the favorites are ignored.
+
+### Daily happenings (`happenings`)
+
+```json
+"happenings": [
+  {
+    "id": "swing-ribbon",
+    "date": "2026-11-13",
+    "place": "swing",
+    "title": "A soft ribbon on the swing",
+    "text": "Bean tied a little sage ribbon to his new swing rope this morning. It sways very slowly in the breeze."
+  }
+]
+```
+
+Each morning, replace `happenings` with 3-4 short, gentle, kid-safe new happenings across different places in the meadow (`{id, date, place, title, text}`). They reflect small, cozy things happening in Bean's life today when Stephanie or her daughter clicks around the meadow.
 
 ### How the day is simulated (so you know what your edits do)
 

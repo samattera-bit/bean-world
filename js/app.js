@@ -3,6 +3,7 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
+import { initGame } from './game.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -77,6 +78,7 @@ function placeBean(x, y) {
 function tick() {
   const clock = nowClock();
   const s = stateAt(app.world, clock);
+  game.applyState(s, clock);
   const prev = app.state;
   app.state = s;
 
@@ -121,6 +123,7 @@ function tick() {
   renderNeeds(s.needs);
   if (!prev) placeBean(s.position.x, s.position.y);
   updateBeanPosition(clock);
+  game.syncScene(s, clock);
 }
 
 // Position is recomputed every frame only while walking; otherwise Bean stays put.
@@ -192,6 +195,7 @@ $('#still-btn').addEventListener('click', () => {
 function showView(name, instant = false) {
   if (name === app.view && !instant) return;
   stopSpeaking();
+  if (game?.isPlaceOpen()) game.closePlace();
   app.view = name;
   const section = name === '3d' ? 'world' : name;
   $$('.tab').forEach((t) => {
@@ -414,6 +418,7 @@ function speak(text) {
   player.play().catch(() => { player = null; speakWithDevice(text); });
 }
 function currentReadText() {
+  if (game?.isPlaceOpen()) return game.getPlaceReadText();
   if (houseDlg.open) return readerText;
   if (app.view === 'diary') {
     const e = (app.world.diary || [])[app.diaryIndex];
@@ -432,6 +437,7 @@ let readerText = '';
 function openReader({ title, image, alt, text, shown, closeLabel = 'Close' }) {
   stopSpeaking();
   readerText = text || '';
+  $('#house-items').innerHTML = '';
   const img = $('#house-img');
   houseDlg.classList.toggle('no-pic', !image);
   if (image) { img.src = image; img.alt = alt || ''; } else { img.removeAttribute('src'); img.alt = ''; }
@@ -445,6 +451,7 @@ function openHouse() {
   if (!h) return;
   const v = (h.views && h.views[houseView()]) || h;
   openReader({ title: "Inside Bean's house", image: v.image, alt: v.image_alt, text: v.text, closeLabel: 'Back outside' });
+  game.renderHouseItems();
 }
 function closeHouse() { stopSpeaking(); houseDlg.close(); }
 $('#house-btn').addEventListener('click', openHouse);
@@ -464,6 +471,23 @@ $('#things').addEventListener('click', (e) => {
     const x = (app.world.letters || [])[Number(l.dataset.letter)];
     if (x) openReader({ title: 'A letter from Bean', text: x.text });
   }
+});
+
+const game = initGame({
+  getWorld: () => app.world,
+  getState: () => app.state,
+  isStill: () => app.still,
+  nowClock,
+  speak,
+  stopSpeaking,
+  openHouse,
+  houseView,
+  onStateChanged: () => tick(),
+  setHouseText: (text) => {
+    stopSpeaking();
+    readerText = text;
+    $('#house-text').textContent = text;
+  },
 });
 
 // Testing hook (read-only peek at the mind).

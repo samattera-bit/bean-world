@@ -579,5 +579,35 @@
       "built_by_activity": "build_swing",
       "image": "assets/swing.webp"
     }
+  ],
+  "happenings": [
+    {
+      "id": "swing-ribbon",
+      "date": "2026-11-13",
+      "place": "swing",
+      "title": "A soft ribbon on the swing",
+      "text": "Bean tied a little sage ribbon to his new swing rope this morning. It sways very slowly in the breeze."
+    },
+    {
+      "id": "snail-parade",
+      "date": "2026-11-13",
+      "place": "garden",
+      "title": "Three snails on the lettuce",
+      "text": "Three slow garden snails are having a quiet breakfast on the biggest lettuce leaf."
+    },
+    {
+      "id": "warm-rolls",
+      "date": "2026-11-13",
+      "place": "bakery",
+      "title": "Fresh honey rolls",
+      "text": "A tray of tiny warm bread rolls with clover honey is cooling on the bakery windowsill."
+    },
+    {
+      "id": "golden-leaf",
+      "date": "2026-11-13",
+      "place": "pond",
+      "title": "A round golden leaf",
+      "text": "A big autumn leaf floated into the middle of the pond. A tiny frog is resting near the edge."
+    }
   ]
 }
