@@ -370,15 +370,11 @@ Don't put Bean in his own paintings. Vary the subject from day to day.
 
 ## 8. Hosting and deployment
 
-- **Current host:** a Perplexity Computer hosted page, at a link that stays the same on each redeploy: https://www.perplexity.ai/computer/a/bean-s-world-_eY_zQ1aRFqcsPTUsn9exg
-  - Only the Perplexity Teammate could update that link, through its internal deploy tool.
-  - **A new AI cannot update this link.** The old link will keep showing the 2026-11-13 version.
-- **For the new AI:** the site is fully static, so any static host works. Some options:
-  - GitHub Pages (push the `bean-world` repo and enable Pages)
-  - Netlify drop
-  - Cloudflare Pages
-  - Vercel
-  - Run it locally with `python3 -m http.server`
+- **Live host (current):** Render Static Site connected to `https://github.com/samattera-bit/bean-world` (`master` branch): https://beans-world.onrender.com/
+  - Local project path: `/Users/stephaniemattera/.gemini/antigravity/scratch/bean-handoff/bean-world`
+  - Every `git commit` + `git push origin master` automatically redeploys https://beans-world.onrender.com/.
+- **Previous host (archived):** a Perplexity Computer hosted page, at `https://www.perplexity.ai/computer/a/bean-s-world-_eY_zQ1aRFqcsPTUsn9exg` (frozen at the 2026-11-13 version).
+- **For local preview:** run `python3 -m http.server 8765` inside `bean-world`.
 - Give Stephanie the new link once, then keep it stable.
 - **Cache busting.** Images are referenced with `?v=3` where they were redrawn. If you replace an image file in place, bump the query string in `world.json` or `bean.js` so browsers fetch the new one.
 
