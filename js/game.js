@@ -111,6 +111,8 @@ const HOUSE_ITEMS = [
 
 const PET_LINES = [
   'wiggles his tiny stubby feet and feels happy.',
+  'hums one soft little note just for you.',
+  'blinks slowly and gives a cozy little nod.',
   'leans into your gentle pat, and his two-leaf sprout perks up.',
 ];
 
