@@ -167,7 +167,7 @@ Keep 3D models soft, rounded, muted and simple, like the existing ones. No glowi
 "Read to me" plays pre-recorded lines in Bean's voice. `audio/manifest.json` maps each exact on-screen sentence to an mp3. After editing `world.json`:
 
 1. `node scripts/audio_texts.mjs` writes one `.txt` per missing sentence to `/tmp/audio_todo/` (new diary pages, the Things summary, today's happenings, and all captions if Bean's name changed).
-2. Use the logged-in ElevenLabs browser tab (`https://elevenlabs.io/app/speech-synthesis/text-to-speech`) via the browser subagent to generate `.mp3` files for any missing lines in `/tmp/audio_todo/`, and move/copy each downloaded `.mp3` to `/tmp/audio_todo/<id>.mp3`.
+2. Use the logged-in ElevenLabs browser tab (`https://elevenlabs.io/app/speech-synthesis/text-to-speech`) via the browser subagent to generate `.mp3` files for any missing lines in `/tmp/audio_todo/`, and move/copy each downloaded `.mp3` to `/tmp/audio_todo/<id>.mp3`. **Voice delivery rule (Stephanie's preference): never use `[whispers]`, `[sleepily]`, or `[softly]` tags and never use a whispery or breathy delivery. Always generate voiceovers in a clear, warm, full natural speaking voice (plain text without whisper tags, or `[warmly]` / `[calmly]` only, with normal stability/clarity).**
 3. `node scripts/audio_register.mjs` copies `/tmp/audio_todo/<id>.mp3` to `audio/<id>.mp3` (or converts `.wav` with `ffmpeg` if provided) and updates the manifest. Rerun step 1 and confirm `missing` is `0`.
 
 Do not use browser `speechSynthesis` or fallback device voices; only ElevenLabs recordings registered in `audio/manifest.json` are played.
