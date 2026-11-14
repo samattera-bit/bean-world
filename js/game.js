@@ -507,7 +507,7 @@ export function initGame(api) {
   // ---------- Place Mini-Games ----------
   function setPlaceNarrative(text) {
     placeText.textContent = text;
-    placeReadText = `${placeTitle.textContent}. ${text}`;
+    placeReadText = text;
   }
 
   function renderGardenGame(clock) {
@@ -824,7 +824,7 @@ export function initGame(api) {
       boostNeeds({ wonder: 0.04, rest: 0.03 }, clock.date);
       api.onStateChanged();
       renderPondGame(clock);
-      setPlaceNarrative(`Plip. One soft leaf landed on the pond, making ${miniState.rippleCount} gentle ${miniState.rippleCount === 1 ? 'ripple' : 'ripples'}.`);
+      setPlaceNarrative('Plip. One soft leaf landed on the pond, sending gentle ripples across the water.');
     };
 
     const svg = $('#pond-svg', placeStage);
