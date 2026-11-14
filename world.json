@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-11-13",
+  "last_updated": "2026-11-14",
   "bean": {
     "name": "Bean",
     "placeholder_name": "Bean",
@@ -13,13 +13,14 @@
     "loves": [
       "the sound of rain on the roof",
       "the slow, kind garden snails",
-      "a warm croissant in the morning"
+      "a warm croissant in the morning",
+      "swinging slowly under the big tree"
     ],
     "dislikes": [],
     "hobbies": [
       "painting with soft colors"
     ],
-    "mood_word": "content",
+    "mood_word": "peaceful",
     "memories": [
       {
         "date": "2026-11-10",
@@ -36,6 +37,10 @@
       {
         "date": "2026-11-12",
         "text": "Built a swing on the big tree, with tools from Stephanie."
+      },
+      {
+        "date": "2026-11-13",
+        "text": "Swung on my new tree swing for the very first time, nice and slow."
       }
     ],
     "name_story": "He listened to the soft sounds of the meadow for a whole day, and chose Bean for himself. It felt just right."
@@ -429,7 +434,7 @@
         "play": 0.4,
         "wonder": 0.2
       },
-      "preference_weight": 1.2,
+      "preference_weight": 1.3,
       "from_date": "2026-11-13"
     }
   ],
@@ -492,15 +497,22 @@
       "text": "I woke up to a breakfast feast from Stephanie. I ate a warm croissant, berries, and a tiny waffle with honey. The cocoa made my sprout feel cozy. In the afternoon, I used my new tools to build a swing on the big tree. I tied the ropes tight and checked them twice. Tomorrow I will swing, nice and slow.",
       "image": "assets/diary/2026-11-12.webp",
       "image_alt": "Bean stands beside the big tree, smiling at the new wooden swing he built, with a coil of rope and a small drill on the grass."
+    },
+    {
+      "date": "2026-11-13",
+      "title": "My first slow swing",
+      "text": "Today I tried my new swing on the big tree. My little feet did not touch the grass at all. The wind tickled my sprout as I rocked back and forth. In the afternoon I baked tiny bread rolls and watched the lily pads on the pond. At bedtime I sat on the hill and made a quiet wish on the first star.",
+      "image": "assets/diary/2026-11-13.webp",
+      "image_alt": "Bean sits happily on his wooden rope swing hanging from the big tree in the soft green meadow, with his tiny feet dangling above the wildflowers."
     }
   ],
   "today": {
-    "date": "2026-11-13",
-    "intention": "Bean wants to try his new swing, nice and slow.",
+    "date": "2026-11-14",
+    "intention": "Bean wants to hum a quiet tune and count the ripples on the pond.",
     "favorite_activity_ids": [
-      "swing_gently",
-      "bake_tiny_bread",
-      "first_stars"
+      "count_ripples",
+      "hum_tunes",
+      "talk_to_snails"
     ]
   },
   "home_inside": {
@@ -549,6 +561,13 @@
       "image": "assets/paintings/2026-11-12.webp",
       "image_alt": "A soft, wobbly painting of a little table with a croissant, berries, a pear, a waffle with honey, and a cup of cocoa.",
       "note": "I painted my breakfast before I ate it. The honey dripped on the paper, just like on the waffle."
+    },
+    {
+      "date": "2026-11-13",
+      "title": "The pond and the lily pads",
+      "image": "assets/paintings/2026-11-13.webp",
+      "image_alt": "A simple, childlike watercolor painting of a round blue pond with three green lily pads and soft ripples on cream paper.",
+      "note": "I watched the lily pads float on the pond and painted them after tea. The water stayed very still for me."
     }
   ],
   "letters": [
@@ -582,32 +601,32 @@
   ],
   "happenings": [
     {
-      "id": "swing-ribbon",
-      "date": "2026-11-13",
-      "place": "swing",
-      "title": "A soft ribbon on the swing",
-      "text": "Bean tied a little sage ribbon to his new swing rope this morning. It sways very slowly in the breeze."
+      "id": "dewy-clover",
+      "date": "2026-11-14",
+      "place": "music",
+      "title": "Dewdrops on the clover",
+      "text": "Tiny round dewdrops are shining on the clover beside Bean's wooden xylophone this morning."
     },
     {
-      "id": "snail-parade",
-      "date": "2026-11-13",
-      "place": "garden",
-      "title": "Three snails on the lettuce",
-      "text": "Three slow garden snails are having a quiet breakfast on the biggest lettuce leaf."
-    },
-    {
-      "id": "warm-rolls",
-      "date": "2026-11-13",
-      "place": "bakery",
-      "title": "Fresh honey rolls",
-      "text": "A tray of tiny warm bread rolls with clover honey is cooling on the bakery windowsill."
-    },
-    {
-      "id": "golden-leaf",
-      "date": "2026-11-13",
+      "id": "ripple-rings",
+      "date": "2026-11-14",
       "place": "pond",
-      "title": "A round golden leaf",
-      "text": "A big autumn leaf floated into the middle of the pond. A tiny frog is resting near the edge."
+      "title": "Quiet pond ripples",
+      "text": "The three green lily pads drifted close together, making soft little rings across the water."
+    },
+    {
+      "id": "snail-trail",
+      "date": "2026-11-14",
+      "place": "garden",
+      "title": "A sleepy garden snail",
+      "text": "A friendly snail is curled up under a sweet pea leaf, listening to the morning breeze."
+    },
+    {
+      "id": "cinnamon-toast",
+      "date": "2026-11-14",
+      "place": "bakery",
+      "title": "Warm cinnamon toast",
+      "text": "A small plate of warm toast and a pot of chamomile tea are waiting on the checkered cloth."
     }
   ]
 }

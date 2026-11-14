@@ -3,7 +3,7 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js?v=7';
+import { initGame } from './game.js?v=8';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -380,7 +380,7 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=7', { cache: 'no-store' })
+fetch('audio/manifest.json?v=8', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
