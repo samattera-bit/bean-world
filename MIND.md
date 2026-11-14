@@ -164,11 +164,11 @@ Keep 3D models soft, rounded, muted and simple, like the existing ones. No glowi
 
 ## Read-aloud voice (every morning, before redeploying)
 
-"Read to me" plays pre-recorded lines in Bean's voice (Gemini TTS voice **achird**, chosen by Stephanie). `audio/manifest.json` maps each exact on-screen sentence to an mp3. After editing world.json:
+"Read to me" plays pre-recorded lines in Bean's voice. `audio/manifest.json` maps each exact on-screen sentence to an mp3. After editing `world.json`:
 
-1. `node scripts/audio_texts.mjs` writes one `.txt` per missing sentence to `/tmp/audio_todo/` (new diary pages, the Things summary, and all captions if Bean's name changed).
-2. Call `text_to_speech` with voice `achird` on each file there, at most 12 at a time.
-3. `node scripts/audio_register.mjs` converts the WAVs to `audio/<id>.mp3` and updates the manifest. Rerun step 1 and confirm `missing` is 0.
+1. `node scripts/audio_texts.mjs` writes one `.txt` per missing sentence to `/tmp/audio_todo/` (new diary pages, the Things summary, today's happenings, and all captions if Bean's name changed).
+2. Use the logged-in ElevenLabs browser tab (`https://elevenlabs.io/app/speech-synthesis/text-to-speech`) via the browser subagent to generate `.mp3` files for any missing lines in `/tmp/audio_todo/`, and move/copy each downloaded `.mp3` to `/tmp/audio_todo/<id>.mp3`.
+3. `node scripts/audio_register.mjs` copies `/tmp/audio_todo/<id>.mp3` to `audio/<id>.mp3` (or converts `.wav` with `ffmpeg` if provided) and updates the manifest. Rerun step 1 and confirm `missing` is `0`.
 
 Anything not recorded falls back to the device voice, so a failure here isn't fatal, but always try.
 
