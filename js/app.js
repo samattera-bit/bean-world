@@ -3,7 +3,7 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js';
+import { initGame } from './game.js?v=5';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -124,6 +124,7 @@ function tick() {
   if (!prev) placeBean(s.position.x, s.position.y);
   updateBeanPosition(clock);
   game.syncScene(s, clock);
+  updateReadButtons();
 }
 
 // Position is recomputed every frame only while walking; otherwise Bean stays put.
@@ -218,6 +219,7 @@ function showView(name, instant = false) {
   $('.view-world').classList.toggle('is-3d', is3d);
   if (is3d) open3D();
   else if (world3d) world3d.setActive(false);
+  updateReadButtons();
 }
 $$('.tab').forEach((t) => t.addEventListener('click', () => showView(t.dataset.view)));
 
@@ -284,6 +286,7 @@ function renderDiary() {
   $('#prev-btn').disabled = app.diaryIndex === 0;
   $('#next-btn').disabled = app.diaryIndex >= entries.length - 1;
   page.setAttribute('aria-label', `Diary page ${app.diaryIndex + 1}`);
+  updateReadButtons();
 }
 $('#prev-btn').addEventListener('click', () => { if (app.diaryIndex > 0) { stopSpeaking(); app.diaryIndex--; renderDiary(); } });
 $('#next-btn').addEventListener('click', () => { if (app.diaryIndex < (app.world.diary || []).length - 1) { stopSpeaking(); app.diaryIndex++; renderDiary(); } });
@@ -373,17 +376,15 @@ function thingsSpeech() {
 }
 
 // ---------- Read to me ----------
-// Pre-recorded lines in Bean's voice (audio/manifest.json maps exact text -> mp3).
-// Falls back to the device voice for anything not recorded yet.
-const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
+// Pre-recorded lines in the ElevenLabs narrator voice (audio/manifest.json maps exact text -> mp3).
+// Never fall back to browser device speech synthesis.
 let voiceMap = {};
-fetch('audio/manifest.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : {})).then((m) => { voiceMap = m || {}; }).catch(() => {});
+let voiceMapLoaded = false;
+fetch('audio/manifest.json?v=5', { cache: 'no-store' })
+  .then((r) => (r.ok ? r.json() : {}))
+  .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
+  .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
 let player = null;
-function pickVoice() {
-  if (!synth) return null;
-  const voices = synth.getVoices().filter((v) => /^en/i.test(v.lang));
-  return voices.find((v) => /samantha|karen|moira|serena|google us english|female/i.test(v.name)) || voices[0] || null;
-}
 function setReadButtons(speaking) {
   app.speaking = speaking;
   $$('.read-btn').forEach((b) => {
@@ -391,40 +392,37 @@ function setReadButtons(speaking) {
     b.querySelector('.read-label').textContent = speaking ? 'Stop reading' : 'Read to me';
   });
 }
+function updateReadButtons() {
+  const text = currentReadText();
+  const hasAudio = !voiceMapLoaded || Boolean(text && voiceMap[text]);
+  $$('.read-btn').forEach((b) => {
+    b.disabled = !hasAudio;
+    b.hidden = !hasAudio;
+  });
+}
 function stopSpeaking() {
   if (player) { player.pause(); player.src = ''; player = null; }
-  if (synth && (synth.speaking || synth.pending)) synth.cancel();
   setReadButtons(false);
-}
-function speakWithDevice(text) {
-  if (!synth) { setReadButtons(false); return; }
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.85; u.pitch = 1.05; u.lang = 'en-US';
-  const v = pickVoice(); if (v) u.voice = v;
-  u.onend = () => setReadButtons(false);
-  u.onerror = () => setReadButtons(false);
-  setReadButtons(true);
-  synth.speak(u);
 }
 function speak(text) {
   stopSpeaking();
   const file = voiceMap[text];
-  if (!file) { speakWithDevice(text); return; }
+  if (!file) { setReadButtons(false); return; }
   player = new Audio(file);
   player.volume = 0.9;
   player.onended = () => { player = null; setReadButtons(false); };
-  player.onerror = () => { player = null; speakWithDevice(text); };
+  player.onerror = () => { player = null; setReadButtons(false); };
   setReadButtons(true);
-  player.play().catch(() => { player = null; speakWithDevice(text); });
+  player.play().catch(() => { player = null; setReadButtons(false); });
 }
 function currentReadText() {
   if (game?.isPlaceOpen()) return game.getPlaceReadText();
   if (houseDlg.open) return readerText;
   if (app.view === 'diary') {
-    const e = (app.world.diary || [])[app.diaryIndex];
+    const e = (app.world?.diary || [])[app.diaryIndex];
     return e ? `${e.title}. ${e.text}` : '';
   }
-  if (app.view === 'things') return thingsSpeech();
+  if (app.view === 'things') return app.world ? thingsSpeech() : '';
   return app.state ? app.state.caption : '';
 }
 $$('.read-btn').forEach((b) => {
@@ -445,6 +443,7 @@ function openReader({ title, image, alt, text, shown, closeLabel = 'Close' }) {
   $('#house-text').textContent = shown ?? text ?? '';
   $('#house-close span').textContent = closeLabel;
   houseDlg.showModal();
+  updateReadButtons();
 }
 function openHouse() {
   const h = app.world?.home_inside;
@@ -458,7 +457,7 @@ $('#house-btn').addEventListener('click', openHouse);
 $('#house-spot').addEventListener('click', openHouse);
 $('#house-close').addEventListener('click', closeHouse);
 houseDlg.addEventListener('click', (e) => { if (e.target === houseDlg) closeHouse(); });
-houseDlg.addEventListener('close', stopSpeaking);
+houseDlg.addEventListener('close', () => { stopSpeaking(); updateReadButtons(); });
 $('#things').addEventListener('click', (e) => {
   const p = e.target.closest('[data-painting]');
   if (p) {
@@ -483,10 +482,12 @@ const game = initGame({
   openHouse,
   houseView,
   onStateChanged: () => tick(),
+  onReadTextChanged: () => updateReadButtons(),
   setHouseText: (text) => {
     stopSpeaking();
     readerText = text;
     $('#house-text').textContent = text;
+    updateReadButtons();
   },
 });
 

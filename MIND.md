@@ -170,7 +170,7 @@ Keep 3D models soft, rounded, muted and simple, like the existing ones. No glowi
 2. Use the logged-in ElevenLabs browser tab (`https://elevenlabs.io/app/speech-synthesis/text-to-speech`) via the browser subagent to generate `.mp3` files for any missing lines in `/tmp/audio_todo/`, and move/copy each downloaded `.mp3` to `/tmp/audio_todo/<id>.mp3`.
 3. `node scripts/audio_register.mjs` copies `/tmp/audio_todo/<id>.mp3` to `audio/<id>.mp3` (or converts `.wav` with `ffmpeg` if provided) and updates the manifest. Rerun step 1 and confirm `missing` is `0`.
 
-Anything not recorded falls back to the device voice, so a failure here isn't fatal, but always try.
+Do not use browser `speechSynthesis` or fallback device voices; only ElevenLabs recordings registered in `audio/manifest.json` are played.
 
 ## Redeploying
 

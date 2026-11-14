@@ -508,6 +508,7 @@ export function initGame(api) {
   function setPlaceNarrative(text) {
     placeText.textContent = text;
     placeReadText = text;
+    api.onReadTextChanged?.();
   }
 
   function renderGardenGame(clock) {
@@ -1147,6 +1148,7 @@ export function initGame(api) {
 
     placeDlg.classList.remove('no-pic');
     if (!placeDlg.open) placeDlg.showModal();
+    api.onReadTextChanged?.();
   }
 
   function closePlace() {
@@ -1154,6 +1156,7 @@ export function initGame(api) {
     api.stopSpeaking();
     activeMode = null;
     if (placeDlg.open) placeDlg.close();
+    api.onReadTextChanged?.();
   }
 
   placeClose.addEventListener('click', closePlace);
@@ -1162,6 +1165,7 @@ export function initGame(api) {
     clearPlaceTimers();
     api.stopSpeaking();
     activeMode = null;
+    api.onReadTextChanged?.();
   });
   guideBtn?.addEventListener('click', openGuide);
 
