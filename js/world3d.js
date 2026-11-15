@@ -47,7 +47,7 @@ export async function mount3D(api) {
   canvas.className = 'canvas3d';
   canvas.setAttribute('role', 'img');
   canvas.setAttribute('tabindex', '0');
-  canvas.setAttribute('aria-label', "Bean's meadow in 3D");
+  canvas.setAttribute('aria-label', "Pinto Bean's meadow in 3D");
   let renderer;
   try {
     const probe = document.createElement('canvas');
@@ -674,7 +674,7 @@ export async function mount3D(api) {
     if (zzz.visible !== dozing) { zzz.visible = dozing; dirty = true; }
     if (s.caption !== lastCaption) {
       lastCaption = s.caption;
-      canvas.setAttribute('aria-label', `Bean's meadow in 3D. ${s.caption}`);
+      canvas.setAttribute('aria-label', `Pinto Bean's meadow in 3D. ${s.caption}`);
       dirty = true;
     }
     updateBean(clock);
@@ -785,7 +785,7 @@ export async function mount3D(api) {
   function findBean() {
     if (!state) return;
     if (beanInside) {
-      showMsg(state.sleeping || state.activity?.id === 'nap_in_bed' ? 'Bean is inside his house, resting.' : 'Bean is inside his house.', 6000);
+      showMsg(state.sleeping || state.activity?.id === 'nap_in_bed' ? 'Pinto Bean is inside his house, resting.' : 'Pinto Bean is inside his house.', 6000);
       requestRender();
       return;
     }

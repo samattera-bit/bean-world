@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bean's World</title>
+  <title>Pinto Bean's World</title>
   <meta name="description" content="A quiet storybook meadow where a little bean lives its own gentle life." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&family=Nunito:wght@500..800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M52 8C79 8 90 30 89 54C88 81 72 96 50 96C27 96 12 82 12 58C12 42 21 37 23 27C26 15 36 8 52 8Z' fill='%23D99A72'/%3E%3C/svg%3E" />
 </head>
 <body data-time="day">
-  <a class="skip-link" href="#main">Skip to Bean's meadow</a>
+  <a class="skip-link" href="#main">Skip to Pinto Bean's meadow</a>
   <header class="top">
-    <h1 class="brand">Bean's World</h1>
+    <h1 class="brand">Pinto Bean's World</h1>
     <nav class="tabs" aria-label="Pages">
       <button class="tab" data-view="world" aria-current="page">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18c3-5 6-7 9-7s6 2 9 7"/><circle cx="16.5" cy="6.5" r="2.5"/></svg>
-        <span class="long">Bean's World</span><span class="short">World</span>
+        <span class="long">Pinto Bean's World</span><span class="short">World</span>
       </button>
       <button class="tab" data-view="3d">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20 8v8l-8 4.5L4 16V8z"/><path d="M4 8l8 4.5L20 8M12 12.5v8"/></svg>
@@ -30,7 +30,7 @@
       </button>
       <button class="tab" data-view="things">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
-        <span class="long">Bean's Things</span><span class="short">Things</span>
+        <span class="long">Pinto Bean's Things</span><span class="short">Things</span>
       </button>
     </nav>
   </header>
@@ -38,21 +38,21 @@
   <main id="main">
     <!-- VIEW 1: the meadow -->
     <section class="view view-world is-active" data-view="world" aria-labelledby="world-title">
-      <h2 id="world-title" class="sr-only">Bean's meadow</h2>
+      <h2 id="world-title" class="sr-only">Pinto Bean's meadow</h2>
       <div class="world-layout">
-        <div class="scene" id="scene" role="img" aria-label="Bean's meadow">
+        <div class="scene" id="scene" role="img" aria-label="Pinto Bean's meadow">
           <img class="bg bg-day" src="assets/meadow-day.webp" alt="" width="1536" height="864" decoding="async" />
           <img class="bg bg-dusk" src="assets/meadow-dusk.webp" alt="" width="1536" height="864" decoding="async" />
           <div class="bean" id="bean"></div>
           <div class="house-glow" aria-hidden="true"></div>
           <div class="zzz" id="zzz" aria-hidden="true">z<span>z</span></div>
-          <button class="house-spot" id="house-spot" aria-label="Peek inside Bean's house"><span class="house-tip" aria-hidden="true">Peek inside</span></button>
+          <button class="house-spot" id="house-spot" aria-label="Peek inside Pinto Bean's house"><span class="house-tip" aria-hidden="true">Peek inside</span></button>
         </div>
 
         <!-- The 3D meadow (same panel on the right). Its code loads only when the 3D tab is opened. -->
         <div class="scene3d" id="scene3d" hidden>
           <div class="stage3d" id="stage3d" data-state="idle">
-            <div class="stage3d-note stage3d-loading" aria-hidden="true">Bean's little meadow is unfolding…</div>
+            <div class="stage3d-note stage3d-loading" aria-hidden="true">Pinto Bean's little meadow is unfolding…</div>
             <div class="stage3d-note stage3d-failed" role="status">
               <p>This device can't show the 3D meadow right now.</p>
               <button class="big-btn" id="back-to-storybook" type="button">Back to the storybook</button>
@@ -66,11 +66,11 @@
             </button>
             <button class="big-btn" id="find-btn" type="button">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m15.5 15.5 4 4"/></svg>
-              <span>Where's Bean?</span>
+              <span>Where's Pinto Bean?</span>
             </button>
             <button class="big-btn" id="follow-btn" type="button" aria-pressed="false">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
-              <span>Follow Bean</span>
+              <span>Follow Pinto Bean</span>
             </button>
             <button class="big-btn" id="reset-btn" type="button">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></svg>
@@ -87,7 +87,7 @@
 
         <aside class="panel">
           <div class="bubble" id="caption-wrap">
-            <p class="caption" id="caption">Bean is waking up…</p>
+            <p class="caption" id="caption">Pinto Bean is waking up…</p>
             <span class="bubble-dot d1" aria-hidden="true"></span>
             <span class="bubble-dot d2" aria-hidden="true"></span>
           </div>
@@ -123,7 +123,7 @@
           </button>
 
           <section class="needs" aria-labelledby="needs-title">
-            <h3 id="needs-title" class="needs-title">How Bean is feeling inside</h3>
+            <h3 id="needs-title" class="needs-title">How Pinto Bean is feeling inside</h3>
             <ul class="needs-list" id="needs" role="list"></ul>
           </section>
         </aside>
@@ -132,7 +132,7 @@
 
     <!-- VIEW 2: the diary -->
     <section class="view view-diary" data-view="diary" aria-labelledby="diary-title" hidden>
-      <h2 id="diary-title" class="sr-only">Bean's diary</h2>
+      <h2 id="diary-title" class="sr-only">Pinto Bean's diary</h2>
       <article class="book" id="diary-page">
         <figure class="page-picture">
           <img id="diary-img" src="" alt="" width="1200" height="800" decoding="async" />
@@ -162,7 +162,7 @@
     <!-- VIEW 3: Bean's things -->
     <section class="view view-things" data-view="things" aria-labelledby="things-title" hidden>
       <div class="things-head">
-        <h2 id="things-title" class="things-title">Bean's Things</h2>
+        <h2 id="things-title" class="things-title">Pinto Bean's Things</h2>
         <button class="big-btn read-btn" data-reads="things">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
           <span class="read-label">Read to me</span>
@@ -175,7 +175,7 @@
   <dialog class="house-dialog" id="house" aria-labelledby="house-title">
     <figure class="house-picture"><img id="house-img" src="" alt="" width="1031" height="1100" decoding="async" /></figure>
     <div class="house-words">
-      <h2 class="page-title" id="house-title">Inside Bean's house</h2>
+      <h2 class="page-title" id="house-title">Inside Pinto Bean's house</h2>
       <p class="page-text" id="house-text"></p>
       <div class="house-items" id="house-items"></div>
       <div class="house-controls">
@@ -211,6 +211,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="js/app.js?v=10"></script>
+  <script type="module" src="js/app.js?v=11"></script>
 </body>
 </html>

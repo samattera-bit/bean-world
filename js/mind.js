@@ -170,7 +170,7 @@ export function positionOnSegment(seg, minutes) {
 
 export function stateAt(world, clock) {
   const plan = cachedPlan(world, clock.date);
-  const name = world.bean.name || world.bean.placeholder_name || 'Bean';
+  const name = world.bean.name || world.bean.placeholder_name || 'Pinto Bean';
   const home = plan.places.home || world.places[0];
   const m = clock.minutes;
 

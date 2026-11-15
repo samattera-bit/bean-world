@@ -1,4 +1,4 @@
-// Bean's World — interactive 00s Flash-style point-and-click meadow, pet care, and calm mini-games.
+// Pinto Bean's World — interactive 00s Flash-style point-and-click meadow, pet care, and calm mini-games.
 // Keeps everything low-stimulation, kid-safe, and responsive to the Still toggle.
 import { NEEDS, WALK_SPEED_PER_MIN, hashString, positionOnSegment } from './mind.js';
 
@@ -11,23 +11,23 @@ const STORAGE_KEY_PREFIX = 'bean-world-care:';
 const PLACE_INFO = {
   tree: {
     name: 'The reading nook',
-    desc: 'A soft patch of moss sits beneath the shady branches of the big tree. Bean keeps his favorite picture books here.',
+    desc: 'A soft patch of moss sits beneath the shady branches of the big tree. Pinto Bean keeps his favorite picture books here.',
     happenings: [
-      { title: 'A bookmark of clover', text: 'Bean pressed a soft clover leaf inside his picture book to save his page.' },
-      { title: 'A mossy reading cushion', text: 'Two dappled sunbeams rest right on the mossy root where Bean likes to read.' },
+      { title: 'A bookmark of clover', text: 'Pinto Bean pressed a soft clover leaf inside his picture book to save his page.' },
+      { title: 'A mossy reading cushion', text: 'Two dappled sunbeams rest right on the mossy root where Pinto Bean likes to read.' },
     ],
   },
   swing: {
     name: 'The tree swing',
     desc: 'A smooth wooden plank hangs from two soft ropes on the big tree branch, ready for slow swinging.',
     happenings: [
-      { title: 'A gentle breeze on the ropes', text: 'The wooden swing sways just an inch in the soft meadow wind, waiting for Bean.' },
-      { title: 'A smooth oak acorn', text: 'Bean left one shiny acorn on the swing seat like a tiny passenger.' },
+      { title: 'A gentle breeze on the ropes', text: 'The wooden swing sways just an inch in the soft meadow wind, waiting for Pinto Bean.' },
+      { title: 'A smooth oak acorn', text: 'Pinto Bean left one shiny acorn on the swing seat like a tiny passenger.' },
     ],
   },
   hill: {
     name: 'The stargazing hill',
-    desc: 'From the quiet grassy hilltop, Bean can watch clouds drift by day and count early stars at dusk.',
+    desc: 'From the quiet grassy hilltop, Pinto Bean can watch clouds drift by day and count early stars at dusk.',
     happenings: [
       { title: 'Cloud shapes above the hill', text: 'A long puffy cloud looks just like a sleepy snail gliding across the sky.' },
       { title: 'Early evening stillness', text: 'A small cricket tuned up in the tall grass at the edge of the hilltop.' },
@@ -38,7 +38,7 @@ const PLACE_INFO = {
     desc: 'Cool water reflects the sky between three broad lily pads. Dropping a single leaf makes calm rings.',
     happenings: [
       { title: 'A resting dragonfly', text: 'A pale dusty-blue dragonfly is resting quietly on the largest lily pad.' },
-      { title: 'Smooth skipping pebbles', text: 'Bean stacked three flat pebbles beside the bank where the water is still.' },
+      { title: 'Smooth skipping pebbles', text: 'Pinto Bean stacked three flat pebbles beside the bank where the water is still.' },
     ],
   },
   bakery: {
@@ -59,7 +59,7 @@ const PLACE_INFO = {
   },
   easel: {
     name: 'The art easel',
-    desc: 'Bean stands his wooden easel on the grass here, with his box of soft muted watercolors close at hand.',
+    desc: 'Pinto Bean stands his wooden easel on the grass here, with his box of soft muted watercolors close at hand.',
     happenings: [
       { title: 'Fresh paper clipped up', text: 'A clean sheet of thick cream watercolor paper is clipped onto the easel.' },
       { title: 'Painted pebbles drying', text: 'Three smooth stones with tiny sage dots are drying on the paint tray.' },
@@ -70,7 +70,7 @@ const PLACE_INFO = {
     desc: 'A little wooden xylophone rests in a patch of clover, tuned to five soft notes that never sound too loud.',
     happenings: [
       { title: 'A snail in the front row', text: 'A small striped snail settled right next to the wooden xylophone to listen.' },
-      { title: 'Soft notes in the clover', text: 'Bean left his two little felt mallets neatly crossed beside the keys.' },
+      { title: 'Soft notes in the clover', text: 'Pinto Bean left his two little felt mallets neatly crossed beside the keys.' },
     ],
   },
 };
@@ -84,23 +84,23 @@ const HOUSE_ITEMS = [
   {
     id: 'window',
     label: 'Round window',
-    text: 'Through the round window, Bean can watch soft light move slowly across his quiet meadow.',
+    text: 'Through the round window, Pinto Bean can watch soft light move slowly across his quiet meadow.',
   },
   {
     id: 'shelf',
     label: 'Bookshelf & pebble',
-    text: 'On the small wooden shelf sit Bean\'s picture books and one smooth pebble painted with tiny dots.',
+    text: 'On the small wooden shelf sit Pinto Bean\'s picture books and one smooth pebble painted with tiny dots.',
   },
   {
     id: 'tea',
     label: 'Chamomile tea',
     text: 'A small cup of warm chamomile tea smells gently of apples and honey.',
-    care: { label: 'Fluff pillow & warm tea', needs: { rest: 0.12, tummy: 0.06 }, reply: 'You fluffed the patchwork pillow and warmed the chamomile tea. Bean feels extra cozy.' },
+    care: { label: 'Fluff pillow & warm tea', needs: { rest: 0.12, tummy: 0.06 }, reply: 'You fluffed the patchwork pillow and warmed the chamomile tea. Pinto Bean feels extra cozy.' },
   },
   {
     id: 'paints',
     label: 'Paints on windowsill',
-    text: 'Bean keeps his little box of soft watercolor paints neatly on the sunny windowsill.',
+    text: 'Pinto Bean keeps his little box of soft watercolor paints neatly on the sunny windowsill.',
   },
   {
     id: 'note',
@@ -353,7 +353,7 @@ export function initGame(api) {
     if (!inside) {
       beanEl.setAttribute('role', 'button');
       beanEl.setAttribute('tabindex', '0');
-      beanEl.setAttribute('aria-label', `Say hello to ${s?.name || 'Bean'}`);
+      beanEl.setAttribute('aria-label', `Say hello to ${s?.name || 'Pinto Bean'}`);
     } else {
       beanEl.removeAttribute('role');
       beanEl.setAttribute('tabindex', '-1');
@@ -393,7 +393,7 @@ export function initGame(api) {
   function petBean() {
     const s = api.getState();
     const clock = api.nowClock();
-    const name = s?.name || 'Bean';
+    const name = s?.name || 'Pinto Bean';
     if (s?.sleeping) {
       showReaction(`Shh. ${name} is fast asleep in his bed right now.`, 5000);
       return;
@@ -414,7 +414,7 @@ export function initGame(api) {
   function giveSnack() {
     const s = api.getState();
     const clock = api.nowClock();
-    const name = s?.name || 'Bean';
+    const name = s?.name || 'Pinto Bean';
     if (s?.sleeping) {
       showReaction(`Shh. ${name} is sleeping now, so we will save a warm snack for morning.`, 5000);
       return;
@@ -583,18 +583,18 @@ export function initGame(api) {
             <button type="button" class="mini-btn" id="easel-back">Back to my canvas</button>
           </div>
         </div>
-        <canvas class="easel-canvas" id="easel-canvas" width="480" height="300" aria-label="Bean's soft watercolor paper"></canvas>
+        <canvas class="easel-canvas" id="easel-canvas" width="480" height="300" aria-label="Pinto Bean's soft watercolor paper"></canvas>
         <div class="easel-stamps">
           <button type="button" class="mini-btn" data-stamp="cloud">Stamp cloud</button>
           <button type="button" class="mini-btn" data-stamp="snail">Stamp snail</button>
           <button type="button" class="mini-btn" data-stamp="star">Stamp star</button>
           <button type="button" class="mini-btn" data-stamp="sprout">Stamp sprout</button>
           <button type="button" class="mini-btn" id="easel-clear">Clear paper</button>
-          <button type="button" class="mini-btn is-primary" id="easel-show">Show Bean</button>
+          <button type="button" class="mini-btn is-primary" id="easel-show">Show Pinto Bean</button>
         </div>
         ${paintings.length ? `
           <div class="easel-gallery">
-            <p class="mg-hint">Bean's paintings (tap one to look closely):</p>
+            <p class="mg-hint">Pinto Bean's paintings (tap one to look closely):</p>
             <div class="easel-paintings" role="list">
               ${paintings.map((p) => `
                 <button type="button" class="easel-thumb" data-bean-painting="${p.i}">
@@ -753,7 +753,7 @@ export function initGame(api) {
       showCanvas();
       boostNeeds({ wonder: 0.08, play: 0.08 }, clock.date);
       api.onStateChanged();
-      setPlaceNarrative('Bean tilts his head and smiles at your painting. He loves the soft colors you chose.');
+      setPlaceNarrative('Pinto Bean tilts his head and smiles at your painting. He loves the soft colors you chose.');
     });
 
     $('#easel-back', placeStage)?.addEventListener('click', () => {
@@ -909,7 +909,7 @@ export function initGame(api) {
     ];
     placeStage.innerHTML = `
       <div class="mg mg-bakery">
-        <p class="mg-hint">Pick a warm treat from the windowsill to share with Bean.</p>
+        <p class="mg-hint">Pick a warm treat from the windowsill to share with Pinto Bean.</p>
         <div class="bakery-shelf">
           ${treats.map((t) => `
             <button type="button" class="treat-btn ${miniState.treatServed === t.id ? 'is-served' : ''}" data-treat="${t.id}">
@@ -929,7 +929,7 @@ export function initGame(api) {
         boostNeeds({ tummy: 0.14, rest: 0.04 }, clock.date);
         api.onStateChanged();
         renderBakeryGame(clock);
-        const name = api.getState()?.name || 'Bean';
+        const name = api.getState()?.name || 'Pinto Bean';
         setPlaceNarrative(`${name} enjoys the ${t.label.toLowerCase()}. His tummy feels warm and satisfied.`);
       });
     });
@@ -1024,7 +1024,7 @@ export function initGame(api) {
     $('#tree-rest', placeStage).addEventListener('click', () => {
       boostNeeds({ rest: 0.12 }, clock.date);
       api.onStateChanged();
-      setPlaceNarrative('A cool breeze drifts through the leaves. Bean rests peacefully in the shade.');
+      setPlaceNarrative('A cool breeze drifts through the leaves. Pinto Bean rests peacefully in the shade.');
     });
   }
 
@@ -1122,7 +1122,7 @@ export function initGame(api) {
     const acts = (world.activities || []).filter(
       (a) => a.place === placeId && (!a.only_dates || a.only_dates.includes(clock.date)) && (!a.from_date || clock.date >= a.from_date)
     );
-    const name = s?.name || 'Bean';
+    const name = s?.name || 'Pinto Bean';
     if (s && !s.sleeping && acts.length) {
       placeActions.innerHTML = acts
         .map((a) => `<button type="button" class="big-btn invite-btn" data-act="${esc(a.id)}">Invite ${esc(name)}: ${esc(a.label)}</button>`)
@@ -1172,7 +1172,7 @@ export function initGame(api) {
         <ul class="guide-list" role="list">
           ${allPlaces.map((p) => {
             if (p.id === 'home') {
-              return `<li><button type="button" class="guide-item" data-go="home"><strong>Bean's little home</strong><span>Peek inside the house and touch Bean's cozy things</span></button></li>`;
+              return `<li><button type="button" class="guide-item" data-go="home"><strong>Pinto Bean's little home</strong><span>Peek inside the house and touch Pinto Bean's cozy things</span></button></li>`;
             }
             const hap = todayHappenings[p.id];
             const isFound = hap && c.found.includes(hap.id);
@@ -1236,7 +1236,7 @@ export function initGame(api) {
     const s = api.getState();
     const clock = api.nowClock();
     wrap.innerHTML = `
-      <p class="house-items-label">Tap anything in Bean's room to look closer:</p>
+      <p class="house-items-label">Tap anything in Pinto Bean's room to look closer:</p>
       <div class="house-items-row">
         ${HOUSE_ITEMS.map((item) => `<button type="button" class="mini-btn" data-house-item="${esc(item.id)}">${esc(item.label)}</button>`).join('')}
         ${!s?.sleeping ? `<button type="button" class="mini-btn is-primary" id="house-care-btn">${esc(HOUSE_ITEMS[3].care.label)}</button>` : ''}
