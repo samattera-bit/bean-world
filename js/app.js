@@ -3,7 +3,7 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js?v=9';
+import { initGame } from './game.js?v=10';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -380,11 +380,12 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=9', { cache: 'no-store' })
+fetch('audio/manifest.json?v=10', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
-let player = null;
+const activePlayers = new Set();
+let speakSeq = 0;
 function setReadButtons(speaking) {
   app.speaking = speaking;
   $$('.read-btn').forEach((b) => {
@@ -394,26 +395,46 @@ function setReadButtons(speaking) {
 }
 function updateReadButtons() {
   const text = currentReadText();
-  const hasAudio = !voiceMapLoaded || Boolean(text && voiceMap[text]);
+  const hasAudio = app.speaking || !voiceMapLoaded || Boolean(text && voiceMap[text]);
   $$('.read-btn').forEach((b) => {
     b.disabled = !hasAudio;
     b.hidden = !hasAudio;
   });
 }
 function stopSpeaking() {
-  if (player) { player.pause(); player.src = ''; player = null; }
+  speakSeq++;
+  try { window.speechSynthesis?.cancel(); } catch {}
+  for (const a of new Set([...activePlayers, ...document.querySelectorAll('audio')])) {
+    a.onended = null;
+    a.onerror = null;
+    try { a.pause(); a.currentTime = 0; } catch {}
+    a.removeAttribute('src');
+    try { a.load(); } catch {}
+  }
+  activePlayers.clear();
   setReadButtons(false);
 }
 function speak(text) {
   stopSpeaking();
   const file = voiceMap[text];
-  if (!file) { setReadButtons(false); return; }
-  player = new Audio(file);
-  player.volume = 0.9;
-  player.onended = () => { player = null; setReadButtons(false); };
-  player.onerror = () => { player = null; setReadButtons(false); };
+  if (!file) return;
+  const seq = ++speakSeq;
+  const a = new Audio(file);
+  a.volume = 0.9;
+  activePlayers.add(a);
+  a.onended = () => {
+    activePlayers.delete(a);
+    if (seq === speakSeq) setReadButtons(false);
+  };
+  a.onerror = () => {
+    activePlayers.delete(a);
+    if (seq === speakSeq) setReadButtons(false);
+  };
   setReadButtons(true);
-  player.play().catch(() => { player = null; setReadButtons(false); });
+  a.play().catch(() => {
+    activePlayers.delete(a);
+    if (seq === speakSeq) setReadButtons(false);
+  });
 }
 function currentReadText() {
   if (game?.isPlaceOpen()) return game.getPlaceReadText();
@@ -427,6 +448,9 @@ function currentReadText() {
 }
 $$('.read-btn').forEach((b) => {
   b.addEventListener('click', () => { if (app.speaking) stopSpeaking(); else speak(currentReadText()); });
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && app.speaking) stopSpeaking();
 });
 
 // ---------- the reader: inside the house, paintings, letters ----------
@@ -477,7 +501,6 @@ const game = initGame({
   getState: () => app.state,
   isStill: () => app.still,
   nowClock,
-  speak,
   stopSpeaking,
   openHouse,
   houseView,

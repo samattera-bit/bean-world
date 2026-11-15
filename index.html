@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&family=Nunito:wght@500..800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="stylesheet" href="styles.css?v=10" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M52 8C79 8 90 30 89 54C88 81 72 96 50 96C27 96 12 82 12 58C12 42 21 37 23 27C26 15 36 8 52 8Z' fill='%23D99A72'/%3E%3C/svg%3E" />
 </head>
 <body data-time="day">
@@ -57,7 +57,7 @@
               <p>This device can't show the 3D meadow right now.</p>
               <button class="big-btn" id="back-to-storybook" type="button">Back to the storybook</button>
             </div>
-            <p class="explore-msg" id="explore-msg" aria-live="polite"></p>
+            <p class="explore-msg" id="explore-msg"></p>
           </div>
           <div class="tools3d" role="group" aria-label="3D meadow controls">
             <button class="big-btn" id="explore-btn" type="button" aria-pressed="false">
@@ -87,7 +87,7 @@
 
         <aside class="panel">
           <div class="bubble" id="caption-wrap">
-            <p class="caption" id="caption" aria-live="polite">Bean is waking up…</p>
+            <p class="caption" id="caption">Bean is waking up…</p>
             <span class="bubble-dot d1" aria-hidden="true"></span>
             <span class="bubble-dot d2" aria-hidden="true"></span>
           </div>
@@ -133,7 +133,7 @@
     <!-- VIEW 2: the diary -->
     <section class="view view-diary" data-view="diary" aria-labelledby="diary-title" hidden>
       <h2 id="diary-title" class="sr-only">Bean's diary</h2>
-      <article class="book" id="diary-page" aria-live="polite">
+      <article class="book" id="diary-page">
         <figure class="page-picture">
           <img id="diary-img" src="" alt="" width="1200" height="800" decoding="async" />
         </figure>
@@ -211,6 +211,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="js/app.js?v=9"></script>
+  <script type="module" src="js/app.js?v=10"></script>
 </body>
 </html>
