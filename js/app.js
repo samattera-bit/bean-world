@@ -3,7 +3,7 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js?v=8';
+import { initGame } from './game.js?v=9';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -325,6 +325,12 @@ function renderThings() {
 
   $('#things').innerHTML = `
     ${intention ? `<article class="card full intention"><h3>${icon('sun')} Today ${esc(name)} hopes…</h3><p>${esc(intention)}</p></article>` : ''}
+    <article class="card full">
+      <h3>${icon('frame')} ${esc(name)}'s paintings</h3>
+      ${paintings.length
+        ? `<ul class="paintings" role="list">${paintings.map((p) => `<li><button class="painting" data-painting="${p.i}"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async" /><span class="painting-title">${esc(p.title)}</span><span class="memory-date">${esc(friendlyDate(p.date))}</span></button></li>`).join('')}</ul>`
+        : '<p class="soft">No paintings yet.</p>'}
+    </article>
     <article class="card wide">
       <h3>${icon('bean')} About ${esc(name)}</h3>
       <p>${nameLine}</p>
@@ -345,12 +351,6 @@ function renderThings() {
     <article class="card">
       <h3>${icon('memory')} Memories</h3>
       ${memories.length ? `<ul role="list">${memories.map((m) => `<li><span class="memory-date">${esc(friendlyDate(m.date))}</span>${esc(m.text)}</li>`).join('')}</ul>` : '<p class="soft">No memories yet.</p>'}
-    </article>
-    <article class="card full">
-      <h3>${icon('frame')} ${esc(name)}'s paintings</h3>
-      ${paintings.length
-        ? `<ul class="paintings" role="list">${paintings.map((p) => `<li><button class="painting" data-painting="${p.i}"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async" /><span class="painting-title">${esc(p.title)}</span><span class="memory-date">${esc(friendlyDate(p.date))}</span></button></li>`).join('')}</ul>`
-        : '<p class="soft">No paintings yet.</p>'}
     </article>
     ${letters.length ? `<article class="card full">
       <h3>${icon('letter')} Letters from ${esc(name)}</h3>
@@ -380,7 +380,7 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=8', { cache: 'no-store' })
+fetch('audio/manifest.json?v=9', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });

@@ -562,6 +562,7 @@ export function initGame(api) {
   }
 
   function renderEaselGame(clock) {
+    const paintings = (api.getWorld()?.paintings || []).map((p, i) => ({ ...p, i })).reverse();
     placeStage.innerHTML = `
       <div class="mg mg-easel">
         <div class="easel-toolbar">
@@ -575,6 +576,13 @@ export function initGame(api) {
             <button type="button" class="mini-btn" data-size="18" aria-pressed="${miniState.paintSize === 18}">Big brush</button>
           </div>
         </div>
+        <div class="easel-preview" id="easel-preview" hidden>
+          <img id="easel-preview-img" src="" alt="" />
+          <div class="easel-preview-bar">
+            <strong id="easel-preview-title"></strong>
+            <button type="button" class="mini-btn" id="easel-back">Back to my canvas</button>
+          </div>
+        </div>
         <canvas class="easel-canvas" id="easel-canvas" width="480" height="300" aria-label="Bean's soft watercolor paper"></canvas>
         <div class="easel-stamps">
           <button type="button" class="mini-btn" data-stamp="cloud">Stamp cloud</button>
@@ -584,10 +592,31 @@ export function initGame(api) {
           <button type="button" class="mini-btn" id="easel-clear">Clear paper</button>
           <button type="button" class="mini-btn is-primary" id="easel-show">Show Bean</button>
         </div>
+        ${paintings.length ? `
+          <div class="easel-gallery">
+            <p class="mg-hint">Bean's paintings (tap one to look closely):</p>
+            <div class="easel-paintings" role="list">
+              ${paintings.map((p) => `
+                <button type="button" class="easel-thumb" data-bean-painting="${p.i}">
+                  <img src="${esc(p.image)}" alt="" loading="lazy" decoding="async" />
+                  <span>${esc(p.title)}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
       </div>`;
 
     const canvas = $('#easel-canvas', placeStage);
+    const preview = $('#easel-preview', placeStage);
+    const previewImg = $('#easel-preview-img', placeStage);
+    const previewTitle = $('#easel-preview-title', placeStage);
     const ctx = canvas.getContext('2d');
+    const showCanvas = () => {
+      preview.hidden = true;
+      canvas.hidden = false;
+      placeStage.querySelectorAll('[data-bean-painting]').forEach((b) => b.classList.remove('is-picked'));
+    };
     const resetPaper = () => {
       ctx.fillStyle = '#f8f2e4';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -650,6 +679,7 @@ export function initGame(api) {
 
     placeStage.querySelectorAll('[data-color]').forEach((btn) => {
       btn.addEventListener('click', () => {
+        showCanvas();
         miniState.paintColor = btn.dataset.color;
         placeStage.querySelectorAll('[data-color]').forEach((b) => b.classList.toggle('is-picked', b === btn));
       });
@@ -657,6 +687,7 @@ export function initGame(api) {
 
     placeStage.querySelectorAll('[data-size]').forEach((btn) => {
       btn.addEventListener('click', () => {
+        showCanvas();
         miniState.paintSize = Number(btn.dataset.size);
         placeStage.querySelectorAll('[data-size]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
       });
@@ -664,6 +695,7 @@ export function initGame(api) {
 
     placeStage.querySelectorAll('[data-stamp]').forEach((btn) => {
       btn.addEventListener('click', () => {
+        showCanvas();
         const kind = btn.dataset.stamp;
         const cx = 70 + Math.random() * (canvas.width - 140);
         const cy = 60 + Math.random() * (canvas.height - 120);
@@ -711,15 +743,37 @@ export function initGame(api) {
     });
 
     $('#easel-clear', placeStage).addEventListener('click', () => {
+      showCanvas();
       miniState.easelImage = null;
       resetPaper();
       setPlaceNarrative('A fresh sheet of cream watercolor paper is ready on the easel.');
     });
 
     $('#easel-show', placeStage).addEventListener('click', () => {
+      showCanvas();
       boostNeeds({ wonder: 0.08, play: 0.08 }, clock.date);
       api.onStateChanged();
       setPlaceNarrative('Bean tilts his head and smiles at your painting. He loves the soft colors you chose.');
+    });
+
+    $('#easel-back', placeStage)?.addEventListener('click', () => {
+      showCanvas();
+      setPlaceNarrative(PLACE_INFO.easel.desc);
+    });
+
+    placeStage.querySelectorAll('[data-bean-painting]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.beanPainting);
+        const p = (api.getWorld()?.paintings || [])[idx];
+        if (!p) return;
+        previewImg.src = p.image;
+        previewImg.alt = p.image_alt || p.title;
+        previewTitle.textContent = p.title;
+        canvas.hidden = true;
+        preview.hidden = false;
+        placeStage.querySelectorAll('[data-bean-painting]').forEach((b) => b.classList.toggle('is-picked', b === btn));
+        setPlaceNarrative(p.note ? `${p.title}. ${p.note}` : p.title);
+      });
     });
   }
 
