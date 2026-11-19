@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-11-14",
+  "last_updated": "2026-11-19",
   "bean": {
     "name": "Pinto Bean",
     "placeholder_name": "Pinto Bean",
@@ -18,9 +18,10 @@
     ],
     "dislikes": [],
     "hobbies": [
-      "painting with soft colors"
+      "painting with soft colors",
+      "baking tiny warm bread"
     ],
-    "mood_word": "peaceful",
+    "mood_word": "cozy",
     "memories": [
       {
         "date": "2026-11-10",
@@ -41,6 +42,10 @@
       {
         "date": "2026-11-13",
         "text": "Swung on my new tree swing for the very first time, nice and slow."
+      },
+      {
+        "date": "2026-11-18",
+        "text": "Baked a tiny warm loaf and watched the first stars come out from the hilltop."
       }
     ],
     "name_story": "He listened to the soft sounds of the meadow for a whole day, and chose Pinto Bean for himself. It felt just right."
@@ -258,7 +263,7 @@
         "play": 0.25,
         "wonder": 0.05
       },
-      "preference_weight": 1.2
+      "preference_weight": 1.1
     },
     {
       "id": "little_snack",
@@ -511,15 +516,22 @@
       "text": "This morning I dropped a leaf in the pond and counted every ripple. Later I painted tiny blue and sage dots on smooth round pebbles at my easel. After lunch I hummed a quiet tune in the clover and took a cozy nap in my bed. Tonight the first stars came out over the hill, shining like little pebbles in the sky.",
       "image": "assets/diary/2026-11-14.webp",
       "image_alt": "Pinto Bean sits happily by his wooden easel in the meadow, painting tiny soft dots on smooth river pebbles beside his box of paints."
+    },
+    {
+      "date": "2026-11-18",
+      "title": "Warm bread and the first stars",
+      "text": "First thing this morning I baked a tiny loaf of bread at the bakery window. Later I swung nice and slow under the big tree and picked sweet peas in the garden. In the afternoon I painted the sky at my easel and read a picture book in the shade. At dusk I carried a warm roll up the hill and made a quiet wish on the first two stars.",
+      "image": "assets/diary/2026-11-18.webp",
+      "image_alt": "Pinto Bean sits on the grassy meadow hilltop at dusk with a tiny warm bread roll wrapped in a cream cloth beside him, looking up at two glowing stars."
     }
   ],
   "today": {
-    "date": "2026-11-14",
-    "intention": "Pinto Bean wants to hum a quiet tune and count the ripples on the pond.",
+    "date": "2026-11-19",
+    "intention": "Pinto Bean wants to bake tiny warm bread and read a picture book under the big tree.",
     "favorite_activity_ids": [
-      "count_ripples",
-      "hum_tunes",
-      "talk_to_snails"
+      "bake_tiny_bread",
+      "read_books",
+      "swing_gently"
     ]
   },
   "home_inside": {
@@ -582,6 +594,13 @@
       "image": "assets/paintings/2026-11-14.webp",
       "image_alt": "A simple, childlike watercolor painting of two little round garden snails resting under soft green sweet pea leaves on cream paper.",
       "note": "The snails listened while I hummed my quiet tune today. I painted their shells with my softest brown and sage."
+    },
+    {
+      "date": "2026-11-18",
+      "title": "The first stars over the hill",
+      "image": "assets/paintings/2026-11-18.webp",
+      "image_alt": "A simple, childlike watercolor painting of soft green and dusty-blue twilight hills under a lavender sky with pale yellow stars and one puffy cloud.",
+      "note": "I painted the quiet hill just as the sky turned dusty blue and lavender. My yellow brush made four little stars above the cloud."
     }
   ],
   "letters": [
@@ -615,32 +634,32 @@
   ],
   "happenings": [
     {
-      "id": "dewy-clover",
-      "date": "2026-11-14",
-      "place": "music",
-      "title": "Dewdrops on the clover",
-      "text": "Tiny round dewdrops are shining on the clover beside Pinto Bean's wooden xylophone this morning."
-    },
-    {
-      "id": "ripple-rings",
-      "date": "2026-11-14",
-      "place": "pond",
-      "title": "Quiet pond ripples",
-      "text": "The three green lily pads drifted close together, making soft little rings across the water."
-    },
-    {
-      "id": "snail-trail",
-      "date": "2026-11-14",
-      "place": "garden",
-      "title": "A sleepy garden snail",
-      "text": "A friendly snail is curled up under a sweet pea leaf, listening to the morning breeze."
-    },
-    {
-      "id": "cinnamon-toast",
-      "date": "2026-11-14",
+      "id": "warm-bread-crumb",
+      "date": "2026-11-19",
       "place": "bakery",
-      "title": "Warm cinnamon toast",
-      "text": "A small plate of warm toast and a pot of chamomile tea are waiting on the checkered cloth."
+      "title": "A tiny warm loaf",
+      "text": "A fresh little loaf of bread is cooling on a cream linen napkin at the bakery window."
+    },
+    {
+      "id": "clover-bookmark",
+      "date": "2026-11-19",
+      "place": "tree",
+      "title": "Open picture book",
+      "text": "Pinto Bean's favorite picture book is resting on the soft moss under the big tree, marked with a dry leaf."
+    },
+    {
+      "id": "hilltop-dew",
+      "date": "2026-11-19",
+      "place": "hill",
+      "title": "Morning mist on the hill",
+      "text": "A ribbon of soft morning mist is drifting slowly past the top of the grassy hill."
+    },
+    {
+      "id": "lily-reflection",
+      "date": "2026-11-19",
+      "place": "pond",
+      "title": "Still pond mirror",
+      "text": "The pond water is so calm this morning that a fluffy white cloud is reflected right beside the lily pads."
     }
   ]
 }

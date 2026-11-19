@@ -3,7 +3,7 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js?v=11';
+import { initGame } from './game.js?v=12';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -231,7 +231,7 @@ function open3D() {
   if (loading3d) return;
   const stage = $('#stage3d');
   stage.dataset.state = 'loading';
-  loading3d = import('./world3d.js?v=11')
+  loading3d = import('./world3d.js?v=12')
     .then((m) => m.mount3D({
       root: $('#scene3d'),
       world: app.world,
@@ -380,7 +380,7 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=11', { cache: 'no-store' })
+fetch('audio/manifest.json?v=12', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
