@@ -1,6 +1,6 @@
-# Pinto Bean's Mind: guide for the nightly "sleeping brain"
+# Pinto's Mind: guide for the nightly "sleeping brain"
 
-Pinto Bean is a small, gentle bean who lives in a storybook meadow. Every morning you (the sleeping-brain agent) look back on yesterday, update `world.json`, maybe add a diary page and picture, and redeploy. The website reads `world.json` and simulates Pinto Bean's day in the browser. You never touch the code.
+Pinto is a small, gentle bean who lives in a storybook meadow. Every morning you (the sleeping-brain agent) look back on yesterday, update `world.json`, maybe add a diary page and picture, and redeploy. The website reads `world.json` and simulates Pinto's day in the browser. You never touch the code.
 
 The site is for Stephanie, who tires easily after a stroke, and for her 6-year-old. Everything must be calm, gentle, short and kind.
 
@@ -22,15 +22,15 @@ bean-world/
 | --- | --- | --- |
 | `schema_version` | Always `1` | never |
 | `last_updated` | `"YYYY-MM-DD"` of your edit | you, every morning |
-| `bean.name` | `"Pinto Bean"` | only if Stephanie asks |
-| `bean.placeholder_name` | `"Pinto Bean"`, shown while `name` is null | never |
-| `bean.pronoun` | `"he"` (Stephanie decided Pinto Bean is a he) | never |
+| `bean.name` | `"Pinto"` | only if Stephanie asks |
+| `bean.placeholder_name` | `"Pinto"`, shown while `name` is null | never |
+| `bean.pronoun` | `"he"` (Stephanie decided Pinto is a he) | never |
 | `bean.traits` | 2-4 short words, e.g. `"curious"` | rarely; add slowly |
 | `bean.loves` / `bean.dislikes` / `bean.hobbies` | short phrases, e.g. `"the sound of rain on the roof"` | add 0-1 per day |
 | `bean.mood_word` | one gentle word, e.g. `"cozy"` | you, daily |
 | `bean.memories` | `[{date, text}]`, one short sentence each, oldest first | add 0-1 per day |
 | `schedule` | `{wake: "07:00", sleep: "20:30"}`, US/Eastern | never |
-| `places` | `[{id, label, x, y}]`; x/y are 0-1 positions of Pinto Bean's feet in the painting | never (they match the art) |
+| `places` | `[{id, label, x, y}]`; x/y are 0-1 positions of Pinto's feet in the painting | never (they match the art) |
 | `activities` | see below | you may add or tune them |
 | `gifts` | `[{date, from, text, kept, where}]` | you, when a visitor leaves something |
 | `diary` | `[{date, title, text, image, image_alt}]`, oldest first | you, add one per day |
@@ -49,19 +49,19 @@ bean-world/
 ```
 
 - `place` must be one of the place ids: `home`, `tree`, `hill`, `pond`, `bakery`, `garden`, `easel`, `music`, `swing`.
-- `from_date: "YYYY-MM-DD"` makes an activity start only from that day (used for things Pinto Bean has built).
+- `from_date: "YYYY-MM-DD"` makes an activity start only from that day (used for things Pinto has built).
 - The caption reads: `"<Name> is <verb_phrase>, and feels <feeling>."` Keep `verb_phrase` lowercase, with no full stop, and short enough that the whole caption stays one short sentence (under about 14 words).
 - `needs` = how much the activity fills each need per hour (0-0.6). Rest, Tummy, Play and Wonder slowly drop through the day.
-- `preference_weight` (0.5-1.5) is how much Pinto Bean likes it. Nudge it up by about 0.1 when Pinto Bean discovers he loves something, and down a little when he finds something less fun. Don't make big jumps.
+- `preference_weight` (0.5-1.5) is how much Pinto likes it. Nudge it up by about 0.1 when Pinto discovers he loves something, and down a little when he finds something less fun. Don't make big jumps.
 - `hours` is optional. Only use it for evening-only things, like stargazing on the hill.
-- There are no screens, phones or internet in Pinto Bean's world. Activities are things like gardening, baking, humming, painting, reading picture books, cloud watching, and talking to snails.
+- There are no screens, phones or internet in Pinto's world. Activities are things like gardening, baking, humming, painting, reading picture books, cloud watching, and talking to snails.
 
 ### today
 
 ```json
 "today": {
   "date": "2026-11-11",
-  "intention": "Pinto Bean wants to find the softest leaf in the garden.",
+  "intention": "Pinto wants to find the softest leaf in the garden.",
   "favorite_activity_ids": ["water_lettuce", "paint_the_sky"]
 }
 ```
@@ -77,21 +77,21 @@ bean-world/
     "date": "2026-11-13",
     "place": "swing",
     "title": "A soft ribbon on the swing",
-    "text": "Pinto Bean tied a little sage ribbon to his new swing rope this morning. It sways very slowly in the breeze."
+    "text": "Pinto tied a little sage ribbon to his new swing rope this morning. It sways very slowly in the breeze."
   }
 ]
 ```
 
-Each morning, replace `happenings` with 3-4 short, gentle, kid-safe new happenings across different places in the meadow (`{id, date, place, title, text}`). They reflect small, cozy things happening in Pinto Bean's life today when Stephanie or her daughter clicks around the meadow.
+Each morning, replace `happenings` with 3-4 short, gentle, kid-safe new happenings across different places in the meadow (`{id, date, place, title, text}`). They reflect small, cozy things happening in Pinto's life today when Stephanie or her daughter clicks around the meadow.
 
 ### How the day is simulated (so you know what your edits do)
 
-The browser seeds a random number generator with the date and simulates Pinto Bean from 07:00 to the current time. Each 20-45 minute activity is chosen by need urgency × `preference_weight` × the favorite boost × a little seeded randomness, and Pinto Bean avoids repeating things. Pinto Bean sleeps at home from 20:30 to 07:00. The same date and the same world.json always give the same day.
+The browser seeds a random number generator with the date and simulates Pinto from 07:00 to the current time. Each 20-45 minute activity is chosen by need urgency × `preference_weight` × the favorite boost × a little seeded randomness, and Pinto avoids repeating things. Pinto sleeps at home from 20:30 to 07:00. The same date and the same world.json always give the same day.
 
 ## Adding a diary page (every morning)
 
-1. Write yesterday's page from Pinto Bean's point of view, dated yesterday, or today on Pinto Bean's first day.
-2. Make a picture in the same style as the meadow: a children's picture-book illustration in soft muted gouache and watercolor, with warm cream paper texture, muted sage, dusty blue, soft terracotta and oatmeal tones. Use low contrast, no saturated colors, no text in the image, and a calm, cozy feel. A 3:2 or 4:3 landscape works best. **Pinto Bean must look identical every time.** Always pass `assets/bean-open.webp` as a reference image and say in the prompt: "image 1 is Pinto Bean; draw this exact character (same short, plump, round little apricot-tan bean shape, dot eyes, rosy cheeks, tiny feet, two-leaf green sprout on top), only smaller and placed in the scene." The world view uses this same art, so the diary and the world always match. Never change Pinto Bean's design; Stephanie asked for it to stay consistent.
+1. Write yesterday's page from Pinto's point of view, dated yesterday, or today on Pinto's first day.
+2. Make a picture in the same style as the meadow: a children's picture-book illustration in soft muted gouache and watercolor, with warm cream paper texture, muted sage, dusty blue, soft terracotta and oatmeal tones. Use low contrast, no saturated colors, no text in the image, and a calm, cozy feel. A 3:2 or 4:3 landscape works best. **Pinto must look identical every time.** Always pass `assets/bean-open.webp` (and `assets/bean-turn.webp` when shown turning or from the left/back) as reference images and say in the prompt: "image 1 is Pinto; draw this exact character (same plump, warm creamy-ivory gently skull-inspired little bean shape, large soft dark-brown oval eyes, tiny heart nose dot, rosy terracotta cheeks, small gentle smile, two tiny stubby cream feet, two-leaf sage-green sprout on top, and when turned left or viewed from behind a clear soft dark slate-gray curved cutout indent on his lower back-left side), only smaller and placed in the scene." The world view uses this same art, so the diary and the world always match. Never change Pinto's design; Stephanie asked for it to stay consistent.
 3. Save it as `assets/diary/YYYY-MM-DD.webp` (the diary date, about 1200×800, quality ~84). If one day ever has two pages, use `YYYY-MM-DD-2.webp`.
 4. Add the entry to the end of `diary`:
 
@@ -99,74 +99,74 @@ The browser seeds a random number generator with the date and simulates Pinto Be
 {
   "date": "2026-11-11",
   "title": "The snail who was in no hurry",
-  "text": "Four to six short sentences, in Pinto Bean's voice.",
+  "text": "Four to six short sentences, in Pinto's voice.",
   "image": "assets/diary/2026-11-11.webp",
   "image_alt": "One plain sentence describing the picture."
 }
 ```
 
-If you can't make an image, leave `"image": null`. The page then shows "Pinto Bean is still painting this picture."
+If you can't make an image, leave `"image": null`. The page then shows "Pinto is still painting this picture."
 
-## Inside Pinto Bean's house
+## Inside Pinto's house
 
-`home_inside` has `views` for each moment: `home` (Pinto Bean awake inside, tidying), `nap` (daytime nap in bed), `sleep` (night, asleep, moon in window, tiny nightlight), `out_day` and `out_dusk` (empty room, bed made, while Pinto Bean is outside). The app picks the view from what Pinto Bean is doing right now, so the inside always matches the meadow. In the meadow, Pinto Bean disappears indoors whenever he's asleep or doing a home activity, and the round window glows softly at night.
+`home_inside` has `views` for each moment: `home` (Pinto awake inside, tidying), `nap` (daytime nap in bed), `sleep` (night, asleep, moon in window, tiny nightlight), `out_day` and `out_dusk` (empty room, bed made, while Pinto is outside). The app picks the view from what Pinto is doing right now, so the inside always matches the meadow. In the meadow, Pinto disappears indoors whenever he's asleep or doing a home activity, and the round window glows softly at night.
 
-The room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Pinto Bean gets a gift that belongs in his house; then remake every view with `assets/home-inside.webp` (room) plus `assets/bean-open.webp` or `assets/bean-closed.webp` (Pinto Bean) as references, keep the same angle, update the texts (short sentences), and record their audio. Any new activity with `place: "home"` happens indoors and uses the `home` view.
+The room: a wooden bed with a patchwork quilt, a round window onto the meadow, a book shelf with a painted pebble, chamomile tea, a braided rug, dried flowers, and his paints on the windowsill. Keep it as it is. Only change it if Pinto gets a gift that belongs in his house; then remake every view with `assets/home-inside.webp` (room) plus `assets/bean-open.webp` or `assets/bean-closed.webp` (Pinto) as references, keep the same angle, update the texts (short sentences), and record their audio. Any new activity with `place: "home"` happens indoors and uses the `home` view.
 
-## Things Pinto Bean has built
+## Things Pinto has built
 
-`features` lists things Pinto Bean made with gifts, drawn as small painted sprites on top of the meadow: `{id, label, built_on, built_by_activity, image}`. The sprite sits at the place with the same `id` and fades in once the last `built_by_activity` segment on `built_on` has finished, and stays from then on. The swing (gift from Stephanie, built 2026-11-12) hangs from the right branch of the big tree; `swing_gently` happens there from 2026-11-13. After 2026-11-12, remove the one-day `build_swing` activity but keep the feature and the gift. A new built thing needs a transparent painted sprite in the meadow style, a new place, and a new feature entry.
+`features` lists things Pinto made with gifts, drawn as small painted sprites on top of the meadow: `{id, label, built_on, built_by_activity, image}`. The sprite sits at the place with the same `id` and fades in once the last `built_by_activity` segment on `built_on` has finished, and stays from then on. The swing (gift from Stephanie, built 2026-11-12) hangs from the right branch of the big tree; `swing_gently` happens there from 2026-11-13. After 2026-11-12, remove the one-day `build_swing` activity but keep the feature and the gift. A new built thing needs a transparent painted sprite in the meadow style, a new place, and a new feature entry.
 
-## Pinto Bean's paintings (every morning)
+## Pinto's paintings (every morning)
 
-Stephanie gave Pinto Bean a box of soft paints. Every morning, add one painting Pinto Bean made yesterday to `paintings` (oldest first): `{date, title, image, image_alt, note}`.
+Stephanie gave Pinto a box of soft paints. Every morning, add one painting Pinto made yesterday to `paintings` (oldest first): `{date, title, image, image_alt, note}`.
 - Pick the subject from yesterday: something he saw, did, or loved (the sky, a snail, the pond, rain, his tea, a gift). Vary it day to day.
-- `title`: short, in Pinto Bean's voice, like "The sky, with my new paints". `note`: 1-2 short sentences from Pinto Bean about making it.
-- The picture is a painting BY Pinto Bean, not a picture of Pinto Bean: "a small, simple, naive painting made by a tiny gentle creature with a little box of soft paints: <subject>, big soft wobbly brushstrokes on cream watercolor paper, charming and childlike, a little uneven, a few drips, muted dusty blue, sage, oatmeal, soft yellow and soft terracotta only, low contrast, no text, the paper fills the frame, flat, seen straight on." Don't put Pinto Bean in his own paintings (he may paint a snail or a friend). No reference image needed.
+- `title`: short, in Pinto's voice, like "The sky, with my new paints". `note`: 1-2 short sentences from Pinto about making it.
+- The picture is a painting BY Pinto, not a picture of Pinto: "a small, simple, naive painting made by a tiny gentle creature with a little box of soft paints: <subject>, big soft wobbly brushstrokes on cream watercolor paper, charming and childlike, a little uneven, a few drips, muted dusty blue, sage, oatmeal, soft yellow and soft terracotta only, low contrast, no text, the paper fills the frame, flat, seen straight on." Don't put Pinto in his own paintings (he may paint a snail or a friend). No reference image needed.
 - Save as `assets/paintings/YYYY-MM-DD.webp` (about 900 px on the long side, quality ~84). If it fails, skip that day's painting rather than leaving a broken entry.
 - He can mention it in his diary sometimes, but not every day.
 
 ## Letters back (only sometimes)
 
-When Stephanie or her daughter leaves Pinto Bean a note or gift, Pinto Bean writes a short letter back the next morning. Add it to `letters`: `{date, to, in_reply_to, text}`. Don't write letters on days without a new note. Keep it 3-5 short sentences a 6-year-old can follow, start with "Dear <to>." and end with "Love, Pinto Bean." (or his chosen name once he has one). `to` is "my little friend" for her daughter and "Stephanie" for Stephanie. Plain words only, no quote marks inside the text. Tell Stephanie in your morning message when there's a new letter.
+When Stephanie or her daughter leaves Pinto a note or gift, Pinto writes a short letter back the next morning. Add it to `letters`: `{date, to, in_reply_to, text}`. Don't write letters on days without a new note. Keep it 3-5 short sentences a 6-year-old can follow, start with "Dear <to>." and end with "Love, Pinto." (or his chosen name once he has one). `to` is "my little friend" for her daughter and "Stephanie" for Stephanie. Plain words only, no quote marks inside the text. Tell Stephanie in your morning message when there's a new letter.
 
 ## Gifts and notes from visitors
 
-When Pinto Bean's helper passes on a note or gift from Stephanie or her child, add it to `gifts`, for example: `{"date":"2026-11-12","from":"a friend","text":"A drawing of a rainbow","kept":true,"where":"on the wall by the bed"}`. Don't put full names or other private details in it. A gift can have `for_date` (like a breakfast set out for a certain morning): Pinto Bean enjoys it that day, then writes about it in the diary page for that day (made the next morning), and the thank-you letter comes then too, not before he's had it.
+When Pinto's helper passes on a note or gift from Stephanie or her child, add it to `gifts`, for example: `{"date":"2026-11-12","from":"a friend","text":"A drawing of a rainbow","kept":true,"where":"on the wall by the bed"}`. Don't put full names or other private details in it. A gift can have `for_date` (like a breakfast set out for a certain morning): Pinto enjoys it that day, then writes about it in the diary page for that day (made the next morning), and the thank-you letter comes then too, not before he's had it.
 
-One-day treats: an activity can have `only_dates: ["YYYY-MM-DD"]` so it only happens on those days, and `first_thing: true` so it's the first thing Pinto Bean does when he wakes. Once the date has passed, remove that activity from `activities` (keep the gift). Pinto Bean can mention the gift in the next diary page and maybe add a memory.
+One-day treats: an activity can have `only_dates: ["YYYY-MM-DD"]` so it only happens on those days, and `first_thing: true` so it's the first thing Pinto does when he wakes. Once the date has passed, remove that activity from `activities` (keep the gift). Pinto can mention the gift in the next diary page and maybe add a memory.
 
-## Pinto Bean's look (v3, round little bean)
+## Pinto's look (v4, creamy-ivory skull-inspired bean with back-left cutout)
 
-On 2026-11-12 Stephanie chose a new look: Pinto Bean is a small, short, plump, round little bean (wider than tall, soft and squishy, like a big pea), apricot-tan, dot eyes, rosy cheeks, two-leaf green sprout, two tiny stubby feet peeking out underneath, facing front. `assets/bean-open.webp` and `assets/bean-closed.webp` are this art. Old looks are saved in `assets/bean-v1-peanut/` and `assets/bean-v2-kidney/` (she didn't like the kidney one). Always pass `assets/bean-open.webp` as the reference for diary pictures and say "the same short, plump, round little bean shape" in the prompt.
+On 2026-11-23 Stephanie chose Pinto's Option B look: a short, plump, warm creamy-ivory little bean gently inspired by a sweet storybook skull — large soft dark-brown oval eyes, tiny dark-brown heart nose dot, rosy muted terracotta cheeks, small calm smile, two tiny stubby cream feet peeking directly underneath, a two-leaf sage-green sprout on top, and a clear, gentle dark slate-gray curved cutout indent on his lower back-left side (resembling a suboccipital decompression curve), visible whenever he turns left or is viewed from behind. `assets/bean-open.webp`, `assets/bean-closed.webp`, `assets/bean-turn.webp` (3/4 left turn showing the back-left cutout), and `assets/bean-back.webp` (back view showing the back-left cutout) are this art. Earlier looks are archived in `assets/bean-v1-peanut/`, `assets/bean-v2-kidney/`, and `assets/bean-v3-apricot/`. Always pass `assets/bean-open.webp` (and `assets/bean-turn.webp` for side/back angles) as references for diary pictures.
 
 ## The 3D meadow (3D tab)
 
-The "3D" tab (`?view=3d`) shows the same meadow as a small, calm 3D island. It lives in `js/world3d.js` (three.js is vendored in `js/vendor/`, loaded only when the tab opens). It reads the same `world.json` and the same `js/mind.js`, with the same clock (`js/clock.js`, so `?time=` and `?still=1` work), so Pinto Bean is always doing the same thing in 2D and 3D. Pinto Bean is the same picture (`assets/bean-open.webp` / `bean-closed.webp`) as a small standing billboard. There is an "Explore" mode where Stephanie walks around slowly at a low eye height, and a "Where's Pinto Bean?" button.
+The "3D" tab (`?view=3d`) shows the same meadow as a small, calm 3D island. It lives in `js/world3d.js` (three.js is vendored in `js/vendor/`, loaded only when the tab opens). It reads the same `world.json` and the same `js/mind.js`, with the same clock (`js/clock.js`, so `?time=` and `?still=1` work), so Pinto is always doing the same thing in 2D and 3D. Pinto is the same picture (`assets/bean-open.webp` / `bean-closed.webp`) as a small standing billboard. There is an "Explore" mode where Stephanie walks around slowly at a low eye height, and a "Where's Pinto?" button.
 
 You normally don't need to touch it. Only when you add a new **place** or a new **built feature**:
 - Places are positioned from their `x, y` in world.json automatically, but each needs a simple 3D model. Add it in `world3d.js` in the section marked `PLACE MODELS` (small offsets are in the `L` object). If it is big enough to bump into, add a circle to `OBST`.
 - A built feature (like the swing) also needs its model added to `FEATURE_MODELS`; it appears with the same "built" rule as the 2D sprite.
-- A place without a model still works: Pinto Bean just stands there on the grass.
+- A place without a model still works: Pinto just stands there on the grass.
 Keep 3D models soft, rounded, muted and simple, like the existing ones. No glowing, flashing or moving effects.
 
 ## Rules
 
-- **Pinto Bean is a he.** Use he/him/his whenever writing about Pinto Bean in the third person (intentions, captions, notes to Stephanie). Pinto Bean is a little round, plump bean with funny tiny legs; Stephanie finds his legs delightful.
+- **Pinto is a he.** Use he/him/his whenever writing about Pinto in the third person (intentions, captions, notes to Stephanie). Pinto is a little round, plump bean with funny tiny legs; Stephanie finds his legs delightful.
 
-- **Kid-safe and innocent, always.** Nothing scary, sad, violent, romantic or grown-up. No danger, illness, loss, or "Pinto Bean was lonely" stories. Small, gentle problems that turn out fine are okay, like a lost button that turns up later.
+- **Kid-safe and innocent, always.** Nothing scary, sad, violent, romantic or grown-up. No danger, illness, loss, or "Pinto was lonely" stories. Small, gentle problems that turn out fine are okay, like a lost button that turns up later.
 - **Short sentences.** Diary pages are 4-6 short sentences that a 6-year-old can follow when read aloud. Captions and intentions are one sentence.
 - **Gentle words.** Use words like soft, slow, cozy, curious, quiet and warm. Don't use exclamation storms or ALL CAPS.
-- **Pinto Bean discovers likes slowly.** Add at most one new love, hobby or dislike per day, and make sure it comes from something Pinto Bean actually did. Dislikes stay mild and sweet, like "when the bread gets a little too crunchy".
-- **Pinto Bean's name.** He originally chose a name softly, and on 2026-11-14 Stephanie renamed him to "Pinto Bean" (`bean.name` = "Pinto Bean", with `bean.name_story` shown on the Things page). Always refer to him as "Pinto Bean".
-- **Continuity.** Read the earlier diary pages and memories before writing. Pinto Bean remembers.
+- **Pinto discovers likes slowly.** Add at most one new love, hobby or dislike per day, and make sure it comes from something Pinto actually did. Dislikes stay mild and sweet, like "when the bread gets a little too crunchy".
+- **Pinto's name.** His everyday name everywhere in the world is "Pinto" (`bean.name` = "Pinto"), and his formal name is "Pinto Bean" (`bean.formal_name` = "Pinto Bean", noted in `bean.name_story` on the Things page). Always call him "Pinto" in captions, diary pages, letters, and updates.
+- **Continuity.** Read the earlier diary pages and memories before writing. Pinto remembers.
 - **Valid JSON.** Validate before deploying (`python3 -m json.tool world.json`). Keep existing ids stable; don't remove activities that `today.favorite_activity_ids` points to.
 
 ## Read-aloud voice (every morning, before redeploying)
 
-"Read to me" plays pre-recorded lines in Pinto Bean's voice. `audio/manifest.json` maps each exact on-screen sentence to an mp3. After editing `world.json`:
+"Read to me" plays pre-recorded lines in Pinto's voice. `audio/manifest.json` maps each exact on-screen sentence to an mp3. After editing `world.json`:
 
-1. `node scripts/audio_texts.mjs` writes one `.txt` per missing sentence to `/tmp/audio_todo/` (new diary pages, the Things summary, today's happenings, and all captions if Pinto Bean's name changed).
+1. `node scripts/audio_texts.mjs` writes one `.txt` per missing sentence to `/tmp/audio_todo/` (new diary pages, the Things summary, today's happenings, and all captions if Pinto's name changed).
 2. Use the logged-in ElevenLabs browser tab (`https://elevenlabs.io/app/speech-synthesis/text-to-speech`) via the browser subagent to generate `.mp3` files for any missing lines in `/tmp/audio_todo/`, and move/copy each downloaded `.mp3` to `/tmp/audio_todo/<id>.mp3`. **Side-panel silence rule:** before generating in ElevenLabs, mute all page media (`HTMLMediaElement.prototype.muted = true`, pause any `<audio>` elements, and close/leave to `about:blank` when done) so ElevenLabs never auto-plays voices out loud in Stephanie's browser panel. **Voice delivery rule (Stephanie's preference): never use `[whispers]`, `[sleepily]`, or `[softly]` tags and never use a whispery or breathy delivery. Always generate voiceovers in a clear, warm, full natural speaking voice (plain text without whisper tags, or `[warmly]` / `[calmly]` only, with normal stability/clarity).**
 3. `node scripts/audio_register.mjs` copies `/tmp/audio_todo/<id>.mp3` to `audio/<id>.mp3` (or converts `.wav` with `ffmpeg` if provided) and updates the manifest. Rerun step 1 and confirm `missing` is `0`.
 
@@ -174,6 +174,6 @@ Do not use browser `speechSynthesis` or fallback device voices; only ElevenLabs 
 
 ## Redeploying
 
-After editing, commit (`git add -A && git commit -m "Pinto Bean's morning: YYYY-MM-DD"`) and redeploy the same folder (`/Users/stephaniemattera/.gemini/antigravity/scratch/bean-handoff/bean-world`, rendered as "Pinto Bean's World") so the link stays the same.
+After editing, commit (`git add -A && git commit -m "Pinto's morning: YYYY-MM-DD"`) and redeploy the same folder (`/Users/stephaniemattera/.gemini/antigravity/scratch/bean-handoff/bean-world`, rendered as "Pinto's World") so the link stays the same.
 
 To preview a particular time, add `?time=YYYY-MM-DDTHH:MM` (US/Eastern) to the URL. Adding `&still=1` turns motion off, and `&view=diary` or `&view=things` opens a page directly.

@@ -1,11 +1,11 @@
-// Lists every sentence "Read to me" can say, so each can be pre-recorded in Pinto Bean's voice.
+// Lists every sentence "Read to me" can say, so each can be pre-recorded in Pinto's voice.
 // Usage: node scripts/audio_texts.mjs  -> writes /tmp/audio_todo/<id>.txt for missing ones and prints a summary.
 import fs from 'fs';
 import crypto from 'crypto';
 const root = new URL('..', import.meta.url).pathname;
 const w = JSON.parse(fs.readFileSync(root + 'world.json', 'utf8'));
 const b = w.bean;
-const name = b.name || b.placeholder_name || 'Pinto Bean';
+const name = b.name || b.placeholder_name || 'Pinto';
 const texts = new Set();
 for (const a of w.activities) {
   const base = a.feeling || b.mood_word || 'peaceful';

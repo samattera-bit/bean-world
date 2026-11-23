@@ -1,9 +1,9 @@
-// Pinto Bean's World — the 2D storybook renderer + page UI.
+// Pinto's World — the 2D storybook renderer + page UI.
 // All character logic lives in mind.js; all character data lives in world.json.
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js?v=12';
+import { initGame } from './game.js?v=13';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -36,7 +36,7 @@ async function boot() {
     if (!res.ok) throw new Error('bad status');
     app.world = await res.json();
   } catch (e) {
-    $('#main').innerHTML = `<div class="load-error"><p>Pinto Bean's meadow is still waking up. Please try again in a little while.</p></div>`;
+    $('#main').innerHTML = `<div class="load-error"><p>Pinto's meadow is still waking up. Please try again in a little while.</p></div>`;
     return;
   }
   app.diaryIndex = Math.max(0, (app.world.diary || []).length - 1);
@@ -90,7 +90,7 @@ function tick() {
   // caption (only update when it changes, so screen readers stay calm)
   const cap = $('#caption');
   if (cap.textContent !== s.caption) cap.textContent = s.caption;
-  $('#scene').setAttribute('aria-label', `Pinto Bean's meadow. ${s.caption}`);
+  $('#scene').setAttribute('aria-label', `Pinto's meadow. ${s.caption}`);
 
   // things Bean has built (like the swing) appear once he's finished making them
   for (const f of app.world.features || []) {
@@ -118,7 +118,7 @@ function tick() {
   const dozing = s.sleeping || (inside && s.activity?.id === 'nap_in_bed');
   z.classList.toggle('is-on', dozing);
   $('#scene').classList.toggle('bean-home', inside);
-  $('#house-spot').setAttribute('aria-label', inside ? "Peek inside Pinto Bean's house. Pinto Bean is inside." : "Peek inside Pinto Bean's house");
+  $('#house-spot').setAttribute('aria-label', inside ? "Peek inside Pinto's house. Pinto is inside." : "Peek inside Pinto's house");
 
   renderNeeds(s.needs);
   if (!prev) placeBean(s.position.x, s.position.y);
@@ -127,7 +127,23 @@ function tick() {
   updateReadButtons();
 }
 
-// Position is recomputed every frame only while walking; otherwise Bean stays put.
+// Position is recomputed every frame while walking; pose gently turns to show Pinto's back-left cutout.
+const TURN_CYCLE_MS = 14000;
+const TURN_SHOW_MS = 5000;
+function computeBeanPose(s, walking) {
+  if (!s || s.sleeping) return 'front';
+  const dx = s.dx ?? 0;
+  const dy = s.dy ?? 0;
+  if (walking) {
+    if (s.facing < 0 || dx < -0.02) return 'turn';
+    if (dy < -0.08 && Math.abs(dx) < Math.abs(dy) * 0.7) return 'back';
+    return 'front';
+  }
+  if (app.still) return s.facing < 0 ? 'turn' : 'front';
+  const phase = performance.now() % TURN_CYCLE_MS;
+  return phase >= (TURN_CYCLE_MS - TURN_SHOW_MS) ? 'turn' : 'front';
+}
+
 function updateBeanPosition(clock = nowClock()) {
   const s = app.state;
   if (!s) return;
@@ -139,8 +155,9 @@ function updateBeanPosition(clock = nowClock()) {
       const p = positionOnSegment(s.segment, clock.minutes);
       x = p.x; y = p.y; walking = p.walking;
     }
-    beanEl.querySelector('.flip').style.setProperty('--face', String(s.facing));
   }
+  const pose = computeBeanPose(s, walking);
+  if (beanEl.dataset.pose !== pose) beanEl.dataset.pose = pose;
   beanEl.classList.toggle('is-walking', walking && !app.still);
   placeBean(x, y);
   return walking;
@@ -149,7 +166,12 @@ function updateBeanPosition(clock = nowClock()) {
 function frame() {
   if (app.state && app.state.segment && !app.still && !app.state.sleeping) {
     const p = positionOnSegment(app.state.segment, nowClock().minutes);
-    if (p.walking || beanEl.classList.contains('is-walking')) updateBeanPosition();
+    if (p.walking || beanEl.classList.contains('is-walking')) {
+      updateBeanPosition();
+    } else {
+      const pose = computeBeanPose(app.state, false);
+      if (beanEl.dataset.pose !== pose) beanEl.dataset.pose = pose;
+    }
   }
   requestAnimationFrame(frame);
 }
@@ -231,7 +253,7 @@ function open3D() {
   if (loading3d) return;
   const stage = $('#stage3d');
   stage.dataset.state = 'loading';
-  loading3d = import('./world3d.js?v=12')
+  loading3d = import('./world3d.js?v=13')
     .then((m) => m.mount3D({
       root: $('#scene3d'),
       world: app.world,
@@ -263,7 +285,7 @@ function renderDiary() {
   const page = $('#diary-page');
   if (!entries.length) {
     $('#diary-heading').textContent = 'No pages yet';
-    $('#diary-text').textContent = "Pinto Bean hasn't written in the diary yet.";
+    $('#diary-text').textContent = "Pinto hasn't written in the diary yet.";
     $('#diary-date').textContent = '';
     $('#prev-btn').disabled = true; $('#next-btn').disabled = true;
     return;
@@ -278,10 +300,10 @@ function renderDiary() {
     const img = new Image();
     img.src = e.image; img.alt = e.image_alt || `A picture for "${e.title}"`;
     img.width = 1200; img.height = 800; img.decoding = 'async';
-    img.addEventListener('error', () => { fig.innerHTML = `<div class="img-fallback" role="img" aria-label="${img.alt}">Pinto Bean is still painting this picture.</div>`; });
+    img.addEventListener('error', () => { fig.innerHTML = `<div class="img-fallback" role="img" aria-label="${img.alt}">Pinto is still painting this picture.</div>`; });
     fig.appendChild(img);
   } else {
-    fig.innerHTML = `<div class="img-fallback">Pinto Bean is still painting this picture.</div>`;
+    fig.innerHTML = `<div class="img-fallback">Pinto is still painting this picture.</div>`;
   }
   $('#prev-btn').disabled = app.diaryIndex === 0;
   $('#next-btn').disabled = app.diaryIndex >= entries.length - 1;
@@ -313,10 +335,10 @@ function listOrEmpty(items, emptyText, chips = true) {
 
 function renderThings() {
   const w = app.world, b = w.bean;
-  const name = b.name || b.placeholder_name || 'Pinto Bean';
+  const name = b.name || b.placeholder_name || 'Pinto';
   const nameLine = b.name
-    ? (b.name_story ? esc(b.name_story) : `Pinto Bean's name is ${esc(b.name)}.`)
-    : `Pinto Bean hasn't picked a name yet. For now, everyone just says "Pinto Bean".`;
+    ? (b.name_story ? esc(b.name_story) : `Pinto's name is ${esc(b.name)}.`)
+    : `Pinto hasn't picked a name yet. For now, everyone just says "Pinto".`;
   const intention = w.today && w.today.intention;
   const memories = (b.memories || []).slice().reverse();
   const gifts = (w.gifts || []).filter((g) => g.kept !== false);
@@ -334,19 +356,19 @@ function renderThings() {
     <article class="card wide">
       <h3>${icon('bean')} About ${esc(name)}</h3>
       <p>${nameLine}</p>
-      ${listOrEmpty(b.traits, 'Pinto Bean is still getting to know himself.')}
+      ${listOrEmpty(b.traits, 'Pinto is still getting to know himself.')}
     </article>
     <article class="card wide">
       <h3>${icon('heart')} Things ${esc(name)} loves</h3>
-      ${listOrEmpty(b.loves, 'Pinto Bean is still finding out what he loves.')}
+      ${listOrEmpty(b.loves, 'Pinto is still finding out what he loves.')}
     </article>
     <article class="card">
       <h3>${icon('brush')} Hobbies</h3>
-      ${listOrEmpty(b.hobbies, 'Pinto Bean is trying lots of little things to see what feels right.')}
+      ${listOrEmpty(b.hobbies, 'Pinto is trying lots of little things to see what feels right.')}
     </article>
     <article class="card">
       <h3>${icon('cloud')} Not so keen on</h3>
-      ${listOrEmpty(b.dislikes, 'Nothing yet. Pinto Bean likes almost everything so far.')}
+      ${listOrEmpty(b.dislikes, 'Nothing yet. Pinto likes almost everything so far.')}
     </article>
     <article class="card">
       <h3>${icon('memory')} Memories</h3>
@@ -360,13 +382,13 @@ function renderThings() {
       <h3>${icon('gift')} Gifts ${esc(name)} has kept</h3>
       ${gifts.length
         ? `<ul role="list">${gifts.map((g) => `<li><span class="memory-date">From ${esc(g.from)} · ${esc(friendlyDate(g.date))}</span>${esc(g.text)}${g.where ? ` <span class="soft">(kept ${esc(g.where)})</span>` : ''}</li>`).join('')}</ul>`
-        : `<div class="empty"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON.gift}</svg><p class="soft">No gifts yet. You can leave Pinto Bean a note by telling Pinto Bean's helper.</p></div>`}
+        : `<div class="empty"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON.gift}</svg><p class="soft">No gifts yet. You can leave Pinto a note by telling Pinto's helper.</p></div>`}
     </article>`;
 }
 
 function thingsSpeech() {
   const w = app.world, b = w.bean;
-  const name = b.name || b.placeholder_name || 'Pinto Bean';
+  const name = b.name || b.placeholder_name || 'Pinto';
   const parts = [];
   if (w.today?.intention) parts.push(w.today.intention);
   if (b.traits?.length) parts.push(`${name} is ${b.traits.join(', ')}.`);
@@ -380,7 +402,7 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=12', { cache: 'no-store' })
+fetch('audio/manifest.json?v=13', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
@@ -395,7 +417,10 @@ function setReadButtons(speaking) {
 }
 function resolveVoice(text) {
   if (!text) return undefined;
-  return voiceMap[text] || voiceMap[text.replaceAll('Pinto Bean', 'Bean')];
+  return voiceMap[text]
+    || voiceMap[text.replaceAll('Pinto', 'Pinto Bean')]
+    || voiceMap[text.replaceAll('Pinto', 'Bean')]
+    || voiceMap[text.replaceAll('Pinto Bean', 'Bean')];
 }
 function updateReadButtons() {
   const text = currentReadText();
@@ -477,7 +502,7 @@ function openHouse() {
   const h = app.world?.home_inside;
   if (!h) return;
   const v = (h.views && h.views[houseView()]) || h;
-  openReader({ title: "Inside Pinto Bean's house", image: v.image, alt: v.image_alt, text: v.text, closeLabel: 'Back outside' });
+  openReader({ title: "Inside Pinto's house", image: v.image, alt: v.image_alt, text: v.text, closeLabel: 'Back outside' });
   game.renderHouseItems();
 }
 function closeHouse() { stopSpeaking(); houseDlg.close(); }
@@ -496,7 +521,7 @@ $('#things').addEventListener('click', (e) => {
   const l = e.target.closest('[data-letter]');
   if (l) {
     const x = (app.world.letters || [])[Number(l.dataset.letter)];
-    if (x) openReader({ title: 'A letter from Pinto Bean', text: x.text });
+    if (x) openReader({ title: 'A letter from Pinto', text: x.text });
   }
 });
 

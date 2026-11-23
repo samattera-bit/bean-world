@@ -2,8 +2,8 @@
   "schema_version": 1,
   "last_updated": "2026-11-19",
   "bean": {
-    "name": "Pinto Bean",
-    "placeholder_name": "Pinto Bean",
+    "name": "Pinto",
+    "placeholder_name": "Pinto",
     "pronoun": "he",
     "traits": [
       "curious",
@@ -33,7 +33,7 @@
       },
       {
         "date": "2026-11-11",
-        "text": "Chose my very own name: Pinto Bean."
+        "text": "Chose my name: Pinto (formal name: Pinto Bean)."
       },
       {
         "date": "2026-11-12",
@@ -48,7 +48,8 @@
         "text": "Baked a tiny warm loaf and watched the first stars come out from the hilltop."
       }
     ],
-    "name_story": "He listened to the soft sounds of the meadow for a whole day, and chose Pinto Bean for himself. It felt just right."
+    "name_story": "His formal name is Pinto Bean, and everyone in the meadow calls him Pinto. He listened to the soft sounds of the meadow, and it felt just right.",
+    "formal_name": "Pinto Bean"
   },
   "schedule": {
     "wake": "07:00",
@@ -57,7 +58,7 @@
   "places": [
     {
       "id": "home",
-      "label": "Pinto Bean's little home",
+      "label": "Pinto's little home",
       "x": 0.149,
       "y": 0.434
     },
@@ -487,47 +488,47 @@
       "title": "A song for the snails",
       "text": "I visited the snails three times today. They are slow, and so kind. In the afternoon I made up a little song just for them. When I dropped a leaf in the pond, it went plip, and I liked that sound. Tonight I watched the first stars come out. I think my name is hiding somewhere in the quiet little sounds.",
       "image": "assets/diary/2026-11-10-2.webp?v=3",
-      "image_alt": "Pinto Bean sits on a big lettuce leaf singing to two snails at dusk, with a little xylophone and the first stars above."
+      "image_alt": "Pinto sits on a big lettuce leaf singing to two snails at dusk, with a little xylophone and the first stars above."
     },
     {
       "date": "2026-11-11",
       "title": "My new paints, and my name",
-      "text": "Stephanie gave me a box of soft paints. I painted the sky, and one cloud dripped. A little friend gave me a sound, duh, said very softly. I keep it under my pillow. All day I listened for my name, and the softest sound was Pinto Bean. So I picked it, and now Pinto Bean is my very own name.",
+      "text": "Stephanie gave me a box of soft paints. I painted the sky, and one cloud dripped. A little friend gave me a sound, duh, said very softly. I keep it under my pillow. All day I listened for my name, and the softest sound was Pinto. So I picked Pinto, with Pinto Bean as my formal name.",
       "image": "assets/diary/2026-11-11.webp?v=3",
-      "image_alt": "Pinto Bean stands at his easel in the meadow, painting a sky with puffy clouds, with his paint box on a stool beside him."
+      "image_alt": "Pinto stands at his easel in the meadow, painting a sky with puffy clouds, with his paint box on a stool beside him."
     },
     {
       "date": "2026-11-12",
       "title": "Breakfast, and a swing",
       "text": "I woke up to a breakfast feast from Stephanie. I ate a warm croissant, berries, and a tiny waffle with honey. The cocoa made my sprout feel cozy. In the afternoon, I used my new tools to build a swing on the big tree. I tied the ropes tight and checked them twice. Tomorrow I will swing, nice and slow.",
       "image": "assets/diary/2026-11-12.webp",
-      "image_alt": "Pinto Bean stands beside the big tree, smiling at the new wooden swing he built, with a coil of rope and a small drill on the grass."
+      "image_alt": "Pinto stands beside the big tree, smiling at the new wooden swing he built, with a coil of rope and a small drill on the grass."
     },
     {
       "date": "2026-11-13",
       "title": "My first slow swing",
       "text": "Today I tried my new swing on the big tree. My little feet did not touch the grass at all. The wind tickled my sprout as I rocked back and forth. In the afternoon I baked tiny bread rolls and watched the lily pads on the pond. At bedtime I sat on the hill and made a quiet wish on the first star.",
       "image": "assets/diary/2026-11-13.webp",
-      "image_alt": "Pinto Bean sits happily on his wooden rope swing hanging from the big tree in the soft green meadow, with his tiny feet dangling above the wildflowers."
+      "image_alt": "Pinto sits happily on his wooden rope swing hanging from the big tree in the soft green meadow, with his tiny feet dangling above the wildflowers."
     },
     {
       "date": "2026-11-14",
       "title": "Painted pebbles and a quiet tune",
       "text": "This morning I dropped a leaf in the pond and counted every ripple. Later I painted tiny blue and sage dots on smooth round pebbles at my easel. After lunch I hummed a quiet tune in the clover and took a cozy nap in my bed. Tonight the first stars came out over the hill, shining like little pebbles in the sky.",
       "image": "assets/diary/2026-11-14.webp",
-      "image_alt": "Pinto Bean sits happily by his wooden easel in the meadow, painting tiny soft dots on smooth river pebbles beside his box of paints."
+      "image_alt": "Pinto sits happily by his wooden easel in the meadow, painting tiny soft dots on smooth river pebbles beside his box of paints."
     },
     {
       "date": "2026-11-18",
       "title": "Warm bread and the first stars",
       "text": "First thing this morning I baked a tiny loaf of bread at the bakery window. Later I swung nice and slow under the big tree and picked sweet peas in the garden. In the afternoon I painted the sky at my easel and read a picture book in the shade. At dusk I carried a warm roll up the hill and made a quiet wish on the first two stars.",
       "image": "assets/diary/2026-11-18.webp",
-      "image_alt": "Pinto Bean sits on the grassy meadow hilltop at dusk with a tiny warm bread roll wrapped in a cream cloth beside him, looking up at two glowing stars."
+      "image_alt": "Pinto sits on the grassy meadow hilltop at dusk with a tiny warm bread roll wrapped in a cream cloth beside him, looking up at two glowing stars."
     }
   ],
   "today": {
     "date": "2026-11-19",
-    "intention": "Pinto Bean wants to bake tiny warm bread and read a picture book under the big tree.",
+    "intention": "Pinto wants to bake tiny warm bread and read a picture book under the big tree.",
     "favorite_activity_ids": [
       "bake_tiny_bread",
       "read_books",
@@ -535,34 +536,34 @@
     ]
   },
   "home_inside": {
-    "image": "assets/home-inside.webp?v=3",
-    "image_alt": "Inside Pinto Bean's cozy round house: Pinto Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
-    "text": "Pinto Bean is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too.",
+    "image": "assets/home-inside.webp?v=4",
+    "image_alt": "Inside Pinto's cozy round house: Pinto sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
+    "text": "Pinto is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too.",
     "views": {
       "home": {
-        "image": "assets/home-inside.webp?v=3",
-        "image_alt": "Inside Pinto Bean's cozy round house: Pinto Bean sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
-        "text": "Pinto Bean is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too."
+        "image": "assets/home-inside.webp?v=4",
+        "image_alt": "Inside Pinto's cozy round house: Pinto sits on a patchwork quilt bed by a round, rainy window, with books, tea, and paints nearby.",
+        "text": "Pinto is home, tidying up and fluffing his pillow. His house is warm and cozy. A round window looks out at the meadow. His books, his tea, and his paints are here too."
       },
       "nap": {
-        "image": "assets/home-inside-nap.webp?v=3",
-        "image_alt": "Pinto Bean naps in his bed under the patchwork quilt, with soft daylight in the round window.",
-        "text": "Shh. Pinto Bean is having a cozy nap in his bed. The quilt is soft and warm. The meadow is bright outside his round window."
+        "image": "assets/home-inside-nap.webp?v=4",
+        "image_alt": "Pinto naps in his bed under the patchwork quilt, with soft daylight in the round window.",
+        "text": "Shh. Pinto is having a cozy nap in his bed. The quilt is soft and warm. The meadow is bright outside his round window."
       },
       "sleep": {
-        "image": "assets/home-inside-sleep.webp?v=3",
-        "image_alt": "Pinto Bean sleeps in his bed at night. A crescent moon shows in the round window, and a tiny nightlight glows.",
-        "text": "Shh. Pinto Bean is fast asleep in his cozy bed. The moon peeks in the round window. A tiny nightlight glows softly."
+        "image": "assets/home-inside-sleep.webp?v=4",
+        "image_alt": "Pinto sleeps in his bed at night. A crescent moon shows in the round window, and a tiny nightlight glows.",
+        "text": "Shh. Pinto is fast asleep in his cozy bed. The moon peeks in the round window. A tiny nightlight glows softly."
       },
       "out_day": {
         "image": "assets/home-inside-out-day.webp",
-        "image_alt": "Pinto Bean's room with nobody in it. The bed is made, and the meadow is sunny outside the round window.",
-        "text": "This is Pinto Bean's little house. Pinto Bean is out in the meadow right now. His bed is all made up, and his paints wait on the windowsill."
+        "image_alt": "Pinto's room with nobody in it. The bed is made, and the meadow is sunny outside the round window.",
+        "text": "This is Pinto's little house. Pinto is out in the meadow right now. His bed is all made up, and his paints wait on the windowsill."
       },
       "out_dusk": {
         "image": "assets/home-inside-out-dusk.webp",
-        "image_alt": "Pinto Bean's empty room in the early evening, with a soft peach and lavender sky in the round window.",
-        "text": "This is Pinto Bean's little house. The sky is getting dusky, and Pinto Bean is still outside. His bed is made and waiting for him."
+        "image_alt": "Pinto's empty room in the early evening, with a soft peach and lavender sky in the round window.",
+        "text": "This is Pinto's little house. The sky is getting dusky, and Pinto is still outside. His bed is made and waiting for him."
       }
     }
   },
@@ -608,19 +609,19 @@
       "date": "2026-11-11",
       "to": "my little friend",
       "in_reply_to": "the sound note",
-      "text": "Dear little friend. Thank you for the sound. I say duh very quietly at bedtime. It makes my sprout feel calm. I keep your note under my pillow. Love, Pinto Bean."
+      "text": "Dear little friend. Thank you for the sound. I say duh very quietly at bedtime. It makes my sprout feel calm. I keep your note under my pillow. Love, Pinto."
     },
     {
       "date": "2026-11-12",
       "to": "Stephanie",
       "in_reply_to": "the paints",
-      "text": "Dear Stephanie. Thank you for my paints. I tried every color. The soft blue is my favorite, because it looks like rain. Love, Pinto Bean."
+      "text": "Dear Stephanie. Thank you for my paints. I tried every color. The soft blue is my favorite, because it looks like rain. Love, Pinto."
     },
     {
       "date": "2026-11-13",
       "to": "Stephanie",
       "in_reply_to": "the breakfast and the swing tools",
-      "text": "Dear Stephanie. Thank you for my breakfast feast. The croissant was warm and flaky, and the cocoa was just right. Thank you for the swing tools too. I built a swing on the big tree, and today I will try it. Love, Pinto Bean."
+      "text": "Dear Stephanie. Thank you for my breakfast feast. The croissant was warm and flaky, and the cocoa was just right. Thank you for the swing tools too. I built a swing on the big tree, and today I will try it. Love, Pinto."
     }
   ],
   "features": [
@@ -645,7 +646,7 @@
       "date": "2026-11-19",
       "place": "tree",
       "title": "Open picture book",
-      "text": "Pinto Bean's favorite picture book is resting on the soft moss under the big tree, marked with a dry leaf."
+      "text": "Pinto's favorite picture book is resting on the soft moss under the big tree, marked with a dry leaf."
     },
     {
       "id": "hilltop-dew",

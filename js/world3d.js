@@ -47,7 +47,7 @@ export async function mount3D(api) {
   canvas.className = 'canvas3d';
   canvas.setAttribute('role', 'img');
   canvas.setAttribute('tabindex', '0');
-  canvas.setAttribute('aria-label', "Pinto Bean's meadow in 3D");
+  canvas.setAttribute('aria-label', "Pinto's meadow in 3D");
   let renderer;
   try {
     const probe = document.createElement('canvas');
@@ -562,10 +562,15 @@ export async function mount3D(api) {
     pa.needsUpdate = true;
   }
 
-  // ---------- Bean: the exact painted art, as a camera-facing sprite ----------
+  // ---------- Pinto: painted sprites that turn to show his back-left cutout ----------
   const texLoader = new THREE.TextureLoader();
   const loadTex = (url) => new Promise((res) => texLoader.load(url, (t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; res(t); }, undefined, () => res(null)));
-  const [texOpen, texClosed] = await Promise.all([loadTex('assets/bean-open.webp?v=3'), loadTex('assets/bean-closed.webp?v=3')]);
+  const [texOpen, texClosed, texTurn, texBack] = await Promise.all([
+    loadTex('assets/bean-open.webp?v=4'),
+    loadTex('assets/bean-closed.webp?v=4'),
+    loadTex('assets/bean-turn.webp?v=4'),
+    loadTex('assets/bean-back.webp?v=4'),
+  ]);
   const beanMat = new THREE.SpriteMaterial({ map: texOpen, transparent: true, alphaTest: 0.35, fog: false });
   const bean = new THREE.Sprite(beanMat);
   bean.center.set(0.5, 0.015);
@@ -674,7 +679,7 @@ export async function mount3D(api) {
     if (zzz.visible !== dozing) { zzz.visible = dozing; dirty = true; }
     if (s.caption !== lastCaption) {
       lastCaption = s.caption;
-      canvas.setAttribute('aria-label', `Pinto Bean's meadow in 3D. ${s.caption}`);
+      canvas.setAttribute('aria-label', `Pinto's meadow in 3D. ${s.caption}`);
       dirty = true;
     }
     updateBean(clock);
@@ -694,6 +699,15 @@ export async function mount3D(api) {
     beanPos.set(w.x, groundY(w.x, w.z), w.z);
     beanVisible = !beanInside;
     bean.userData.walking = walking;
+    if (walking && s.segment) {
+      const wf = toXZ(s.segment.from), wt = toXZ(s.segment.place);
+      const dwx = wt.x - wf.x, dwz = wt.z - wf.z;
+      if (Math.hypot(dwx, dwz) > 1e-3) bean.userData.walkYaw = Math.atan2(dwx, dwz);
+    } else if (s.facing < 0) {
+      bean.userData.walkYaw = -Math.PI * 0.48;
+    } else {
+      bean.userData.walkYaw = 0;
+    }
   }
 
   // ---------- camera: overview (orbit) and Explore (walk) ----------
@@ -785,7 +799,7 @@ export async function mount3D(api) {
   function findBean() {
     if (!state) return;
     if (beanInside) {
-      showMsg(state.sleeping || state.activity?.id === 'nap_in_bed' ? 'Pinto Bean is inside his house, resting.' : 'Pinto Bean is inside his house.', 6000);
+      showMsg(state.sleeping || state.activity?.id === 'nap_in_bed' ? 'Pinto is inside his house, resting.' : 'Pinto is inside his house.', 6000);
       requestRender();
       return;
     }
@@ -987,7 +1001,19 @@ export async function mount3D(api) {
         if (now - t0 > nextBlink) { blinkUntil = now + 260; nextBlink = now - t0 + 11000 + (Math.random() - 0.5) * 2000; }
         if (now < blinkUntil) open = false;
       }
-      const tex = open ? texOpen : texClosed || texOpen;
+      const bx = bean.position.x, bz = bean.position.z;
+      let beanYaw = bean.userData.walkYaw ?? 0;
+      if (!bean.userData.walking && !state?.sleeping && !calm) {
+        // Calm idle glance: gently turns left and back so his back-left cutout is visible as he turns
+        const cyc = (tsec % 14) / 14;
+        if (cyc > 0.62) beanYaw = -1.25;
+      }
+      const camAngle = Math.atan2(camera.position.x - bx, camera.position.z - bz);
+      const rel = Math.atan2(Math.sin(camAngle - beanYaw), Math.cos(camAngle - beanYaw));
+      let tex;
+      if (Math.abs(rel) > 2.25) tex = texBack || texTurn || texOpen;
+      else if (rel >= 0.45) tex = texTurn || texOpen;
+      else tex = open ? texOpen : texClosed || texOpen;
       if (beanMat.map !== tex) { beanMat.map = tex; beanMat.needsUpdate = true; dirty = true; }
       const br = calm ? 0 : Math.sin((tsec * Math.PI * 2) / 6);
       bean.scale.set(BEAN_W * (1 + 0.006 * br), BEAN_H * (1 + 0.016 * br), 1);

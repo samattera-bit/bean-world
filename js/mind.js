@@ -170,7 +170,7 @@ export function positionOnSegment(seg, minutes) {
 
 export function stateAt(world, clock) {
   const plan = cachedPlan(world, clock.date);
-  const name = world.bean.name || world.bean.placeholder_name || 'Pinto Bean';
+  const name = world.bean.name || world.bean.placeholder_name || 'Pinto';
   const home = plan.places.home || world.places[0];
   const m = clock.minutes;
 
@@ -182,7 +182,7 @@ export function stateAt(world, clock) {
     const base = morning ? START_NEEDS : last ? last.needsEnd : START_NEEDS;
     return {
       name, sleeping: true, activity: null, place: home,
-      position: { x: home.x, y: home.y }, walking: false, facing: 1,
+      position: { x: home.x, y: home.y }, walking: false, facing: 1, dx: 0, dy: 0,
       feeling: 'sleepy',
       caption: `${name} is fast asleep at home, dreaming soft dreams.`,
       needs: { ...base, rest },
@@ -199,7 +199,9 @@ export function stateAt(world, clock) {
   const walking = walked < seg.walkMinutes;
   const wk = walking ? walked / seg.walkMinutes : 1;
   const position = { x: lerp(seg.from.x, seg.place.x, wk), y: lerp(seg.from.y, seg.place.y, wk) };
-  const facing = seg.place.x >= seg.from.x ? 1 : -1;
+  const dx = seg.place.x - seg.from.x;
+  const dy = seg.place.y - seg.from.y;
+  const facing = dx >= 0 ? 1 : -1;
 
   let feeling = seg.activity.feeling || world.bean.mood_word || 'peaceful';
   if (needs.rest < 0.2) feeling = 'a little sleepy';
@@ -208,6 +210,6 @@ export function stateAt(world, clock) {
   const caption = `${name} is ${seg.activity.verb_phrase}, and feels ${feeling}.`;
   return {
     name, sleeping: false, activity: seg.activity, place: seg.place, from: seg.from,
-    segment: seg, position, walking, facing, feeling, caption, needs, plan,
+    segment: seg, position, walking, facing, dx, dy, feeling, caption, needs, plan,
   };
 }
