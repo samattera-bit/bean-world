@@ -1268,5 +1268,8 @@ export function initGame(api) {
     isPlaceOpen: () => placeDlg.open,
     renderHouseItems,
     closePlace,
+    openPlace,
+    openGuide,
+    petBean,
   };
 }

@@ -718,7 +718,7 @@ export async function mount3D(api) {
     minAzimuthAngle: -1.35, maxAzimuthAngle: 1.35,
   });
   controls.addEventListener('change', () => { dirty = true; });
-  const FOV_OVERVIEW = 34, FOV_EXPLORE = 52;
+  const FOV_OVERVIEW = 34, FOV_EXPLORE = 52, FOV_PLAY = 46;
   const setFov = (f) => { if (f && camera.fov !== f) { camera.fov = f; camera.updateProjectionMatrix(); } };
   const HOME_TARGET = new THREE.Vector3(0.2, 1.0, 0.9);
   function defaultDistance() {
@@ -730,12 +730,45 @@ export async function mount3D(api) {
     return { pos: HOME_TARGET.clone().add(new THREE.Vector3(0, Math.cos(polar) * d, Math.sin(polar) * d)), target: HOME_TARGET.clone(), fov: FOV_OVERVIEW };
   }
 
-  let mode = 'overview'; // 'overview' | 'explore'
+  let mode = 'overview'; // 'overview' | 'explore' | 'play'
   let follow = false;
   let flight = null;      // {from, to, fromT, toT, t, dur, then}
   const lookAtNow = new THREE.Vector3();
   const visitor = { x: 0, z: 6.2, yaw: 0, pitch: -0.1, v: 0, turnV: 0, yawGoal: null };
+  const player = { x: P.home.x, z: P.home.z, yaw: 0, vx: 0, vz: 0, moving: false, hopT: 0 };
+  const playCam = { yaw: 0, pitch: 0.28, dist: 4.6 };
   const input = { fwd: 0, turn: 0, keys: new Set(), pad: new Set() };
+
+  // Interactive meadow spots for Play-as-Pinto mode
+  const SPOTS = [
+    { id: 'home', x: P.home.x, z: P.home.z, r: 2.35, label: "Peek inside Pinto's house" },
+    { id: 'tree', x: P.tree.x, z: P.tree.z, r: 2.25, label: 'Visit the reading nook' },
+    { id: 'swing', x: P.swing.x, z: P.swing.z, r: 2.1, label: 'Visit the tree swing' },
+    { id: 'hill', x: P.hill.x, z: P.hill.z, r: 2.45, label: 'Visit the stargazing hill' },
+    { id: 'pond', x: P.pond.x, z: P.pond.z, r: 2.5, label: 'Visit the quiet pond' },
+    { id: 'bakery', x: P.bakery.x, z: P.bakery.z, r: 2.45, label: 'Visit the bakery window' },
+    { id: 'garden', x: P.garden.x, z: P.garden.z, r: 2.5, label: 'Visit the vegetable garden' },
+    { id: 'easel', x: P.easel.x, z: P.easel.z, r: 2.25, label: 'Visit the art easel' },
+    { id: 'music', x: P.music.x, z: P.music.z, r: 2.3, label: 'Visit the music corner' },
+  ];
+  const spotRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.62, 0.84, 32),
+    new THREE.MeshBasicMaterial({ color: 0xf6e7c1, transparent: true, opacity: 0.55, side: THREE.DoubleSide, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 })
+  );
+  spotRing.rotation.x = -Math.PI / 2;
+  spotRing.visible = false;
+  scene.add(spotRing);
+  const promptEl = root.querySelector('#prompt3d');
+  let nearSpot = null;
+
+  function playerCamPose() {
+    const py = groundY(player.x, player.z);
+    const cd = playCam.dist;
+    const cx = player.x + Math.sin(playCam.yaw) * Math.cos(playCam.pitch) * cd;
+    const cz = player.z + Math.cos(playCam.yaw) * Math.cos(playCam.pitch) * cd;
+    const cy = Math.max(groundY(cx, cz) + 0.55, py + 0.55 + Math.sin(playCam.pitch) * cd);
+    return { pos: new THREE.Vector3(cx, cy, cz), target: new THREE.Vector3(player.x, py + 0.48, player.z), fov: FOV_PLAY };
+  }
 
   function visitorPose() {
     const y = groundY(visitor.x, visitor.z) + EYE_H;
@@ -745,6 +778,7 @@ export async function mount3D(api) {
   }
   function currentLookTarget() {
     if (mode === 'explore') return visitorPose().target;
+    if (mode === 'play') return playerCamPose().target;
     return controls.target.clone();
   }
   function flyTo(to, dur = 1.6, then) {
@@ -759,20 +793,36 @@ export async function mount3D(api) {
     if (next === mode) return;
     mode = next;
     input.keys.clear(); input.pad.clear(); visitor.v = 0; visitor.turnV = 0; visitor.yawGoal = null;
+    player.vx = 0; player.vz = 0; player.moving = false;
     if (mode === 'explore') {
       follow = false;
       controls.enabled = false;
-      // start at the front of the meadow, looking in, a few steps from the middle
       visitor.x = 0.8; visitor.z = 6.0; visitor.yaw = 0; visitor.pitch = -0.08;
       pushOut(visitor, 0.35);
-      flyTo(visitorPose(), 1.8);
-      showMsg('Walk with the arrows. Drag to look around.', 6000);
+      flyTo(visitorPose(), 1.6);
+      showMsg('Walk with the stick or arrows. Drag or use the right stick to look around.', 6000);
+    } else if (mode === 'play') {
+      follow = false;
+      controls.enabled = false;
+      // Start right where Pinto is, or outside his cottage if he was indoors
+      const startX = beanInside ? P.home.x : beanPos.x;
+      const startZ = beanInside ? P.home.z + 0.5 : beanPos.z;
+      player.x = startX; player.z = startZ;
+      pushOut(player, 0.24, { garden: false });
+      player.yaw = 0;
+      playCam.yaw = 0; playCam.pitch = 0.28;
+      flyTo(playerCamPose(), 1.3);
+      showMsg('Use the stick or arrows to walk Pinto around. Press A or E near a spot to visit.', 6500);
     } else {
+      nearSpot = null;
+      spotRing.visible = false;
+      if (promptEl) promptEl.hidden = true;
       const pose = overviewPose();
-      flyTo(pose, 1.8, () => { controls.target.copy(pose.target); controls.enabled = true; controls.update(); });
+      flyTo(pose, 1.5, () => { controls.target.copy(pose.target); controls.enabled = true; controls.update(); });
       showMsg('', 0);
     }
     syncButtons();
+    requestRender();
   }
 
   // ---------- messages over the canvas (Where's Bean, near Bean) ----------
@@ -825,20 +875,86 @@ export async function mount3D(api) {
   }
 
   // ---------- buttons ----------
+  const playBtn = root.querySelector('#play-btn');
   const exploreBtn = root.querySelector('#explore-btn');
   const followBtn = root.querySelector('#follow-btn');
   const resetBtn = root.querySelector('#reset-btn');
   const findBtn = root.querySelector('#find-btn');
   const pad = root.querySelector('#walk-pad');
+
+  function updateNearSpot() {
+    if (mode !== 'play') {
+      nearSpot = null;
+      spotRing.visible = false;
+      if (promptEl) promptEl.hidden = true;
+      return;
+    }
+    let best = null, bestD = Infinity;
+    for (const sp of SPOTS) {
+      if (sp.id === 'swing' && !swing.visible) continue;
+      const d = Math.hypot(player.x - sp.x, player.z - sp.z);
+      if (d <= sp.r && d < bestD) { best = sp; bestD = d; }
+    }
+    nearSpot = best;
+    if (best) {
+      spotRing.position.set(best.x, groundY(best.x, best.z) + 0.03, best.z);
+      spotRing.visible = true;
+      if (promptEl) {
+        const hasPad = Boolean(api.getGamepad?.()?.connected);
+        const hint = hasPad ? 'Press A' : 'Press E or click';
+        const txt = `${best.label} · ${hint}`;
+        if (promptEl.textContent !== txt) promptEl.textContent = txt;
+        promptEl.hidden = false;
+      }
+    } else {
+      spotRing.visible = false;
+      if (promptEl) promptEl.hidden = true;
+    }
+  }
+
+  function interactSpot() {
+    if (mode !== 'play' || !nearSpot) return false;
+    if (nearSpot.id === 'home') {
+      api.openHouse?.();
+      return true;
+    }
+    if (api.openPlace) {
+      api.openPlace(nearSpot.id);
+      return true;
+    }
+    return false;
+  }
+
+  function hopPinto() {
+    if (mode === 'play') {
+      player.hopT = 0.55;
+      showMsg('Pinto wiggles his sprout happily.', 3200);
+      requestRender();
+      return true;
+    }
+    return false;
+  }
+
   function syncButtons() {
     const ex = mode === 'explore';
+    const pl = mode === 'play';
+    if (playBtn) {
+      playBtn.setAttribute('aria-pressed', String(pl));
+      const lbl = root.querySelector('#play-label');
+      if (lbl) lbl.textContent = pl ? 'Stop playing' : 'Play as Pinto';
+    }
     exploreBtn.setAttribute('aria-pressed', String(ex));
     root.querySelector('#explore-label').innerHTML = ex ? '<span class="long">Back to overview</span><span class="short">Overview</span>' : 'Explore';
     followBtn.setAttribute('aria-pressed', String(follow));
-    followBtn.hidden = ex; resetBtn.hidden = ex;
-    pad.hidden = !ex;
-    stage.classList.toggle('is-exploring', ex);
+    followBtn.hidden = ex || pl;
+    resetBtn.hidden = ex || pl;
+    findBtn.hidden = pl;
+    pad.hidden = !(ex || pl);
+    stage.classList.toggle('is-exploring', ex || pl);
+    updateNearSpot();
   }
+  playBtn?.addEventListener('click', () => setMode(mode === 'play' ? 'overview' : 'play'));
+  promptEl?.addEventListener('click', interactSpot);
   exploreBtn.addEventListener('click', () => setMode(mode === 'explore' ? 'overview' : 'explore'));
   followBtn.addEventListener('click', () => { follow = !follow; syncButtons(); requestRender(); });
   resetBtn.addEventListener('click', () => {
@@ -865,15 +981,21 @@ export async function mount3D(api) {
   const KEYMAP = { ArrowUp: 'forward', KeyW: 'forward', ArrowDown: 'back', KeyS: 'back', ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right' };
   const dialogOpen = () => !!document.querySelector('dialog[open]');
   window.addEventListener('keydown', (e) => {
-    if (!active || mode !== 'explore' || dialogOpen() || e.altKey || e.ctrlKey || e.metaKey) return;
-    const k = KEYMAP[e.code]; if (!k) return;
+    if (!active || (mode !== 'explore' && mode !== 'play') || dialogOpen() || e.altKey || e.ctrlKey || e.metaKey) return;
     if (e.target.closest && e.target.closest('input, textarea, select')) return;
+    if (mode === 'play' && (e.code === 'KeyE' || e.code === 'Space' || e.code === 'Enter')) {
+      if (interactSpot()) { e.preventDefault(); return; }
+    }
+    if (mode === 'play' && e.code === 'KeyH') {
+      e.preventDefault(); hopPinto(); return;
+    }
+    const k = KEYMAP[e.code]; if (!k) return;
     e.preventDefault(); input.keys.add(k); wake();
   });
   window.addEventListener('keyup', (e) => { const k = KEYMAP[e.code]; if (k) input.keys.delete(k); });
   window.addEventListener('blur', () => { input.keys.clear(); input.pad.clear(); });
 
-  // drag to look (Explore) and tap the cottage to peek inside (both modes)
+  // drag to look (Explore / Play) and tap the cottage to peek inside
   const ray = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
   let down = null;
@@ -883,15 +1005,19 @@ export async function mount3D(api) {
     ray.setFromCamera(ndc, camera);
     return ray.intersectObject(cottage, true).length > 0;
   }
-  canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, id: e.pointerId }; if (mode === 'explore') { try { canvas.setPointerCapture(e.pointerId); } catch {} } });
+  canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, id: e.pointerId }; if (mode === 'explore' || mode === 'play') { try { canvas.setPointerCapture(e.pointerId); } catch {} } });
   canvas.addEventListener('pointermove', (e) => {
     if (down && mode === 'explore' && !flight) {
       visitor.yaw += (e.clientX - down.lx) * 0.0035;
       visitor.pitch = Math.max(-0.45, Math.min(0.3, visitor.pitch + (e.clientY - down.ly) * 0.0025));
       visitor.yawGoal = null;
       down.lx = e.clientX; down.ly = e.clientY; dirty = true;
+    } else if (down && mode === 'play' && !flight) {
+      playCam.yaw -= (e.clientX - down.lx) * 0.0055;
+      playCam.pitch = Math.max(0.08, Math.min(0.65, playCam.pitch + (e.clientY - down.ly) * 0.0035));
+      down.lx = e.clientX; down.ly = e.clientY; dirty = true; wake();
     } else if (!down && e.pointerType === 'mouse') {
-      canvas.style.cursor = hitCottage(e) ? 'pointer' : (mode === 'explore' ? 'grab' : '');
+      canvas.style.cursor = hitCottage(e) ? 'pointer' : ((mode === 'explore' || mode === 'play') ? 'grab' : '');
     }
   });
   canvas.addEventListener('pointerup', (e) => {
@@ -928,16 +1054,23 @@ export async function mount3D(api) {
   function wake() { if (active && !raf && !document.hidden) raf = requestAnimationFrame(loop); }
 
   function stepExplore(dt) {
-    const want = (input.keys.has('forward') || input.pad.has('forward') ? 1 : 0) - (input.keys.has('back') || input.pad.has('back') ? 1 : 0);
-    const turn = (input.keys.has('left') || input.pad.has('left') ? 1 : 0) - (input.keys.has('right') || input.pad.has('right') ? 1 : 0);
-    const MAX_V = 1.1, MAX_T = 0.65; // slow walk (units/s), slow turn (rad/s)
-    const ka = 1 - Math.exp(-dt * 2.6);
+    const gp = api.getGamepad?.();
+    const gpFwd = gp && !dialogOpen() ? -(gp.ly || gp.dpadY) : 0;
+    const gpTurn = gp && !dialogOpen() ? -(gp.lx || gp.dpadX || gp.rx) : 0;
+    const gpPitch = gp && !dialogOpen() ? (gp.ry || 0) : 0;
+    const want = Math.max(-1, Math.min(1, ((input.keys.has('forward') || input.pad.has('forward') ? 1 : 0) - (input.keys.has('back') || input.pad.has('back') ? 1 : 0)) + gpFwd));
+    const turn = Math.max(-1, Math.min(1, ((input.keys.has('left') || input.pad.has('left') ? 1 : 0) - (input.keys.has('right') || input.pad.has('right') ? 1 : 0)) + gpTurn));
+    const MAX_V = 1.25, MAX_T = 0.85; // calm walk (units/s), gentle turn (rad/s)
+    const ka = 1 - Math.exp(-dt * 2.8);
     visitor.v += (want * MAX_V - visitor.v) * ka;
     visitor.turnV += (turn * MAX_T - visitor.turnV) * ka;
     if (Math.abs(visitor.v) < 0.003 && !want) visitor.v = 0;
     if (Math.abs(visitor.turnV) < 0.002 && !turn) visitor.turnV = 0;
     if (turn) visitor.yawGoal = null;
     visitor.yaw += visitor.turnV * dt;
+    if (Math.abs(gpPitch) > 0.01) {
+      visitor.pitch = Math.max(-0.45, Math.min(0.3, visitor.pitch - gpPitch * 0.55 * dt));
+    }
     if (visitor.yawGoal !== null) {
       const d = visitor.yawGoal - visitor.yaw;
       visitor.yaw += d * (1 - Math.exp(-dt * 1.8));
@@ -947,14 +1080,61 @@ export async function mount3D(api) {
       visitor.x += -Math.sin(visitor.yaw) * visitor.v * dt;
       visitor.z += -Math.cos(visitor.yaw) * visitor.v * dt;
       pushOut(visitor, 0.35);
-      if (beanVisible && !onSwing) { // don't walk through Bean
+      if (beanVisible && !onSwing) { // don't walk through Pinto
         const dx = visitor.x - beanPos.x, dz = visitor.z - beanPos.z, d = Math.hypot(dx, dz);
         if (d < 1.4 && d > 1e-4) { visitor.x = beanPos.x + (dx / d) * 1.4; visitor.z = beanPos.z + (dz / d) * 1.4; }
       }
     }
     const pose = visitorPose();
     camera.position.copy(pose.pos); camera.lookAt(pose.target); lookAtNow.copy(pose.target);
-    return !!(visitor.v || visitor.turnV || visitor.yawGoal !== null || want || turn);
+    return !!(visitor.v || visitor.turnV || visitor.yawGoal !== null || want || turn || Math.abs(gpPitch) > 0.01);
+  }
+
+  function stepPlay(dt) {
+    const gp = api.getGamepad?.();
+    const dlg = dialogOpen();
+    const keyFwd = (input.keys.has('forward') || input.pad.has('forward') ? 1 : 0) - (input.keys.has('back') || input.pad.has('back') ? 1 : 0);
+    const keyRight = (input.keys.has('right') || input.pad.has('right') ? 1 : 0) - (input.keys.has('left') || input.pad.has('left') ? 1 : 0);
+    const inFwd = dlg ? 0 : Math.max(-1, Math.min(1, keyFwd + (gp ? -(gp.ly || gp.dpadY) : 0)));
+    const inRight = dlg ? 0 : Math.max(-1, Math.min(1, keyRight + (gp ? (gp.lx || gp.dpadX) : 0)));
+    const camTurn = dlg ? 0 : (gp ? gp.rx : 0);
+    const camTilt = dlg ? 0 : (gp ? gp.ry : 0);
+
+    if (Math.abs(camTurn) > 0.01) playCam.yaw -= camTurn * 1.45 * dt;
+    if (Math.abs(camTilt) > 0.01) playCam.pitch = Math.max(0.08, Math.min(0.65, playCam.pitch + camTilt * 0.9 * dt));
+
+    const fwdX = -Math.sin(playCam.yaw), fwdZ = -Math.cos(playCam.yaw);
+    const rightX = Math.cos(playCam.yaw), rightZ = -Math.sin(playCam.yaw);
+    let wx = fwdX * inFwd + rightX * inRight;
+    let wz = fwdZ * inFwd + rightZ * inRight;
+    const mag = Math.hypot(wx, wz);
+    if (mag > 1) { wx /= mag; wz /= mag; }
+
+    const MAX_V = 2.0; // cozy unhurried waddle speed
+    const ka = 1 - Math.exp(-dt * 5.5);
+    player.vx += (wx * MAX_V - player.vx) * ka;
+    player.vz += (wz * MAX_V - player.vz) * ka;
+    if (Math.hypot(player.vx, player.vz) < 0.01 && mag < 0.01) { player.vx = 0; player.vz = 0; }
+    player.moving = Math.hypot(player.vx, player.vz) > 0.04;
+
+    if (player.moving) {
+      player.x += player.vx * dt;
+      player.z += player.vz * dt;
+      pushOut(player, 0.24, { garden: false });
+      const targetYaw = Math.atan2(player.vx, player.vz);
+      const diff = Math.atan2(Math.sin(targetYaw - player.yaw), Math.cos(targetYaw - player.yaw));
+      player.yaw += diff * (1 - Math.exp(-dt * 9.0));
+    }
+    if (player.hopT > 0) player.hopT = Math.max(0, player.hopT - dt);
+
+    updateNearSpot();
+
+    const goal = playerCamPose();
+    const kc = still() ? 1 : 1 - Math.exp(-dt * 6.5);
+    camera.position.lerp(goal.pos, kc);
+    lookAtNow.lerp(goal.target, kc);
+    camera.lookAt(lookAtNow);
+    return !!(player.moving || player.hopT > 0 || Math.abs(camTurn) > 0.01 || Math.abs(camTilt) > 0.01 || camera.position.distanceTo(goal.pos) > 0.01);
   }
 
   function loop(now) {
@@ -981,29 +1161,39 @@ export async function mount3D(api) {
       applyLook(look.cur);
     }
 
-    // Bean: position, blink, breath, swing
+    // Pinto: position, blink, breath, swing, or player-controlled walk & turn
     const tsec = (now - t0) / 1000;
     const calm = still();
     let sway = 0;
     if (onSwing && !calm) sway = 0.07 * Math.sin((tsec * Math.PI * 2) / 5.5);
     if (swing.rotation.x !== sway) { swing.rotation.x = sway; }
-    bean.visible = beanVisible; beanShadow.visible = beanVisible && !onSwing;
-    if (beanVisible) {
-      if (onSwing) {
+    const playActive = mode === 'play';
+    bean.visible = playActive ? true : beanVisible;
+    beanShadow.visible = playActive ? true : (beanVisible && !onSwing);
+    if (bean.visible) {
+      if (playActive) {
+        const py = groundY(player.x, player.z);
+        const bob = (!calm && player.moving) ? Math.abs(Math.sin(tsec * 6.5)) * 0.045 : 0;
+        const hop = player.hopT > 0 ? Math.sin((player.hopT / 0.55) * Math.PI) * 0.22 : 0;
+        bean.position.set(player.x, py + bob + hop, player.z);
+        beanShadow.position.set(player.x, py + 0.012, player.z);
+      } else if (onSwing) {
         swing.updateMatrixWorld();
         const seat = swing.localToWorld(swing.userData.seat.clone());
         bean.position.copy(seat);
-      } else bean.position.copy(beanPos);
-      beanShadow.position.set(beanPos.x, beanPos.y + 0.012, beanPos.z);
+      } else {
+        bean.position.copy(beanPos);
+        beanShadow.position.set(beanPos.x, beanPos.y + 0.012, beanPos.z);
+      }
       let open = true;
-      if (state?.sleeping) open = false;
+      if (!playActive && state?.sleeping) open = false;
       else if (!calm) {
         if (now - t0 > nextBlink) { blinkUntil = now + 260; nextBlink = now - t0 + 11000 + (Math.random() - 0.5) * 2000; }
         if (now < blinkUntil) open = false;
       }
       const bx = bean.position.x, bz = bean.position.z;
-      let beanYaw = bean.userData.walkYaw ?? 0;
-      if (!bean.userData.walking && !state?.sleeping && !calm) {
+      let beanYaw = playActive ? player.yaw : (bean.userData.walkYaw ?? 0);
+      if (!playActive && !bean.userData.walking && !state?.sleeping && !calm) {
         // Calm idle glance: gently turns left and back so his back-left cutout is visible as he turns
         const cyc = (tsec % 14) / 14;
         if (cyc > 0.62) beanYaw = -1.25;
@@ -1020,8 +1210,8 @@ export async function mount3D(api) {
       if (!calm) moving = true;
     }
 
-    // window glow at night while Bean is home
-    const glow = beanInside ? Math.min(1, skyNight * 1.4) : 0;
+    // window glow at night while Pinto is home
+    const glow = (!playActive && beanInside) ? Math.min(1, skyNight * 1.4) : 0;
     windowGlass.emissiveIntensity = glow * 0.85;
     glowSprite.material.opacity = glow * 0.55;
     zzz.material.map = skyNight > 0.3 ? zTexNight : zTexDay;
@@ -1036,9 +1226,20 @@ export async function mount3D(api) {
       camera.lookAt(lookAtNow);
       moving = true;
       if (flight.t >= flight.dur) { const f = flight; flight = null; f.then && f.then(); }
+    } else if (mode === 'play') {
+      if (stepPlay(dt)) moving = true;
     } else if (mode === 'explore') {
       if (stepExplore(dt)) moving = true;
     } else {
+      const gp = api.getGamepad?.();
+      if (gp && !dialogOpen() && (Math.abs(gp.rx) > 0.01 || Math.abs(gp.ry) > 0.01)) {
+        const off = camera.position.clone().sub(controls.target);
+        const sph = new THREE.Spherical().setFromVector3(off);
+        sph.theta = Math.max(-1.35, Math.min(1.35, sph.theta - gp.rx * 1.1 * dt));
+        sph.phi = Math.max(0.38, Math.min(1.22, sph.phi + gp.ry * 0.8 * dt));
+        camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(sph));
+        moving = true;
+      }
       if (follow && beanVisible) {
         const goal = (onSwing ? bean.position.clone() : beanPos.clone()).add(new THREE.Vector3(0, 0.4, 0));
         const k = calm ? 1 : 1 - Math.exp(-dt * 0.9);
@@ -1089,5 +1290,11 @@ export async function mount3D(api) {
       if (on) { resize(); think(); requestRender(); }
       else { input.keys.clear(); input.pad.clear(); if (raf) cancelAnimationFrame(raf); raf = 0; }
     },
+    wake: requestRender,
+    getMode: () => mode,
+    setMode,
+    interact: interactSpot,
+    hop: hopPinto,
+    findBean,
   };
 }

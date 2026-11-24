@@ -3,7 +3,8 @@
 import { stateAt, duskAmount, positionOnSegment, NEEDS } from './mind.js';
 import { beanSVG } from './bean.js';
 import { nowClock } from './clock.js';
-import { initGame } from './game.js?v=13';
+import { initGame } from './game.js?v=14';
+import { initGamepad } from './gamepad.js?v=14';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -253,19 +254,27 @@ function open3D() {
   if (loading3d) return;
   const stage = $('#stage3d');
   stage.dataset.state = 'loading';
-  loading3d = import('./world3d.js?v=13')
+  loading3d = import('./world3d.js?v=14')
     .then((m) => m.mount3D({
       root: $('#scene3d'),
       world: app.world,
       nowClock,
       isStill: () => app.still,
       openHouse,
+      openPlace: (placeId) => {
+        game.openPlace(placeId);
+        requestAnimationFrame(() => gamepad.focusFirstInDialog());
+      },
+      getGamepad: () => gamepad.getState(),
       backToStorybook: () => showView('world'),
     }))
     .then((w) => {
       world3d = w;
       stage.dataset.state = w.ok ? 'ready' : 'failed';
-      if (w.ok) w.setActive(app.view === '3d');
+      if (w.ok) {
+        w.setActive(app.view === '3d');
+        if (params.get('play') === '1') w.setMode('play');
+      }
     })
     .catch((err) => {
       console.warn('3D view could not start', err);
@@ -402,7 +411,7 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=13', { cache: 'no-store' })
+fetch('audio/manifest.json?v=14', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
@@ -504,6 +513,7 @@ function openHouse() {
   const v = (h.views && h.views[houseView()]) || h;
   openReader({ title: "Inside Pinto's house", image: v.image, alt: v.image_alt, text: v.text, closeLabel: 'Back outside' });
   game.renderHouseItems();
+  requestAnimationFrame(() => gamepad.focusFirstInDialog());
 }
 function closeHouse() { stopSpeaking(); houseDlg.close(); }
 $('#house-btn').addEventListener('click', openHouse);
@@ -543,7 +553,85 @@ const game = initGame({
   },
 });
 
+// ---------- controller support (Steam Machine / SteamOS / Xbox / DualSense / Switch) ----------
+const VIEW_ORDER = ['world', '3d', 'diary', 'things'];
+const padStatusEl = $('#pad-status');
+const gamepad = initGamepad({
+  isDirect3DControl: () => app.view === '3d' && world3d && (world3d.getMode() === 'play' || world3d.getMode() === 'explore' || world3d.getMode() === 'overview'),
+  onConnectionChange: (connected) => {
+    if (padStatusEl) padStatusEl.hidden = !connected;
+    if (connected && app.view === '3d' && world3d) world3d.wake();
+  },
+  on3DInput: () => {
+    if (app.view === '3d' && world3d) world3d.wake();
+  },
+  onConfirm: () => {
+    if (document.querySelector('dialog[open]')) return false;
+    if (app.view === '3d' && world3d) {
+      if (world3d.getMode() === 'play') {
+        return world3d.interact() || world3d.hop();
+      }
+      if (world3d.getMode() === 'overview') {
+        world3d.setMode('play');
+        return true;
+      }
+    }
+    return false;
+  },
+  onCancel: () => {
+    if (game?.isPlaceOpen()) { game.closePlace(); return; }
+    if (houseDlg.open) { closeHouse(); return; }
+    if (app.view === '3d' && world3d && world3d.getMode() !== 'overview') {
+      world3d.setMode('overview');
+    }
+  },
+  onRead: () => {
+    if (app.speaking) stopSpeaking();
+    else speak(currentReadText());
+  },
+  onAction: () => {
+    if (document.querySelector('dialog[open]')) return;
+    if (app.view === '3d' && world3d) {
+      if (world3d.getMode() === 'play') world3d.hop();
+      else world3d.findBean();
+    } else if (app.view === 'world') {
+      game.petBean();
+    }
+  },
+  onMenu: () => {
+    if (document.querySelector('dialog[open]')) {
+      if (game?.isPlaceOpen()) game.closePlace();
+      if (houseDlg.open) closeHouse();
+      return;
+    }
+    if (app.view === '3d' && world3d) {
+      world3d.setMode(world3d.getMode() === 'play' ? 'overview' : 'play');
+    } else {
+      game.openGuide();
+      requestAnimationFrame(() => gamepad.focusFirstInDialog());
+    }
+  },
+  onPrevTab: () => {
+    if (document.querySelector('dialog[open]')) return;
+    const i = VIEW_ORDER.indexOf(app.view);
+    showView(VIEW_ORDER[(i - 1 + VIEW_ORDER.length) % VIEW_ORDER.length]);
+  },
+  onNextTab: () => {
+    if (document.querySelector('dialog[open]')) return;
+    const i = VIEW_ORDER.indexOf(app.view);
+    showView(VIEW_ORDER[(i + 1) % VIEW_ORDER.length]);
+  },
+  onNavigate: (dx) => {
+    if (document.querySelector('dialog[open]')) return false;
+    if (app.view === 'diary' && dx !== 0) {
+      if (dx < 0 && !$('#prev-btn').disabled) { $('#prev-btn').click(); return true; }
+      if (dx > 0 && !$('#next-btn').disabled) { $('#next-btn').click(); return true; }
+    }
+    return false;
+  },
+});
+
 // Testing hook (read-only peek at the mind).
-window.__bean = { get state() { return app.state; }, get world() { return app.world; } };
+window.__bean = { get state() { return app.state; }, get world() { return app.world; }, get gamepad() { return gamepad.getState(); } };
 
 boot();
