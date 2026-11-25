@@ -411,7 +411,7 @@ function thingsSpeech() {
 // Never fall back to browser device speech synthesis.
 let voiceMap = {};
 let voiceMapLoaded = false;
-fetch('audio/manifest.json?v=14', { cache: 'no-store' })
+fetch('audio/manifest.json?v=15', { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((m) => { voiceMap = m || {}; voiceMapLoaded = true; updateReadButtons(); })
   .catch(() => { voiceMapLoaded = true; updateReadButtons(); });
